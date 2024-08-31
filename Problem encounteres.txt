@@ -1,0 +1,8 @@
+Tile sheet kept breaking when import diffirent types of tiles.
+original tyles were 16 x 16 bits and the new ones were 8 x 8
+realised the 2 types werent compatable and would make the 16 x 16 tiles enlarge and break.
+Created a seperate tylesheet for the 8 x 8 tiles.
+
+Unity Github issue.
+Unity project was not being comitted to github repo.
+Had to add unity project to tracked files with git add Testing-Area/
