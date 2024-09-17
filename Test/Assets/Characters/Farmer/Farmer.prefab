@@ -107,6 +107,7 @@ GameObject:
   - component: {fileID: 7637304933884052966}
   - component: {fileID: 8168175903977118561}
   - component: {fileID: 208652690094873676}
+  - component: {fileID: 6680495002012124263}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Player
@@ -334,3 +335,16 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6680495002012124263
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865140930327043108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c32f50fef7007448f624c20348b915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 0}
