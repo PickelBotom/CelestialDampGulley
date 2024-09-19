@@ -35,5 +35,14 @@ public class SwordAttack : MonoBehaviour
                 enemy.Health -= damage;
             }
         }
+
+        if(other.tag == "Tree") {
+            // Deal damage to the enemy
+            TreeScript enemy = other.GetComponent<TreeScript>();
+
+            if(enemy != null) {
+                enemy.Health -= damage;
+            }
+        }
     }
 }

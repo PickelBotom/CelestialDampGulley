@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
 
     bool canMove = true;
 
+    // bool moveup,movedown;
+
+public Vector2 LastMotionVector;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -53,6 +57,18 @@ public class PlayerController : MonoBehaviour
             } else if (movementInput.x > 0) {
                 spriteRenderer.flipX = false;
             }
+
+            // if(movementInput.y<0)
+            // {
+            //     movedown=true;
+            //     moveup=false;
+            // } 
+            // else if(movementInput.y>0)
+            // {
+            //     moveup=true;
+            //     movedown=false;    
+            // }
+            
         }
     }
 
@@ -65,6 +81,9 @@ public class PlayerController : MonoBehaviour
                 castCollisions, // List of collisions to store the found collisions into after the Cast is finished
                 moveSpeed * Time.fixedDeltaTime + collisionOffset); // The amount to cast equal to the movement plus an offset
 
+            ////////////////
+            LastMotionVector=direction;
+            ////////////////
             if(count == 0){
                 rb.MovePosition(rb.position + direction * moveSpeed * Time.fixedDeltaTime);
                 return true;
@@ -82,10 +101,11 @@ public class PlayerController : MonoBehaviour
         movementInput = movementValue.Get<Vector2>();
     }
 
-    void OnFire() {
-        animator.SetTrigger("swordAttack");
-    }
+    // void OnFire() {
+    //     animator.SetTrigger("swordAttack");
+    // }
 
+   
     public void SwordAttack() {
         LockMovement();
 
