@@ -12,8 +12,7 @@ public class InventoryPanel : MonoBehaviour
         SetIndex();
         Show();
     }
-
-    private void OnEnable()
+    void OnEnable()
     {
         Show();
     }
@@ -21,9 +20,9 @@ public class InventoryPanel : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        Show();
     }
-    private void Show(){
+    public void Show(){
         for(int i = 0;i < inventory.slots.Count; i++){
             if(inventory.slots[i].item == null){
                 buttons[i].Clean();

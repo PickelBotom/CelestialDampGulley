@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7744638632866539964}
   - component: {fileID: 2277763430926217748}
   m_Layer: 0
-  m_Name: TreeLog
+  m_Name: PickUpItemPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,12 +74,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -346249083, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
+  m_Sprite: {fileID: -613246771, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.13}
+  m_Size: {x: 0.16, y: 0.16}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -97,7 +97,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f3f5c1dadfb87f4b979229665c5c9f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
   speed: 1
   pickUpDistance: 1.5
   ttl: 10
+  item: {fileID: 11400000, guid: 9cb3a8fbe9c83724388829195e95aee3, type: 2}
+  count: 1

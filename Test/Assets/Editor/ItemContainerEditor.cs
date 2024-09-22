@@ -13,8 +13,7 @@ public class ItemContainerEditor : Editor
         ItemContainer container = target as ItemContainer;
         if(GUILayout.Button("Clear container")){
             for (int i = 0; i<container.slots.Count; i++){
-                container.slots[i].item= null;
-                container.slots[i].count = 0;
+                container.slots[i].Clear();
             }
         }
         DrawDefaultInspector();

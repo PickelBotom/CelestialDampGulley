@@ -19,6 +19,14 @@ public class PickUpItem : MonoBehaviour
     {
         player = GameManager.instance.player;
     }
+
+    public void Set(Item item, int count){
+        this.item = item;
+        this.count = count;
+
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        renderer.sprite = item.icon;
+    }
    
    private void Update()
    {

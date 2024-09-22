@@ -11,8 +11,8 @@ public class GameManager : MonoBehaviour
         instance = this;
     }
     public GameObject player;
-
     public ItemContainer inventoryContainer;
+    public ItemDragAnDropContainer dragAndDropController;
     // Start is called before the first frame update
     void Start()
     {

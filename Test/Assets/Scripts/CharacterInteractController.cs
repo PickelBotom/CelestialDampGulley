@@ -18,7 +18,7 @@ public class CharacterInteractController : MonoBehaviour
 
 private void Update()
    {
-    if(Input.GetMouseButtonDown(0))
+    if(Input.GetMouseButtonDown(1))
     {
         Debug.Log("Left click pressed");
         interact();

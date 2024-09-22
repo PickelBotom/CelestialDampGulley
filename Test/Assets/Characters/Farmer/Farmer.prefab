@@ -109,6 +109,7 @@ GameObject:
   - component: {fileID: 208652690094873676}
   - component: {fileID: 8981667144858941449}
   - component: {fileID: 8447588326546865255}
+  - component: {fileID: 4584161919400079318}
   m_Layer: 0
   m_Name: Farmer
   m_TagString: Player
@@ -351,6 +352,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetDistance: 0.11
   sizeOFInteractArea: 0.25
+  markerManager: {fileID: 0}
+  tileMapReadController: {fileID: 0}
+  maxDistance: 0.5
+  cropsManager: {fileID: 0}
+  PlowableTiles: {fileID: 0}
 --- !u!114 &8447588326546865255
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -365,3 +371,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetDistance: 0.11
   sizeOFInteractArea: 0.2
+--- !u!114 &4584161919400079318
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5865140930327043108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 74c32f50fef7007448f624c20348b915, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panel: {fileID: 0}
