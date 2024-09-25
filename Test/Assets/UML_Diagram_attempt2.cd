@@ -1,0 +1,337 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="PlayerController">
+    <Position X="6.5" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAEiAgACAGAAABAQAAQAABAAgAAQECAAAAAgA=</HashCode>
+      <FileName>Assets\Characters\Farmer\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Character">
+    <Position X="0.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Character.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterInteractController">
+    <Position X="3.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAEAAAAAAAAAAAAAAECABAAAAgAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\CharacterInteractController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="character" />
+      <Field Name="player" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Crops" Collapsed="true">
+    <Position X="12" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CropManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CropManager">
+    <Position X="11.25" Y="1.5" Width="1.5" />
+    <AssociationLine Name="plowed" Type="UnityEngine.Tilemaps.TileBase">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.755" Y="0.05" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="seeded" Type="UnityEngine.Tilemaps.TileBase">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.725" Y="0.06" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <AssociationLine Name="targetTileMap" Type="UnityEngine.Tilemaps.Tilemap" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="12.75" Y="1.993" />
+        <Point X="13.823" Y="1.993" Type="JumpStart" />
+        <Point X="13.99" Y="1.993" Type="JumpEnd" />
+        <Point X="14.364" Y="1.993" />
+        <Point X="14.364" Y="3.938" />
+        <Point X="15" Y="3.938" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.018" Y="-0.278" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAgAQAAAACAAAAEAAEAAAAAIAAABAAAABAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CropManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="plowed" />
+      <Field Name="seeded" />
+      <Field Name="targetTileMap" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="dictcrops" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DatabaseManager">
+    <Position X="0.5" Y="4.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAACAAAAAABAABAAAEAAAAEACgAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\DatabaseManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DayNightController">
+    <Position X="2.75" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQBAAAQEAAQAAAAAAAABQAAAAAAgAAIAAAAAEAgAAA=</HashCode>
+      <FileName>Assets\Scripts\DayNightController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="6.75" Y="10.5" Width="1.5" />
+    <AssociationLine Name="dragAndDropController" Type="ItemDragAnDropContainer" ManuallyRouted="true" FixedFromPoint="true">
+      <Path>
+        <Point X="7.312" Y="12.569" />
+        <Point X="7.312" Y="13.136" />
+        <Point X="7.312" Y="13.136" />
+        <Point X="7.312" Y="14" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAABAAAAABACAABAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dragAndDropController" />
+      <Field Name="inventoryContainer" />
+      <Field Name="player" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Interactable">
+    <Position X="2.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interactable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LootContainerInteractable">
+    <Position X="1.25" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAIAAAABAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LootConatinerInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TalkInteractable">
+    <Position X="3.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TalkInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InventoryButton">
+    <Position X="13.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQiAABAAAAAEAAAAAAAAAAAAIAQAAAAAAQAA=</HashCode>
+      <FileName>Assets\Scripts\InventoryButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="inventoryController">
+    <Position X="8.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\inventoryController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="panel" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="InventoryPanel">
+    <Position X="10.75" Y="13.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAIAEAAAAAAAAEAAACAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\InventoryPanel.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="inventory" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="buttons" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="Item">
+    <Position X="16.25" Y="11.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemSlot">
+    <Position X="13.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABAQAAAAAAgAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="item" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ItemContainer">
+    <Position X="10" Y="10.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="slots" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ItemDragAnDropContainer">
+    <Position X="6.75" Y="14" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAACAAAAAAAAAAAAACABARAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemDragAnDropContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemSpawnManager">
+    <Position X="17" Y="13.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIABAAAAAEAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\ItemSpawnManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MarkerManager">
+    <Position X="19.75" Y="0.75" Width="1.5" />
+    <AssociationLine Name="tile" Type="UnityEngine.Tilemaps.TileBase" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.75" Y="2.125" />
+        <Point X="18.5" Y="2.125" />
+        <Point X="18.5" Y="1.75" />
+        <Point X="18.062" Y="1.75" />
+        <Point X="18.062" Y="2" />
+      </Path>
+    </AssociationLine>
+    <AssociationLine Name="targetTilemap" Type="UnityEngine.Tilemaps.Tilemap" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="19.75" Y="0.969" />
+        <Point X="16.25" Y="0.969" />
+        <Point X="16.25" Y="3.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAAAEAAAAAAAAAAAAEAAEABAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\MarkerManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tile" />
+      <Field Name="targetTilemap" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="PickUpItem">
+    <Position X="19" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAABAAABIQAAAAAAEAAAQAFAAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\PickUpItem.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="item" />
+      <Field Name="player" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TileData">
+    <Position X="17.25" Y="6" Width="1.5" />
+    <AssociationLine Name="tiles" Type="UnityEngine.Tilemaps.TileBase" ManuallyRouted="true" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="18.125" Y="6" />
+        <Point X="18.125" Y="4.252" />
+        <Point X="17.875" Y="4.252" />
+        <Point X="17.875" Y="4.002" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TileData.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="tiles" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="TileMapReadController">
+    <Position X="21.25" Y="3.25" Width="1.5" />
+    <AssociationLine Name="dataFromTiles" Type="TileData" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="21.25" Y="4.75" />
+        <Point X="18.375" Y="4.75" />
+        <Point X="18.375" Y="6" />
+      </Path>
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="-1.264" Y="0.126" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAAAABAACCAAAAAAAAAAAAAAggAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TileMapReadController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="tilemap" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="dataFromTiles" />
+      <Field Name="tileDatas" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ToolCharController">
+    <Position X="12.75" Y="4.5" Width="1.5" />
+    <AssociationLine Name="tileMapReadController" Type="TileMapReadController">
+      <MemberNameLabel ManuallyPlaced="true">
+        <Position X="0.04" Y="-0.33" />
+      </MemberNameLabel>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gBQAAQAAAAABAEgQAAAgAQAAAAAAEAApAAAAgBAAAMA=</HashCode>
+      <FileName>Assets\Scripts\ToolCharController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cropsManager" />
+      <Field Name="markerManager" />
+      <Field Name="player" />
+      <Field Name="tileMapReadController" />
+      <Field Name="PlowableTiles" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ToolHit">
+    <Position X="6.75" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ToolHit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TreeCuttable">
+    <Position X="9.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAACAAYAAAAAAAAAAAAAAACAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\TreeCuttable.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="item" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="UnityEngine.Tilemaps.TileBase">
+    <Position X="16.75" Y="2" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.Tilemaps.Tilemap" Collapsed="true">
+    <Position X="15" Y="3.75" Width="1.5" />
+    <NestedTypes>
+      <Class Name="UnityEngine.Tilemaps.Tilemap.Orientation" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+      <Class Name="UnityEngine.Tilemaps.Tilemap.SyncTile" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.GameObject" Collapsed="true">
+    <Position X="9.5" Y="16.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

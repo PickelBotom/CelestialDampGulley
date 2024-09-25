@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject player;
     public ItemContainer inventoryContainer;
     public ItemDragAnDropContainer dragAndDropController;
+   
     // Start is called before the first frame update
     void Start()
     {
