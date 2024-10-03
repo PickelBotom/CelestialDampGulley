@@ -5,11 +5,15 @@ using UnityEngine;
 public class ItemPanel : MonoBehaviour
 {
     
-    [SerializeField] ItemContainer inventory;
+    public ItemContainer inventory;
     public List<InventoryButton> buttons;
     // Start is called before the first frame update
     void Start()
     {
+        Init();
+    }
+    public void Init(){
+
         SetIndex();
         Show();
     }

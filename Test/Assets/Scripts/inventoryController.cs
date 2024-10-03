@@ -7,6 +7,7 @@ public class inventoryController : MonoBehaviour
 {
 
     [SerializeField] GameObject panel;
+    [SerializeField] GameObject toolbarPanel;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,7 @@ public class inventoryController : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Tab)){
             panel.SetActive(!panel.activeInHierarchy);
+            toolbarPanel.SetActive(!toolbarPanel.activeInHierarchy);
         }
     }
 }

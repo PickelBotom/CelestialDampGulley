@@ -8,6 +8,12 @@ public class ItemToolbarPanel : ItemPanel
 {
     [SerializeField] ToolBarController toolbarController;
 
+    void Start()
+    {
+        Init();
+        toolbarController.onChange += Highlight;
+        Highlight(0);
+    }
     public override void OnClick(int id)
     {
         toolbarController.Set(id);
