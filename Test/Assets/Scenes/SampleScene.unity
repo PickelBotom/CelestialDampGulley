@@ -12985,6 +12985,7 @@ MonoBehaviour:
   plowed: {fileID: 11400000, guid: 19882907550eafd44aeb42e961dd6ea2, type: 2}
   seeded: {fileID: 11400000, guid: c844eebb83e454e4dbb85c26825ca399, type: 2}
   targetTileMap: {fileID: 796989353}
+  cropsSpritePrefab: {fileID: 5554194023242154450, guid: e3fcbc1a04cffee4e816f9156099c33d, type: 3}
 --- !u!114 &946657274
 MonoBehaviour:
   m_ObjectHideFlags: 0

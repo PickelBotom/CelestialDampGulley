@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
-  m_Name: WheatSeed
+  m_Name: Wheat
   m_EditorClassIdentifier: 
-  Name: WheatSeed
+  Name: Wheat
   stackable: 1
-  icon: {fileID: -482088290, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
+  icon: {fileID: -122420054, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
   OnAction: {fileID: 0}
-  onTileMapAction: {fileID: 11400000, guid: 83af88507e0213e43ac5fc597d27189c, type: 2}
-  onItemUsed: {fileID: 11400000, guid: 83af88507e0213e43ac5fc597d27189c, type: 2}
-  crop: {fileID: 11400000, guid: fcb6c95d75257864b9c1528a2e496937, type: 2}
+  onTileMapAction: {fileID: 0}
+  onItemUsed: {fileID: 0}
+  crop: {fileID: 0}

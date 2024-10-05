@@ -7,14 +7,14 @@ using UnityEngine;
 public class SeedTile : ToolAction
 {
     // Start is called before the first frame update
-    public override bool OnApplyToTileMap(Vector3Int gridPosition, TileMapReadController tileMapReadController)
+    public override bool OnApplyToTileMap(Vector3Int gridPosition, TileMapReadController tileMapReadController, Item item)
     {
 
         if(tileMapReadController.cropManager.CheckTile(gridPosition) == false){
             return false;
         }
 
-        tileMapReadController.cropManager.Seed(gridPosition);
+        tileMapReadController.cropManager.Seed(gridPosition,item.crop);
 
         return true;
     }

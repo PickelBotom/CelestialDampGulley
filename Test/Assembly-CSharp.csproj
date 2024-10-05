@@ -97,6 +97,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Interactable.cs" />
     <Compile Include="Assets\Scripts\CropManager.cs" />
+    <Compile Include="Assets\Scripts\PlowTile.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\ToolAction.cs" />
     <Compile Include="Assets\Characters\Farmer\PlayerController.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Assets\Scripts\ItemToolbarPanel.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\ItemSpawnManager.cs" />
+    <Compile Include="Assets\Scripts\Crop.cs" />
     <Compile Include="Assets\Scripts\GatherResourceNode.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
@@ -131,7 +133,6 @@
     <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\inventoryController.cs" />
     <Compile Include="Assets\Scripts\ResourceNode.cs" />
-    <Compile Include="Assets\PlowTile.cs" />
     <Compile Include="Assets\Scripts\ItemDragAnDropContainer.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
   </ItemGroup>

@@ -6,12 +6,16 @@ public class CropTile
 {
     public int growTimer;
     public Crop crop;
+    public int growStage;
+    public SpriteRenderer renderer;
 }
 public class CropManager : TimeAgent
 {
     [SerializeField] TileBase plowed;
     [SerializeField] TileBase seeded;
     [SerializeField] Tilemap targetTileMap;
+
+    [SerializeField] GameObject cropsSpritePrefab;
 
     Dictionary<Vector2Int,CropTile> dictcrops;
 
@@ -26,8 +30,19 @@ public class CropManager : TimeAgent
     {
         foreach(CropTile cropTile in dictcrops.Values)
         {
-            if (cropTile.crop = null){continue;}
+            if (cropTile.crop == null){continue;}
+            
             cropTile.growTimer +=1;
+            
+            if (cropTile.growTimer>= cropTile.crop.growthStageTime[cropTile.growStage])
+            {  
+                Debug.Log("Tick for crop");
+                cropTile.renderer.gameObject.SetActive(true);
+                cropTile.renderer.sprite= cropTile.crop.sprites[cropTile.growStage];
+
+                cropTile.growStage+=1;
+            }
+
             if (cropTile.growTimer>= cropTile.crop.timeToGrow)
             {
                 cropTile.crop = null;
@@ -45,9 +60,6 @@ public class CropManager : TimeAgent
         targetTileMap.SetTile(pos,seeded);
 
         dictcrops[(Vector2Int)pos].crop = toSeed;
-        // need to change SeedTile:ToolAction script 7 min in 
-        // need to change SeedTile:ToolAction script
-        // neeed to change Tool CharController
     }
 
     public void Plow(Vector3Int pos )
@@ -63,5 +75,10 @@ public class CropManager : TimeAgent
         CropTile crop = new CropTile();
         dictcrops.Add((Vector2Int)pos,crop);
         targetTileMap.SetTile(pos,plowed);
+        
+        GameObject go = Instantiate(cropsSpritePrefab);
+        go.transform.position = targetTileMap.CellToWorld(pos);
+        go.SetActive(false);
+        crop.renderer = go.GetComponent<SpriteRenderer>();
     }
 }
