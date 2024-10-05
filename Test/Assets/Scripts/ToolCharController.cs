@@ -23,6 +23,8 @@ public class ToolCharController : MonoBehaviour
    Vector3Int selectedTilePosition;//ep9
    bool selectable;//ep9
    
+
+   Crop Temp;// to be removed
     private void Awake()
    {
     player = GetComponent<PlayerController>();
@@ -89,7 +91,7 @@ public class ToolCharController : MonoBehaviour
       if (tileData != PlowableTiles){ return;}
       if(cropsManager.CheckTile(selectedTilePosition))
       {
-        cropsManager.Seed(selectedTilePosition);
+        cropsManager.Seed(selectedTilePosition,Temp);// added temporarily for error on my side this gets replaced on your side
       }else
       {
       cropsManager.Plow(selectedTilePosition);

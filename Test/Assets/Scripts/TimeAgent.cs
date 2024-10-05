@@ -9,9 +9,13 @@ public class TimeAgent : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameManager.instance.TimeController.Sub(this);
+        Init();
     }
 
+    public void Init()
+    {
+    GameManager.instance.TimeController.Sub(this);
+    }
     public void Invoke()
     {
         onTimeTick?.Invoke();

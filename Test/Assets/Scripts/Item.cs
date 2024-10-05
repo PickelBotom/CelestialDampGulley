@@ -8,5 +8,6 @@ public class Item : ScriptableObject
     public string Name;
     public bool stackable;
     public Sprite icon;
+    public Crop crop;// make crop its own subclass of item
     
 }
