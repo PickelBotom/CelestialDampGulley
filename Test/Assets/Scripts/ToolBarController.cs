@@ -9,6 +9,12 @@ public class ToolBarController : MonoBehaviour
     [SerializeField] int toolbarSize = 12;
     int selectedTool;
     public Action<int> onChange;
+    public Item GetItem{
+        get{
+
+            return GameManager.instance.inventoryContainer.slots[selectedTool].item;
+        }
+    }
 
     internal void Set(int id)
     {

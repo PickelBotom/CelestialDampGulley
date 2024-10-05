@@ -70,7 +70,6 @@
     <Compile Include="Assets\Scripts\ToolHit.cs" />
     <Compile Include="Assets\Scripts\SwordAttack.cs" />
     <Compile Include="Assets\Scripts\DatabaseManager.cs" />
-    <Compile Include="Assets\Scripts\TreeCuttable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
     <Compile Include="Assets\Scripts\InventoryPanel.cs" />
@@ -97,7 +96,10 @@
     <Compile Include="Assets\Scripts\Interactable.cs" />
     <Compile Include="Assets\Scripts\CropManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
+    <Compile Include="Assets\Scripts\ToolAction.cs" />
     <Compile Include="Assets\Characters\Farmer\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\SeedTile.cs" />
+    <Compile Include="Assets\ActDisable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
@@ -109,6 +111,7 @@
     <Compile Include="Assets\Scripts\ItemToolbarPanel.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\ItemSpawnManager.cs" />
+    <Compile Include="Assets\Scripts\GatherResourceNode.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TeleType.cs" />
     <Compile Include="Assets\Scripts\TileMapReadController.cs" />
@@ -118,7 +121,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexZoom.cs" />
     <Compile Include="Assets\Scripts\GameManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_B.cs" />
-    <Compile Include="Assets\Scripts\TileData.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\SkewTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\WarpTextExample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
@@ -126,6 +128,8 @@
     <Compile Include="Assets\Scripts\TalkInteractable.cs" />
     <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\inventoryController.cs" />
+    <Compile Include="Assets\Scripts\ResourceNode.cs" />
+    <Compile Include="Assets\PlowTile.cs" />
     <Compile Include="Assets\Scripts\ItemDragAnDropContainer.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />
   </ItemGroup>

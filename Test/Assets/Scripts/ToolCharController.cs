@@ -6,19 +6,20 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEngine.Tilemaps;
+using UnityEngine.UIElements;
 
 public class ToolCharController : MonoBehaviour
 {
    PlayerController player;
    Rigidbody2D rb2d;
+   ToolBarController toolBarController;
+   Animator animator;
    
    [SerializeField] float offsetDistance=0.11f;
    [SerializeField] float sizeOFInteractArea=0.2f;
    [SerializeField] MarkerManager markerManager;//ep8
    [SerializeField] TileMapReadController tileMapReadController;//ep8
    [SerializeField] float maxDistance = 0.5f;
-   [SerializeField] CropManager cropsManager;
-   [SerializeField] TileData PlowableTiles;
 
    Vector3Int selectedTilePosition;//ep9
    bool selectable;//ep9
@@ -27,6 +28,8 @@ public class ToolCharController : MonoBehaviour
    {
     player = GetComponent<PlayerController>();
     rb2d=GetComponent<Rigidbody2D>();
+    toolBarController = GetComponent<ToolBarController>();
+    animator = GetComponent<Animator>();
    }
 
    private void Update()
@@ -37,7 +40,7 @@ public class ToolCharController : MonoBehaviour
     Marker();//ep8
     if(Input.GetMouseButtonDown(1))
     {
-        Debug.Log("Right click presed");
+        Debug.Log("Right click pressed");
         if(UseToolWorld())
         {return;}
         UseToolGrid();
@@ -65,34 +68,39 @@ public class ToolCharController : MonoBehaviour
   private bool UseToolWorld()
   {
     Vector2 pos = rb2d.position + player.LastMotionVector * offsetDistance;
-    Collider2D[] colliders = Physics2D.OverlapCircleAll(pos,sizeOFInteractArea);
+    Item item = toolBarController.GetItem;
+    if(item == null){return false;}
+    if(item.OnAction == null){return false;}
 
-    foreach(Collider2D c in colliders)
-    {
-        ToolHit hit = c.GetComponent<ToolHit>();
-        if(hit!= null)
-        {
-            hit.Hit();
-            return true;
-        }
+    animator.SetTrigger("Act");
+    bool complete = item.OnAction.OnApply(pos);
+
+    if(complete == true){
+
+      if(item.onItemUsed != null){
+        item.onItemUsed.OnItemUsed(item, GameManager.instance.inventoryContainer);
+      }
     }
-    return false;
+
+    return complete;
   }
 
   private void UseToolGrid()
   {
     if(selectable == true)
     {
-      TileBase tileBase = tileMapReadController.GetTileBase(selectedTilePosition);
-      TileData tileData = tileMapReadController.GetTileData(tileBase);
-      
-      if (tileData != PlowableTiles){ return;}
-      if(cropsManager.CheckTile(selectedTilePosition))
-      {
-        cropsManager.Seed(selectedTilePosition);
-      }else
-      {
-      cropsManager.Plow(selectedTilePosition);
+      Item item = toolBarController.GetItem;
+      if(item == null){return;}
+      if(item.onTileMapAction == null){return;}
+
+      animator.SetTrigger("Act");
+      bool complete = item.onTileMapAction.OnApplyToTileMap(selectedTilePosition, tileMapReadController);
+
+      if(complete == true){
+
+        if(item.onItemUsed != null){
+          item.onItemUsed.OnItemUsed(item, GameManager.instance.inventoryContainer);
+        }
       }
     }
   }

@@ -52,15 +52,28 @@ public class ItemContainer : ScriptableObject
             }
         }
     }
-    // Start is called before the first frame update
-    void Start()
-    {
+
+    public void RemoveItem(Item ItemToRemove, int count = 1){
+
+        if(ItemToRemove.stackable){
+            
+            ItemSlot itemSlot = slots.Find(x=>x.item == ItemToRemove);
+            if(itemSlot == null){return;}
+            itemSlot.count -= count;
+            if(itemSlot.count <= 0){
+                itemSlot.Clear();
+            }
+        }
+        else{
+            while(count > 0){
+                count -= 1;
+                ItemSlot itemSlot = slots.Find(x => x.item == ItemToRemove);
+                if(itemSlot == null){return;}
+                itemSlot.Clear();
+            }
+
+        }
 
     }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    
 }

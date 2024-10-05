@@ -9,9 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
-  m_Name: Sword
+  m_Script: {fileID: 11500000, guid: f8b7894f7065c41468a276ec1b876a55, type: 3}
+  m_Name: CutTree
   m_EditorClassIdentifier: 
-  Name: sword
-  stackable: 0
-  icon: {fileID: 637351831, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
+  sizeOFInteractArea: 1
+  canHitNodeOfType: 01000000
