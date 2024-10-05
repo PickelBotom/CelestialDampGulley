@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 277500332897821580}
   - component: {fileID: 1185654143988928773}
   - component: {fileID: 5328457271685874036}
-  - component: {fileID: 6537445645847640896}
   - component: {fileID: 3674880981807351902}
+  - component: {fileID: 3960498975088989340}
+  - component: {fileID: 3929007775377995226}
   m_Layer: 0
   m_Name: Tree
   m_TagString: Tree
@@ -55,7 +56,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,19 +133,6 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.15001512, y: 0.36397862}
   m_EdgeRadius: 0
---- !u!114 &6537445645847640896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 415302698954883582}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 80abbe4cb004d8d42b34e93bb0cfb0fe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  health: 1
 --- !u!114 &3674880981807351902
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162,4 +150,32 @@ MonoBehaviour:
   spread: 0.4
   item: {fileID: 11400000, guid: 9cb3a8fbe9c83724388829195e95aee3, type: 2}
   itemCountInOneDrop: 1
+--- !u!114 &3960498975088989340
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415302698954883582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 36752100b949ab744a594a7fb292a9e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &3929007775377995226
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 415302698954883582}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b9ddaf6b414a3134f9a4206605c89f0b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  toSpawn: {fileID: 11400000, guid: 7fa0425eda3fd7c4c96b99875cb14d25, type: 2}
+  count: 1
+  spread: 1
+  probability: 0.5
   nodeType: 1

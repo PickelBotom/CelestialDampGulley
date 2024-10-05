@@ -28,9 +28,9 @@ public class ItemSlot{
 public class ItemContainer : ScriptableObject
 {
 
-    public List<ItemSlot> slots;
+	public List<ItemSlot> slots;
 
-    public void Add(Item item, int count = 1){
+	public void Add(Item item, int count = 1){
         if(item.stackable == true){
             ItemSlot itemSlot = slots.Find(x => x.item==item);
             if(itemSlot != null){

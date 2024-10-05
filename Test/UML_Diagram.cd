@@ -1,0 +1,234 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Character">
+    <Position X="1" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Character.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CharacterInteractController">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQIAAAAAAAAAEAAAAAAAAAAAAAAECABAAAAgAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\CharacterInteractController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="player" />
+      <Field Name="character" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Crops" Collapsed="true">
+    <Position X="8.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CropManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CropManager">
+    <Position X="5.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAQAAAACAAAAEAAEAAAAAIAAABAAAABAACAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\CropManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="plowed" />
+      <Field Name="targetTileMap" />
+      <Field Name="seeded" />
+    </ShowAsAssociation>
+    <ShowAsCollectionAssociation>
+      <Field Name="dictcrops" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="DatabaseManager">
+    <Position X="6.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAAAAAAAACAAAAAABAABAAAEAAAAEACgAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\DatabaseManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="DayNightController">
+    <Position X="6.5" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgQBAAAQEAAQAAAAAAAABQAAAAAAgAAIAAAAAEAgAAA=</HashCode>
+      <FileName>Assets\Scripts\DayNightController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="GameManager">
+    <Position X="16" Y="1.75" Width="1.5" />
+    <AssociationLine Name="inventoryContainer" Type="ItemContainer" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="17.5" Y="3.375" />
+        <Point X="19.25" Y="3.375" />
+        <Point X="19.25" Y="4.75" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAABAAAAABACAABAAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\GameManager.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="dragAndDropController" />
+      <Field Name="inventoryContainer" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="Interactable">
+    <Position X="13" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Interactable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="LootContainerInteractable">
+    <Position X="11.5" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAACAAAAAAIAAAABAAAIAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\LootConatinerInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TalkInteractable">
+    <Position X="14" Y="3.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TalkInteractable.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InventoryButton">
+    <Position X="17" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAQiAABAAAAAEAAAAAAAAAAAAIAQAAAAAAQAA=</HashCode>
+      <FileName>Assets\Scripts\InventoryButton.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="inventoryController">
+    <Position X="21.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>Assets\Scripts\inventoryController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="InventoryPanel">
+    <Position X="19.25" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAAAAAAIAEAAAAAAAAEAAACAAAAAAAACAA=</HashCode>
+      <FileName>Assets\Scripts\InventoryPanel.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemSlot">
+    <Position X="16" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAABAQAAAAAAgAAAAAAAAAAAABAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ItemContainer">
+    <Position X="18.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAYAAAAAACAAAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemContainer.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsCollectionAssociation>
+      <Field Name="slots" />
+    </ShowAsCollectionAssociation>
+  </Class>
+  <Class Name="ItemDragAnDropContainer">
+    <Position X="20.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAQAAAAAACAAAAAAAAAAAAACABARAAAAgAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ItemDragAnDropContainer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="MarkerManager">
+    <Position X="23.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQBAAAAAAAAAAEAAAAAAAAAAAAEAAEABAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\MarkerManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PickUpItem">
+    <Position X="26.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAQAAAAAACAABAAABIQAAAAAAEAAAQAFAAAAAAIAAAA=</HashCode>
+      <FileName>Assets\Scripts\PickUpItem.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TileMapReadController">
+    <Position X="15" Y="8" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAABAACCAAAAAAAAAAAAAAggAAAAAAQAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TileMapReadController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ToolCharController">
+    <Position X="8.75" Y="3.5" Width="1.5" />
+    <AssociationLine Name="cropsManager" Type="CropManager" FixedFromPoint="true" FixedToPoint="true">
+      <Path>
+        <Point X="8.75" Y="5.469" />
+        <Point X="6.5" Y="5.469" />
+        <Point X="6.5" Y="2.502" />
+      </Path>
+    </AssociationLine>
+    <TypeIdentifier>
+      <HashCode>gBQAAQAAAAABAEgQAAAgAQAAAAAAEAApAAAAgBAAAMA=</HashCode>
+      <FileName>Assets\Scripts\ToolCharController.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="cropsManager" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="TileData">
+    <Position X="13" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAgAAgAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\TileData.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ToolHit">
+    <Position X="0.75" Y="7.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\ToolHit.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="TreeCuttable">
+    <Position X="0.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAACAAACAAYAAAAAAAAAAAAAAACAAAAAAAQ=</HashCode>
+      <FileName>Assets\Scripts\TreeCuttable.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Field Name="item" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ItemSpawnManager">
+    <Position X="22.75" Y="9" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIABAAAAAEAAAAAAAAEA=</HashCode>
+      <FileName>Assets\Scripts\ItemSpawnManager.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PlayerController">
+    <Position X="3.5" Y="3.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAQAAAAAEiAgACAGAAABAQAAQAABAAgAAQECAAAAAgA=</HashCode>
+      <FileName>Assets\Characters\Farmer\PlayerController.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="UnityEngine.Tilemaps.TileBase" Collapsed="true">
+    <Position X="8.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="UnityEngine.Tilemaps.Tilemap" Collapsed="true">
+    <Position X="8.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="Item" Collapsed="true">
+    <Position X="3.5" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAIQAAAAAAAAA=</HashCode>
+      <FileName>Assets\Scripts\Item.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

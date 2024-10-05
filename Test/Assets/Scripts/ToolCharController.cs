@@ -24,6 +24,8 @@ public class ToolCharController : MonoBehaviour
    Vector3Int selectedTilePosition;//ep9
    bool selectable;//ep9
    
+
+   Crop Temp;// to be removed
     private void Awake()
    {
     player = GetComponent<PlayerController>();

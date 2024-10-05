@@ -15,8 +15,32 @@ public class DayNightController : MonoBehaviour
   float time;
   int days=0;
 
-  [SerializeField] float timescale = 65f;
-[SerializeField] Text text;
+  [SerializeField] float timescale = 3000f;
+  [SerializeField] float StartTime = 28800f;
+//[SerializeField] Text text;
+
+  float phaseinSec = secondsinDay/2;
+
+List<TimeAgent> agents;
+
+private void Awake()
+{
+  agents = new List<TimeAgent>();
+}
+
+void Start()
+{
+  time = StartTime;
+}
+
+public void Sub(TimeAgent tagent)
+{
+  agents.Add(tagent);
+}
+public void UnSub(TimeAgent tagent)
+{
+  agents.Remove(tagent);
+}
 
 float Hours{
      get{ return time / 3600f;}
@@ -24,20 +48,45 @@ float Hours{
 private void Update()
 {
     time += Time.deltaTime*timescale;
-    text.text= Hours.ToString();
-    float v = nightTimeCurve.Evaluate(Hours);
-    Color c = Color.Lerp(dayLightColor,nightLightColor,v);
-    globalLight.color=c;
+    //text.text= Hours.ToString();
+    DayLightCalc();
+    TimeAgents();
+    
     if((time>secondsinDay))
     {
         NextDay();
     }
 }
+
+void DayLightCalc()
+ {
+    float v = nightTimeCurve.Evaluate(Hours);
+    Color c = Color.Lerp(dayLightColor,nightLightColor,v);
+    globalLight.color=c;
+ } 
+
+ int oldPhase = 0;
+  void TimeAgents()
+  {
+    int currentPhase = (int)(time / phaseinSec);
+   if(oldPhase!= currentPhase)
+   {
+     oldPhase = currentPhase;
+    for (int i = 0; i < agents.Count; i++)
+    {
+    agents[i].Invoke();
+    }
+   }
+    
+  }
 private void NextDay()
 {
  time=0;
  days+=1;
-
+// for (int i = 0; i < agents.Count; i++)
+//     {
+//     agents[i].Invoke();
+//     } ---- for start of new day does item spawn
+  
 }
-
 }
