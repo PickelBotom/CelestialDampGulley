@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: WheatCrop
   m_EditorClassIdentifier: 
   timeToGrow: 10
-  yield: {fileID: 11400000, guid: 6d3b3c3495166ad43b40012dab0cd140, type: 2}
-  count: 1
+  yield: {fileID: 11400000, guid: 1549b516238a13d49975c828bc0c8029, type: 2}
+  count: 5
   sprites:
   - {fileID: -1094685350, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
   - {fileID: -1699858097, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}

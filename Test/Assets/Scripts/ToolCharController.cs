@@ -1,6 +1,7 @@
 //using System.Threading.Tasks.Dataflow;
 //using System.Numerics;
 //using System.ComponentModel.DataAnnotations.Schema;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -20,6 +21,7 @@ public class ToolCharController : MonoBehaviour
    [SerializeField] MarkerManager markerManager;//ep8
    [SerializeField] TileMapReadController tileMapReadController;//ep8
    [SerializeField] float maxDistance = 0.5f;
+    [SerializeField] ToolAction onTilePickUp; 
 
    Vector3Int selectedTilePosition;//ep9
    bool selectable;//ep9
@@ -92,7 +94,10 @@ public class ToolCharController : MonoBehaviour
     if(selectable == true)
     {
       Item item = toolBarController.GetItem;
-      if(item == null){return;}
+
+      if(item == null){
+				PickUpTile();
+                return;}
       if(item.onTileMapAction == null){return;}
 
       animator.SetTrigger("Act");
@@ -108,4 +113,14 @@ public class ToolCharController : MonoBehaviour
       }
     }
   }
+
+	private void PickUpTile()
+	{
+        if (onTilePickUp == null)
+        { return; }
+
+        onTilePickUp.OnApplyToTileMap(selectedTilePosition, tileMapReadController,null);
+        // so this makes your empty hand do the picking up 
+        // change null to an item type; i assume
+	}
 }

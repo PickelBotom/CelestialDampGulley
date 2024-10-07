@@ -11865,6 +11865,7 @@ GameObject:
   - component: {fileID: 796989351}
   - component: {fileID: 796989353}
   - component: {fileID: 796989352}
+  - component: {fileID: 796989354}
   m_Layer: 0
   m_Name: CropsTilemap
   m_TagString: Untagged
@@ -11974,6 +11975,22 @@ Tilemap:
     e31: 0
     e32: 0
     e33: 1
+--- !u!114 &796989354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796989350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbc38c73c0162ab46982ea7682603810, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  container: {fileID: 11400000, guid: d6670a7b3204f284cb93ece7d1adaecd, type: 2}
+  plowed: {fileID: 11400000, guid: 19882907550eafd44aeb42e961dd6ea2, type: 2}
+  seeded: {fileID: 11400000, guid: c844eebb83e454e4dbb85c26825ca399, type: 2}
+  cropsSpritePrefab: {fileID: 5554194023242154450, guid: e3fcbc1a04cffee4e816f9156099c33d, type: 3}
 --- !u!1001 &840173361
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12657,7 +12674,7 @@ RectTransform:
   m_GameObject: {fileID: 927977175}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1995374978}
@@ -12968,7 +12985,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a5c5c72e8547e4791e4c22ab247b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1048215833}
+  tilemap: {fileID: 0}
   cropManager: {fileID: 946657273}
 --- !u!114 &946657273
 MonoBehaviour:
@@ -12982,10 +12999,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4077a4fbd18853b48acd2140d8b5e9de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  plowed: {fileID: 11400000, guid: 19882907550eafd44aeb42e961dd6ea2, type: 2}
-  seeded: {fileID: 11400000, guid: c844eebb83e454e4dbb85c26825ca399, type: 2}
-  targetTileMap: {fileID: 796989353}
-  cropsSpritePrefab: {fileID: 5554194023242154450, guid: e3fcbc1a04cffee4e816f9156099c33d, type: 3}
+  cropsManager: {fileID: 0}
 --- !u!114 &946657274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -98930,7 +98944,7 @@ RectTransform:
   m_GameObject: {fileID: 1467408046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2107721522}
@@ -98965,10 +98979,10 @@ RectTransform:
   - {fileID: 1523710577}
   m_Father: {fileID: 1047908551}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: -698.1853, y: -390.8519}
+  m_SizeDelta: {x: 1225, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1467408048
 MonoBehaviour:
@@ -101297,6 +101311,10 @@ PrefabInstance:
       propertyPath: cropsManager
       value: 
       objectReference: {fileID: 946657273}
+    - target: {fileID: 8981667144858941449, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
+      propertyPath: onTilePickUp
+      value: 
+      objectReference: {fileID: 11400000, guid: 05cd2babe500db04fbdb781f43a54a11, type: 2}
     - target: {fileID: 8981667144858941449, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
       propertyPath: PlowableTiles
       value: 

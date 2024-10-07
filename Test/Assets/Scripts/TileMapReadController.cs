@@ -20,6 +20,14 @@ public class TileMapReadController : MonoBehaviour
 
 public Vector3Int GetGridPosition(Vector2 position,bool mousePosition)
 {
+        // poorly optimized the guy says 2-3 mins in ep 19
+        if (tilemap == null)
+        {
+            tilemap = GameObject.Find("Ground").GetComponent<Tilemap>();
+        }
+        if (tilemap == null) { return Vector3Int.zero; }
+        // ///////////////////////////////////////////////
+
     Vector3 worldPosition;
     if (mousePosition)
     {
@@ -34,7 +42,14 @@ public Vector3Int GetGridPosition(Vector2 position,bool mousePosition)
 } 
     public TileBase GetTileBase(Vector3Int gridPosition)
     {
-        TileBase tile = tilemap.GetTile(gridPosition);
+
+		if (tilemap == null)
+		{
+			tilemap = GameObject.Find("Ground").GetComponent<Tilemap>();
+		}
+		if (tilemap == null) { return null; }
+
+		TileBase tile = tilemap.GetTile(gridPosition);
         return tile;
     }
 

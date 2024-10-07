@@ -69,6 +69,7 @@
     <Compile Include="Assets\Scripts\MarkerManager.cs" />
     <Compile Include="Assets\Scripts\ToolHit.cs" />
     <Compile Include="Assets\Scripts\SwordAttack.cs" />
+    <Compile Include="Assets\Scripts\CropsContainer.cs" />
     <Compile Include="Assets\Scripts\DatabaseManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\EnvMapAnimator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextSelector_A.cs" />
@@ -101,7 +102,9 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
     <Compile Include="Assets\Scripts\ToolAction.cs" />
     <Compile Include="Assets\Characters\Farmer\PlayerController.cs" />
+    <Compile Include="Assets\Scripts\TilemapCropsManager.cs" />
     <Compile Include="Assets\Scripts\SeedTile.cs" />
+    <Compile Include="Assets\Scripts\TilePickUpAction.cs" />
     <Compile Include="Assets\ActDisable.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
