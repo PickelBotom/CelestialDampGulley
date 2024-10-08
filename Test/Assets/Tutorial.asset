@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8b7894f7065c41468a276ec1b876a55, type: 3}
-  m_Name: CutTree
+  m_Script: {fileID: 11500000, guid: 47d16fd3c9d48f2449ac9a9f58aeb359, type: 3}
+  m_Name: Tutorial
   m_EditorClassIdentifier: 
-  sizeOFInteractArea: 0.25
-  canHitNodeOfType: 00000000
+  line:
+  - First line
+  - Second Line
+  - Third Line
+  actor: {fileID: 11400000, guid: fe49e638176ce924fbcb741a5c09692c, type: 2}
