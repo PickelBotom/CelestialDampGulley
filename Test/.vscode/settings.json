@@ -1,4 +1,7 @@
 {
     "dotnet.preferCSharpExtension": true,
-    "dotnet.defaultSolution": "Test.sln"
+    "dotnet.defaultSolution": "Test.sln",
+    "cSpell.words": [
+        "Cinemachine"
+    ]
 }

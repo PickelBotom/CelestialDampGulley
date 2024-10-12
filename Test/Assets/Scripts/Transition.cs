@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Numerics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Vector3 = UnityEngine.Vector3;
 
 public enum TransitionType{
     Warp,
@@ -12,15 +14,15 @@ public class Transition : MonoBehaviour
 {
     [SerializeField] TransitionType transitionType;
     [SerializeField] string sceneNameToTransition;
+    [SerializeField] Vector3 targetPosition;
     Transform destination;
 
     internal void InitiateTransition(Transform toTransition)
     {
 
-        Cinemachine.CinemachineBrain currentCamera = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
-
         switch(transitionType){
             case TransitionType.Warp:
+                Cinemachine.CinemachineBrain currentCamera = Camera.main.GetComponent<Cinemachine.CinemachineBrain>();
                 currentCamera.ActiveVirtualCamera.OnTargetObjectWarped(
                     toTransition,
                     destination.position - toTransition.position);
@@ -30,10 +32,7 @@ public class Transition : MonoBehaviour
                     toTransition.position.z);
                 break;
             case TransitionType.Scene:
-                currentCamera.ActiveVirtualCamera.OnTargetObjectWarped(
-                    toTransition,
-                    destination.position - toTransition.position);
-                GameSceneManager.instance.SwitchScene(sceneNameToTransition);
+                GameSceneManager.instance.InitSwitchScene(sceneNameToTransition, targetPosition);
             break;
         }
 
