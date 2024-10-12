@@ -16,4 +16,6 @@ MonoBehaviour:
   - First line
   - Second Line
   - Third Line
+  - Third Line
+  - new line
   actor: {fileID: 11400000, guid: fe49e638176ce924fbcb741a5c09692c, type: 2}
