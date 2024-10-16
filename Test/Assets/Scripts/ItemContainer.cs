@@ -30,28 +30,46 @@ public class ItemContainer : ScriptableObject
 
 	public List<ItemSlot> slots;
 
-	public void Add(Item item, int count = 1){
-        if(item.stackable == true){
-            ItemSlot itemSlot = slots.Find(x => x.item==item);
-            if(itemSlot != null){
-                itemSlot.count += count;
-            }
-            else{
-                itemSlot = slots.Find(x => x.item == null);
-                if(itemSlot != null){
-                    itemSlot.item = item;
-                    itemSlot.count = count;
-                }
-            }
+	public void Add(Item item, int count = 1)
+{
+    if (item == null)
+    {
+        Debug.LogError("Attempting to add a null item to the inventory.");
+        return;
+    }
+
+    Debug.Log($"Adding item to inventory: {item.Name}, Count: {count}");
+
+    if (item.stackable == true)
+    {
+        ItemSlot itemSlot = slots.Find(x => x.item == item);
+        if (itemSlot != null)
+        {
+            itemSlot.count += count;
         }
-        else{
-            //adding non stackable item to container
-            ItemSlot itemSlot = slots.Find(x => x.item == null);
-            if(itemSlot != null){
+        else
+        {
+            itemSlot = slots.Find(x => x.item == null);
+            if (itemSlot != null)
+            {
                 itemSlot.item = item;
+                itemSlot.count = count;
             }
         }
     }
+    else
+    {
+        // Adding non-stackable item to container
+        ItemSlot itemSlot = slots.Find(x => x.item == null);
+        if (itemSlot != null)
+        {
+            itemSlot.item = item;
+            itemSlot.count = count;
+        }
+    }
+}
+
+
 
     public void RemoveItem(Item ItemToRemove, int count = 1){
 
@@ -74,6 +92,17 @@ public class ItemContainer : ScriptableObject
 
         }
 
+    }
+
+    public void LoadItemsFromDatabase(DatabaseManager dbManager)
+    {
+        List<Item> itemsFromDB = DatabaseManager.instance.GetAllItems();
+        slots.Clear(); // Clear existing items
+        foreach (var item in itemsFromDB)
+        {
+            ItemSlot itemSlot = new ItemSlot { item = item, count = 1 }; // Adjust count logic as needed
+            slots.Add(itemSlot);
+        }
     }
     
 }

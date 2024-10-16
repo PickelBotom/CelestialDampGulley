@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: SwordAttack
   m_EditorClassIdentifier: 
   sizeOFInteractArea: 0.25
-  canHitNodeOfType: 00000000
+  canHitNodeOfType: 01000000

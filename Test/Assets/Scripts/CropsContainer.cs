@@ -17,4 +17,16 @@ public class CropsContainer : ScriptableObject
 	{
 		crops.Add(crop);
 	}
+
+	public void LoadCropsFromDatabase()
+    {
+        List<Crop> cropsFromDB = DatabaseManager.instance.GetAllCrops(); // TODO
+        crops.Clear(); // Clear existing crops
+        foreach (var crop in cropsFromDB)
+        {
+            CropTile cropTile = new CropTile();
+            cropTile.crop = crop;
+            crops.Add(cropTile);
+        }
+    }
 }
