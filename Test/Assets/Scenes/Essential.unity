@@ -773,6 +773,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1001571279973790088, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
   m_PrefabInstance: {fileID: 3886123793566316555}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &304498464 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3242121328352323880, guid: f073b8d90365c9d4a8c9d1b44c2a3bed, type: 3}
+  m_PrefabInstance: {fileID: 2284959250977068521}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 073797afb82c5a1438f328866b10b3f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &305619385
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3147,7 +3158,7 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   dayLightColor: {r: 1, g: 1, b: 1, a: 1}
-  globalLight: {fileID: 3242121328352323880, guid: f073b8d90365c9d4a8c9d1b44c2a3bed, type: 3}
+  globalLight: {fileID: 304498464}
   timescale: 3000
   StartTime: 28800
 --- !u!114 &946657272
@@ -3162,7 +3173,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25a5c5c72e8547e4791e4c22ab247b36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilemap: {fileID: 1093337058}
+  tilemap: {fileID: 0}
   cropManager: {fileID: 946657273}
 --- !u!114 &946657273
 MonoBehaviour:
