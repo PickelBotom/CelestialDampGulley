@@ -9,17 +9,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f7d33baba314384c91935c332f179de, type: 3}
   m_Name: Wheat
   m_EditorClassIdentifier: 
   ItemID: 0
-  Name: Wheat
+  Name: New Item
   stackable: 1
-  icon: {fileID: -122420054, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
+  icon: {fileID: -155476774, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
   OnAction: {fileID: 0}
   onTileMapAction: {fileID: 0}
   onItemUsed: {fileID: 0}
   crop: {fileID: 0}
-  SellPrice: 20
-  Description: Grain for making bread
-  Category: Crop
+  SellPrice: 10
+  Description: A staple crop for bread.
+  Category: General
+  timeToGrow: 30
+  yield: {fileID: 0}
+  count: 1
+  sprites: []
+  growthStageTime: 
+  Stackable: 0

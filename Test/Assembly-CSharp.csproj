@@ -95,6 +95,7 @@
     <Compile Include="Assets\Scripts\TransitionArea.cs" />
     <Compile Include="Assets\Scripts\ItemPanel.cs" />
     <Compile Include="Assets\Scripts\ItemSpawner.cs" />
+    <Compile Include="Assets\Scripts\ScreenTint.cs" />
     <Compile Include="Assets\Scripts\TreeScript.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
     <Compile Include="Assets\Scripts\Interactable.cs" />
@@ -111,15 +112,16 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMPro_InstructionOverlay.cs" />
     <Compile Include="Assets\Scripts\Enemy.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexShakeB.cs" />
-    <Compile Include="Assets\CameraConfiner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\DropdownSample.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\GameSceneManager.cs" />
+    <Compile Include="Assets\Scripts\SpriteUtils.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Scripts\ItemToolbarPanel.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
     <Compile Include="Assets\Scripts\ItemSpawnManager.cs" />
+    <Compile Include="Assets\Scripts\CameraConfiner.cs" />
     <Compile Include="Assets\Scripts\Crop.cs" />
     <Compile Include="Assets\Scripts\GatherResourceNode.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextConsoleSimulator.cs" />
@@ -141,7 +143,6 @@
     <Compile Include="Assets\Scripts\Item.cs" />
     <Compile Include="Assets\Scripts\inventoryController.cs" />
     <Compile Include="Assets\Scripts\ResourceNode.cs" />
-    <Compile Include="Assets\ScreenTint.cs" />
     <Compile Include="Assets\Scripts\DialogueSystem.cs" />
     <Compile Include="Assets\Scripts\ItemDragAnDropContainer.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />

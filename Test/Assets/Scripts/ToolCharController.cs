@@ -70,24 +70,27 @@ public class ToolCharController : MonoBehaviour
   }
 
   private bool UseToolWorld()
-  {
+{
     Vector2 pos = rb2d.position + player.LastMotionVector * offsetDistance;
-    Item item = toolBarController.GetItem;
-    if(item == null){return false;}
-    if(item.OnAction == null){return false;}
+    Item item = toolBarController.GetItem; // This should get the correct selected item
+
+    if(item == null)
+        return false;
+
+    if(item.OnAction == null)
+        return false;
 
     animator.SetTrigger("Act");
     bool complete = item.OnAction.OnApply(pos);
 
-    if(complete == true){
-
-      if(item.onItemUsed != null){
-        item.onItemUsed.OnItemUsed(item, GameManager.instance.inventoryContainer);
-      }
+    if(complete)
+    {
+        item.onItemUsed?.OnItemUsed(item, GameManager.instance.inventoryContainer);
     }
 
     return complete;
-  }
+}
+
 
   private void UseToolGrid()
   {

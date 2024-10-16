@@ -9,16 +9,24 @@ public class ToolBarController : MonoBehaviour
     [SerializeField] int toolbarSize = 12;
     int selectedTool;
     public Action<int> onChange;
-    public Item GetItem{
-        get{
-
-            return GameManager.instance.inventoryContainer.slots[selectedTool].item;
-        }
+    public Item GetItem
+{
+    get
+    {
+        var item = GameManager.instance.inventoryContainer.slots[selectedTool].item;
+        Debug.Log($"GetItem: {item?.Name} at slot: {selectedTool}");
+        return item;
     }
+}
 
     internal void Set(int id)
     {
-        selectedTool = id;
+        if (selectedTool != id)
+        {
+            selectedTool = id;
+            Debug.Log($"Selected Tool Updated to: {selectedTool}");
+            onChange?.Invoke(selectedTool);
+        }
     }
 
     void Update()
