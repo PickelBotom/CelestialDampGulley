@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -3
+  m_SortingOrder: 0
   m_Sprite: {fileID: -1890747883, guid: 706a7eae8ff74d54bb45bcd896bb9926, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -150,6 +150,7 @@ MonoBehaviour:
   spread: 0.4
   item: {fileID: 11400000, guid: 9cb3a8fbe9c83724388829195e95aee3, type: 2}
   itemCountInOneDrop: 1
+  nodeType: 0
 --- !u!114 &3960498975088989340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -178,4 +179,3 @@ MonoBehaviour:
   count: 1
   spread: 1
   probability: 0.5
-  nodeType: 1

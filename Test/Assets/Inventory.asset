@@ -27,16 +27,16 @@ MonoBehaviour:
     count: 0
   - item: {fileID: 11400000, guid: 6d3b3c3495166ad43b40012dab0cd140, type: 2}
     count: 863
-  - item: {fileID: 11400000, guid: 2f443a3d72225d64eb20b0efc2926ede, type: 2}
+  - item: {fileID: 0}
     count: 1
-  - item: {fileID: 11400000, guid: aa3166f3bd7b863429d428a7a8b7ac07, type: 2}
+  - item: {fileID: 0}
     count: 1
   - item: {fileID: 11400000, guid: bf7e2cdd093b2704da33f3529f350256, type: 2}
     count: 200
+  - item: {fileID: 11400000, guid: aa3166f3bd7b863429d428a7a8b7ac07, type: 2}
+    count: 1
   - item: {fileID: 0}
-    count: 200
-  - item: {fileID: 0}
-    count: 0
+    count: 100
   - item: {fileID: 0}
     count: 0
   - item: {fileID: 0}

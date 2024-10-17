@@ -34,6 +34,7 @@ public class DatabaseManager : MonoBehaviour
     void Start()
     {
         dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
+
         DeleteDatabase();
 
         // Set up the database path

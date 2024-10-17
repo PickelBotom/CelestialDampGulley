@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: TutOak
   m_EditorClassIdentifier: 
   Name: TutOak
-  portrait: {fileID: 1355126002, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
+  portrait: {fileID: 21300000, guid: 4ce434f047def164999270a222f9d140, type: 3}
