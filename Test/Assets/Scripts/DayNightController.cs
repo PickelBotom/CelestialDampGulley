@@ -3,90 +3,96 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Rendering.Universal;
+
 public class DayNightController : MonoBehaviour
 {
-  const float secondsinDay = 86400f;
+    const float secondsInDay = 86400f;
 
-  [SerializeField] Color nightLightColor;
-  [SerializeField] AnimationCurve nightTimeCurve;
-  [SerializeField] Color dayLightColor = Color.white;
-  
-  [SerializeField] Light2D globalLight;
-  float time;
-  int days=0;
+    [SerializeField] Color nightLightColor;
+    [SerializeField] AnimationCurve nightTimeCurve;
+    [SerializeField] Color dayLightColor = Color.white;
 
-  [SerializeField] float timescale = 3000f;
-  [SerializeField] float StartTime = 28800f;
-//[SerializeField] Text text;
+    [SerializeField] Light2D globalLight;
+    [SerializeField] EnvironmentManager environmentManager; // Reference to EnvironmentManager
 
-  float phaseinSec = secondsinDay/2;
+    float time;
+    int days = 0;
 
-List<TimeAgent> agents;
+    [SerializeField] float timeScale = 3000f;
+    [SerializeField] float startTime = 28800f;
+    float phaseInSec = secondsInDay / 2;
 
-private void Awake()
-{
-  agents = new List<TimeAgent>();
-}
+    List<TimeAgent> agents;
 
-void Start()
-{
-  time = StartTime;
-}
-
-public void Sub(TimeAgent tagent)
-{
-  agents.Add(tagent);
-}
-public void UnSub(TimeAgent tagent)
-{
-  agents.Remove(tagent);
-}
-
-float Hours{
-     get{ return time / 3600f;}
-}
-private void Update()
-{
-    time += Time.deltaTime*timescale;
-    //text.text= Hours.ToString();
-    DayLightCalc();
-    TimeAgents();
-    
-    if((time>secondsinDay))
+    private void Awake()
     {
-        NextDay();
+        agents = new List<TimeAgent>();
     }
-}
 
-void DayLightCalc()
- {
-    float v = nightTimeCurve.Evaluate(Hours);
-    Color c = Color.Lerp(dayLightColor,nightLightColor,v);
-    globalLight.color=c;
- } 
-
- int oldPhase = 0;
-  void TimeAgents()
-  {
-    int currentPhase = (int)(time / phaseinSec);
-   if(oldPhase!= currentPhase)
-   {
-     oldPhase = currentPhase;
-    for (int i = 0; i < agents.Count; i++)
+    void Start()
     {
-    agents[i].Invoke();
+        time = startTime;
     }
-   }
-    
-  }
-private void NextDay()
-{
- time=0;
- days+=1;
-// for (int i = 0; i < agents.Count; i++)
-//     {
-//     agents[i].Invoke();
-//     } ---- for start of new day does item spawn
-  
-}
+
+    public void Sub(TimeAgent tagent)
+    {
+        agents.Add(tagent);
+    }
+
+    public void UnSub(TimeAgent tagent)
+    {
+        agents.Remove(tagent);
+    }
+
+    float Hours
+    {
+        get { return time / 3600f; }
+    }
+
+    private void Update()
+    {
+        time += Time.deltaTime * timeScale;
+        DayLightCalc();
+        TimeAgents();
+
+        if (time > secondsInDay)
+        {
+            NextDay();
+        }
+    }
+
+    void DayLightCalc()
+    {
+        float v = nightTimeCurve.Evaluate(Hours);
+        Color c = Color.Lerp(dayLightColor, nightLightColor, v);
+        globalLight.color = c;
+    }
+
+    int oldPhase = 0;
+    void TimeAgents()
+    {
+        int currentPhase = (int)(time / phaseInSec);
+        if (oldPhase != currentPhase)
+        {
+            oldPhase = currentPhase;
+            for (int i = 0; i < agents.Count; i++)
+            {
+                agents[i].Invoke();
+            }
+        }
+    }
+
+    private void NextDay()
+    {
+        time = 0;
+        days += 1;
+
+        // Call the NewDayCycle method in EnvironmentManager
+        if (environmentManager != null)
+        {
+            environmentManager.NewDayCycle(); // Spawn trash at the start of a new day
+        }
+
+        // Optionally invoke any agents here if needed
+    }
 }

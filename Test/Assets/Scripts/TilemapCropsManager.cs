@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿
 using UnityEngine;
 using UnityEngine.Tilemaps;
-using UnityEngine.WSA;
-using static UnityEditor.PlayerSettings;
+
 
 
 public class TilemapCropsManager : TimeAgent

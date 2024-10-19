@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
-  m_Name: Corn Seeds
+  m_Name: Trash
   m_EditorClassIdentifier: 
   ItemID: 0
-  Name: Corn Seeds
+  Name: Trash
   stackable: 1
-  icon: {fileID: -2097011996, guid: f071446d0ebdd474c96312b82dbaf951, type: 3}
+  icon: {fileID: -1976097373, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
   OnAction: {fileID: 0}
   onTileMapAction: {fileID: 0}
   onItemUsed: {fileID: 0}

@@ -164,6 +164,27 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: uipack_rpg_sheet_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 31
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 40588d76377282446b0a5e9bfe496c34
+      internalID: -2085701978
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     physicsShape: []
     bones: []
@@ -177,6 +198,7 @@ TextureImporter:
     nameFileIdTable:
       Inv-Slot: 223994063
       Inv-Window: -1551212879
+      uipack_rpg_sheet_0: -2085701978
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

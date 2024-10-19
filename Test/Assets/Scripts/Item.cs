@@ -17,10 +17,11 @@ public class Item : ScriptableObject
     public int SellPrice = 0; // Default sell price
     public string Description = "No description"; // Default description
     public string Category = "General"; // Default category
+    public bool IsTrash = false;
 
     private void OnEnable()
     {
-        // You can also set defaults here if needed, but initializing above is usually sufficient.
+        
     }
 }
 
