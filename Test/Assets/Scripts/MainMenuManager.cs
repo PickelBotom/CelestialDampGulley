@@ -22,6 +22,8 @@ public class MainMenuManager : MonoBehaviour
 	private string dbPath;
 	private IDbConnection dbConnection;
 
+	private	GameObject tempobj;
+
 	[Header("Transition")]
 	[SerializeField] string nameEssentialScene;
 	[SerializeField] string nameMainScene;
@@ -37,6 +39,7 @@ public class MainMenuManager : MonoBehaviour
 
 
 	[Header("AddUser")]
+	[SerializeField] GameObject ADDUserPanel;
 	[SerializeField] TMP_InputField ADDUsername;
 	[SerializeField] TMP_InputField ADDPassword;
 	[SerializeField] TMP_Dropdown ADDRoleDp;
@@ -44,9 +47,16 @@ public class MainMenuManager : MonoBehaviour
 	string ADDRoleName;
 
 	[Header("ManageUser")]
+	[SerializeField] GameObject ManageUserPanel;
 	[SerializeField] TMP_InputField MUUsername;
 	[SerializeField] TMP_Dropdown MURoleDp;
-	[SerializeField] ScrollView MUScrollview;
+	[SerializeField] TextMeshProUGUI MUScrollviewText;
+	int MURoleEntry;
+	string MURoleName;
+
+	[Header("Notifications")]
+	[SerializeField] GameObject NotificationPanel;
+	[SerializeField] TMP_InputField NotifText;
 
 	private void Start()
 	{
@@ -64,6 +74,7 @@ public class MainMenuManager : MonoBehaviour
 	{
 		username=LogUsername.text;
 		password=LogPassword.text;
+		tempobj = Loginpanel;
 		if (!FindUser(username))
 		{
 			OutputMessage(username + " not found");
@@ -114,13 +125,23 @@ public class MainMenuManager : MonoBehaviour
 
 	void OutputMessage(string message)
 	{
+		NotificationPanel.SetActive(true);
+		NotifText.text = message;
+		tempobj.SetActive(false);
+
 		Debug.Log(message); 
+	}
+	public void RestorePanel()
+	{
+		NotificationPanel.SetActive(false);
+		tempobj.SetActive(true);
 	}
 
 	public void AddUser()
 	{
 		 username = ADDUsername.text;
 		 password = ADDPassword.text;
+		 tempobj = ADDUserPanel;
 		if (FindUser(username))
 		{
 			OutputMessage("Username Exists");
@@ -156,17 +177,57 @@ public class MainMenuManager : MonoBehaviour
 
 	public void ConfirmChanges()
 	{
+		username = MUUsername.text;
+		tempobj = ManageUserPanel;
+		if (FindUser(username))
+		{
+			MURoleEntry = MURoleDp.value;
+			MURoleName = MURoleDp.options[MURoleEntry].text;
+			using (IDbCommand dbCmd = dbConnection.CreateCommand())
+			{
+				dbCmd.CommandText = $"Update Users SET Role = '{MURoleName}' WHERE Username = '{username}'";
+				dbCmd.ExecuteNonQuery();
+			}
+			RefreshList();
+			MUUsername.text = "";
+			OutputMessage(username + " Role Successfully changed!");
+		}
+		else 
+		{
+			if (username.Length > 0)
+			{
+				OutputMessage(username + " not found");
+				return;
+			}
+		}
 
-		OutputMessage(username + " Role Successfully changed!");
+		
 	}
 	public void RefreshList()
 	{
-		OutputMessage("List refreshed!");
+		string tuser, trole;
+		MUScrollviewText.text = "Username\tRole\n";
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"SELECT Username,Role FROM Users WHERE Role != '{"Admin"}'";
+			using (IDataReader reader = dbCmd.ExecuteReader())
+			{
+				while (reader.Read())
+				{
+					tuser = reader["Username"].ToString();
+					trole = reader["Role"].ToString();
+					MUScrollviewText.text += tuser + "\t"+trole+ "\n";
+					
+				}
+
+			}
+
+		}
 	}
 	public void DeleteUser()
 	{
 		username = MUUsername.text;
-
+		tempobj = ManageUserPanel;
 		if (FindUser(username))
 		{
 			using (IDbCommand dbCmd = dbConnection.CreateCommand())
@@ -199,10 +260,6 @@ public class MainMenuManager : MonoBehaviour
 				return;
 			}
 		}
-		
-			
-
-		
 		
 	}
 
