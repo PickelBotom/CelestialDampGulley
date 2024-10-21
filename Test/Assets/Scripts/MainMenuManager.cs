@@ -9,13 +9,14 @@ using TMPro;
 using System.IO;
 using System;
 using static UnityEngine.UIElements.UxmlAttributeDescription;
+using UnityEngine.UIElements;
 
 public class MainMenuManager : MonoBehaviour
 {
 
 
-	string inputpassword;
-	string inputusername;
+	string password;
+	string username;
 	string role="";
 
 	private string dbPath;
@@ -44,6 +45,8 @@ public class MainMenuManager : MonoBehaviour
 
 	[Header("ManageUser")]
 	[SerializeField] TMP_InputField MUUsername;
+	[SerializeField] TMP_Dropdown MURoleDp;
+	[SerializeField] ScrollView MUScrollview;
 
 	private void Start()
 	{
@@ -59,18 +62,20 @@ public class MainMenuManager : MonoBehaviour
 
 	public void Login()
 	{
-		if (!FindUser(LogUsername.text))
+		username=LogUsername.text;
+		password=LogPassword.text;
+		if (!FindUser(username))
 		{
-			OutputMessage(LogUsername.text + " not found");
+			OutputMessage(username + " not found");
 			return;
 		}
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT Password,Role FROM Users WHERE Username = '{LogUsername.text}'";
+			dbCmd.CommandText = $"SELECT Password,Role FROM Users WHERE Username = '{username}'";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
-				if (LogPassword.text == reader["Password"].ToString())
+				if (password == reader["Password"].ToString())
 				{
 					role = reader["Role"].ToString();
 
@@ -114,8 +119,8 @@ public class MainMenuManager : MonoBehaviour
 
 	public void AddUser()
 	{
-		string username = ADDUsername.text;
-		string password = ADDPassword.text;
+		 username = ADDUsername.text;
+		 password = ADDPassword.text;
 		if (FindUser(username))
 		{
 			OutputMessage("Username Exists");
@@ -149,9 +154,56 @@ public class MainMenuManager : MonoBehaviour
 
 	}
 
-	public void ManageUser()
+	public void ConfirmChanges()
 	{
 
+		OutputMessage(username + " Role Successfully changed!");
+	}
+	public void RefreshList()
+	{
+		OutputMessage("List refreshed!");
+	}
+	public void DeleteUser()
+	{
+		username = MUUsername.text;
+
+		if (FindUser(username))
+		{
+			using (IDbCommand dbCmd = dbConnection.CreateCommand())
+			{
+				dbCmd.CommandText = $"SELECT Username,Role FROM Users WHERE Username = '{username}' ";
+				using (IDataReader reader = dbCmd.ExecuteReader())
+				{
+					if (reader["Role"].ToString() == "Admin")
+					{
+						OutputMessage("Cannot Delete Admin");
+						return;
+					}
+
+				}
+
+				dbCmd.CommandText = $"Delete FROM Users WHERE Username ='{username}'";
+				dbCmd.ExecuteNonQuery();
+
+				MUUsername.text = "";
+				RefreshList();
+
+				OutputMessage(username + " Deleted");
+			}
+		}
+		else
+		{
+			if (username.Length > 0)
+			{
+				OutputMessage(username + " not found");
+				return;
+			}
+		}
+		
+			
+
+		
+		
 	}
 
 	bool FindUser(string usern)
