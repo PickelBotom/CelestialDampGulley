@@ -8,13 +8,16 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
     public GameObject PickUpItemPrefab;
 
-    private void Awake(){
+
+	private void Awake(){
         instance = this;
     }
     void Start()
     {
-        DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+		Debug.LogError(userRole);
+		DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
         inventoryContainer.LoadItemsFromDatabase(dbManager);
+        
     }
     public GameObject player;
     public ItemContainer inventoryContainer;
@@ -22,8 +25,9 @@ public class GameManager : MonoBehaviour
     public DayNightController TimeController;
     public DialogueSystem dialogueSystem;
 
+	public static string userRole="blah";
 
-    public void AddItemToInventory(Item item, int count)
+	public void AddItemToInventory(Item item, int count)
     {
         if (inventoryContainer != null)
         {

@@ -47,6 +47,7 @@ public class TilemapCropsManager : TimeAgent
 				{
 					cropTile.Harvested();
 					targetTileMap.SetTile(cropTile.position, plowed);
+					continue;// added to try fix empty croptile renderer
 				}
 
 
@@ -55,7 +56,7 @@ public class TilemapCropsManager : TimeAgent
 
 				cropTile.growTimer += 1;
 
-				if (cropTile.growTimer >= cropTile.crop.growthStageTime[cropTile.growStage])
+				if (cropTile.growTimer >= cropTile.crop.growthStageTime[cropTile.growStage])// need to fix
 				{
 					Debug.Log("Tick for crop");
 					cropTile.renderer.gameObject.SetActive(true);

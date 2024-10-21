@@ -58,8 +58,11 @@ public class DatabaseManager : MonoBehaviour
 
         // Example usage
         AddUser("admin", "admin123", "Admin");
+		AddUser("player", "p1", "Player");
+		AddUser("dev1", "d1", "Developer");
+		AddUser("playertest2", "p2", "Player");
 
-        Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
+		Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
         if (testSprite != null)
         {
             Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
@@ -87,10 +90,10 @@ public class DatabaseManager : MonoBehaviour
                 )";
             dbCmd.ExecuteNonQuery();
 
-            // Add columns to Users table if they don't exist
-            AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
-            AddColumnIfNotExist("Users", "Email", "TEXT");
-            AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
+            //// Add columns to Users table if they don't exist
+            //AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
+            //AddColumnIfNotExist("Users", "Email", "TEXT");
+            //AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
 
             // Create Crops table without Yield column
             dbCmd.CommandText = @"
