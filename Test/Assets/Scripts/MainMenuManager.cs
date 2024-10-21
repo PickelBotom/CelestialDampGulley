@@ -8,6 +8,7 @@ using Unity.UI;
 using TMPro;
 using System.IO;
 using System;
+using static UnityEngine.UIElements.UxmlAttributeDescription;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -36,6 +37,10 @@ public class MainMenuManager : MonoBehaviour
 
 	[Header("AddUser")]
 	[SerializeField] TMP_InputField ADDUsername;
+	[SerializeField] TMP_InputField ADDPassword;
+	[SerializeField] TMP_Dropdown ADDRoleDp;
+	int ADDRoleEntry;
+	string ADDRoleName;
 
 	[Header("ManageUser")]
 	[SerializeField] TMP_InputField MUUsername;
@@ -56,6 +61,7 @@ public class MainMenuManager : MonoBehaviour
 	{
 		if (!FindUser(LogUsername.text))
 		{
+			OutputMessage(LogUsername.text + " not found");
 			return;
 		}
 
@@ -108,6 +114,38 @@ public class MainMenuManager : MonoBehaviour
 
 	public void AddUser()
 	{
+		string username = ADDUsername.text;
+		string password = ADDPassword.text;
+		if (FindUser(username))
+		{
+			OutputMessage("Username Exists");
+			return;
+		}
+		if(username =="")
+		{
+			return;
+		}
+
+		if (password == "")
+		{
+			OutputMessage("Enter a password");
+			return;
+		}
+		
+		ADDRoleEntry = ADDRoleDp.value;
+		ADDRoleName = ADDRoleDp.options[ADDRoleEntry].text;
+
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"INSERT INTO Users (Username, Password, Role) VALUES ('{username}', '{password}', '{ADDRoleName}')";
+			dbCmd.ExecuteNonQuery();
+		}
+
+		ADDUsername.text = "";
+		ADDPassword.text = "";
+		
+		OutputMessage("User Successfully ADDed :)");
+
 
 	}
 
@@ -137,7 +175,6 @@ public class MainMenuManager : MonoBehaviour
 			}
 
 		}
-		OutputMessage(usern + "not found");
 		return false;
 
 	}
