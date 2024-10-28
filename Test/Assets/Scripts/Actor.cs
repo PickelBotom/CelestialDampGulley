@@ -6,5 +6,7 @@ using UnityEngine;
 public class Actor : ScriptableObject
 {
     public string Name;
+    public string TBName;
     public Sprite portrait;
+
 }

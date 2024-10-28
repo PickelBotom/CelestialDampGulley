@@ -9,22 +9,25 @@ public class DialogueSystem : MonoBehaviour
     [SerializeField] Image portrait;
     DialogueContainer currentDialogue;
     int currentTextLine;
+    int lengthOfDialogue;
     [Range(0f,1f)]
     [SerializeField] float visibleTextPercent;
     [SerializeField] float timePerLetter = 0.05f;
     float totalTimeToType,currentTime;
     string lineToShow;
 
+
+
     void Update()
     {
         if(Input.GetMouseButtonDown(0)){
-
+            
             PushText();
         }
         TypeOutText();
     }
 
-    private void TypeOutText()
+	private void TypeOutText()
     {
         if(visibleTextPercent >= 1f){return;}
         currentTime += Time.deltaTime;
@@ -46,8 +49,8 @@ public class DialogueSystem : MonoBehaviour
             return;
         }
 
-        currentTextLine += 1;
-        if(currentTextLine >= currentDialogue.line.Count){
+        //currentTextLine += 1;
+        if(currentTextLine >= currentDialogue.DialogueLines.Count){
 
             Conclude();
         }
@@ -57,19 +60,20 @@ public class DialogueSystem : MonoBehaviour
     }
 
     void CycleLine(){
-        lineToShow = currentDialogue.line[currentTextLine];
+        lineToShow = currentDialogue.DialogueLines[currentTextLine];
             totalTimeToType = lineToShow.Length * timePerLetter;
             currentTime = 0f;
             visibleTextPercent = 0f;
             targetText.text = "";
 
-            currentTextLine += 1;
+        currentTextLine += 1;
     }
 
     public void Initialize(DialogueContainer dialogueContainer){
         Show(true);
         currentDialogue = dialogueContainer;
-        currentTextLine = 0;
+		DatabaseManager.instance.PopulateList(currentDialogue);
+		currentTextLine = 0;
         CycleLine();
         UpdatePortrait();
     }

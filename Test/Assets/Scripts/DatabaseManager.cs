@@ -6,6 +6,8 @@ using System.Data;
 using System.IO;
 using UnityEngine.Tilemaps;
 using System;
+using Random = System.Random;
+
 
 
 #if UNITY_EDITOR
@@ -18,7 +20,16 @@ public class DatabaseManager : MonoBehaviour
     private IDbConnection dbConnection;
     public static DatabaseManager instance; // Singleton instance
 
-    void Awake()
+
+    
+    /// Dialogue stuff
+    string DialogueTBName;
+	Random rnum = new Random();
+	int randDialogue;
+    long DialogueTBSize;
+    string DialogueStr;
+	/// 
+	void Awake()
     {
         if (instance == null)
         {
@@ -51,7 +62,17 @@ public class DatabaseManager : MonoBehaviour
         // Create tables if they don't exist
         CreateTables();
 
-        PopulateItems();
+		InsertDialogueData("REDUCE!.REUSE!.RECYCLE!","Wood");
+        InsertDialogueData("tEST2.BLAH .BLEEH", "Wood");
+        InsertDialogueData("TEST23.SADSD", "Wood");
+
+		InsertDialogueData("TTooll test", "Tool");
+
+		InsertDialogueData("Seed test", "Seed");
+
+		InsertDialogueData("sTone test", "Stone");
+
+		PopulateItems();
         TestLoadItems();
         AddSingleItemToInventory("WheatSeeds", "Items", 500);
         AddSingleItemToInventory("CornSeeds", "Items", 500);
@@ -61,6 +82,7 @@ public class DatabaseManager : MonoBehaviour
 		AddUser("player", "p1", "Player");
 		AddUser("dev1", "d1", "Developer");
 		AddUser("playertest2", "p2", "Player");
+       
 
 		Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
         if (testSprite != null)
@@ -90,13 +112,43 @@ public class DatabaseManager : MonoBehaviour
                 )";
             dbCmd.ExecuteNonQuery();
 
-            //// Add columns to Users table if they don't exist
-            //AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
-            //AddColumnIfNotExist("Users", "Email", "TEXT");
-            //AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
 
-            // Create Crops table without Yield column
+            //// dialogue section ////
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS DialogueTBWood (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Info TEXT
+                )";
+			dbCmd.ExecuteNonQuery();
+			
             dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS DialogueTBStone (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Info TEXT 
+                )";
+			dbCmd.ExecuteNonQuery();
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS DialogueTBTool (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Info TEXT 
+                )";
+			dbCmd.ExecuteNonQuery();
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS DialogueTBSeed (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Info TEXT
+                )";
+			dbCmd.ExecuteNonQuery();
+			//// //////////////// ////
+            
+            
+			// Add columns to Users table if they don't exist
+			//AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
+			//AddColumnIfNotExist("Users", "Email", "TEXT");
+			//AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
+
+			// Create Crops table without Yield column
+			dbCmd.CommandText = @"
             CREATE TABLE IF NOT EXISTS Crops (
                 CropID INTEGER PRIMARY KEY AUTOINCREMENT, 
                 Name TEXT, 
@@ -152,33 +204,33 @@ public class DatabaseManager : MonoBehaviour
                 )";
             dbCmd.ExecuteNonQuery();
 
-            // Create NPCs table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS NPCs (
-                    NPCID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Role TEXT, 
-                    Affiliation TEXT, 
-                    FriendshipLevel INTEGER, 
-                    QuestsOffered TEXT, 
-                    Backstory TEXT,
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
+            //// Create NPCs table
+            //dbCmd.CommandText = @"
+            //    CREATE TABLE IF NOT EXISTS NPCs (
+            //        NPCID INTEGER PRIMARY KEY AUTOINCREMENT, 
+            //        Name TEXT, 
+            //        Role TEXT, 
+            //        Affiliation TEXT, 
+            //        FriendshipLevel INTEGER, 
+            //        QuestsOffered TEXT, 
+            //        Backstory TEXT,
+            //        Icon BLOB
+            //    )";
+            //dbCmd.ExecuteNonQuery();
 
             // Create Quests table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Quests (
-                    QuestID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Title TEXT, 
-                    Description TEXT, 
-                    Requirements TEXT, 
-                    Rewards TEXT, 
-                    Status TEXT, 
-                    NPCID INTEGER, 
-                    FOREIGN KEY(NPCID) REFERENCES NPCs(NPCID)
-                )";
-            dbCmd.ExecuteNonQuery();
+            //dbCmd.CommandText = @"
+            //    CREATE TABLE IF NOT EXISTS Quests (
+            //        QuestID INTEGER PRIMARY KEY AUTOINCREMENT, 
+            //        Title TEXT, 
+            //        Description TEXT, 
+            //        Requirements TEXT, 
+            //        Rewards TEXT, 
+            //        Status TEXT, 
+            //        NPCID INTEGER, 
+            //        FOREIGN KEY(NPCID) REFERENCES NPCs(NPCID)
+            //    )";
+            //dbCmd.ExecuteNonQuery();
 
             // Create Biomes table
             dbCmd.CommandText = @"
@@ -207,18 +259,18 @@ public class DatabaseManager : MonoBehaviour
                 )";
             dbCmd.ExecuteNonQuery();
 
-            // Create Buildings table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Buildings (
-                    BuildingID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Function TEXT, 
-                    Cost INTEGER, 
-                    Requirements TEXT, 
-                    Benefits TEXT, 
-                    Description TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
+            //// Create Buildings table
+            //dbCmd.CommandText = @"
+            //    CREATE TABLE IF NOT EXISTS Buildings (
+            //        BuildingID INTEGER PRIMARY KEY AUTOINCREMENT, 
+            //        Name TEXT, 
+            //        Function TEXT, 
+            //        Cost INTEGER, 
+            //        Requirements TEXT, 
+            //        Benefits TEXT, 
+            //        Description TEXT
+            //    )";
+            //dbCmd.ExecuteNonQuery();
 
             // Create Items table
             dbCmd.CommandText = @"
@@ -233,8 +285,60 @@ public class DatabaseManager : MonoBehaviour
             dbCmd.ExecuteNonQuery();
         }
     }
+	///////////// Dialogue stuff /////////////
+	public void PopulateList(DialogueContainer currentDialogue)
+	{
+		currentDialogue.DialogueLines.Clear();
+        DialogueTBName = "DialogueTB" + currentDialogue.actor.TBName;
 
-    public void AddUser(string username, string password, string role)
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = $"SELECT COUNT(*) FROM {DialogueTBName} ";
+			 DialogueTBSize = (long)dbCmd.ExecuteScalar();
+            Debug.LogError("Dialogue size : "+ (int)DialogueTBSize);
+		}
+        if (DialogueTBSize > 1)
+        {
+            randDialogue = rnum.Next(1, (int)DialogueTBSize+1);
+        }
+        else
+        {
+            randDialogue = 1;
+        }
+
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = $"SELECT * FROM {DialogueTBName} WHERE ID = {randDialogue} ";
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    DialogueStr = reader["Info"].ToString();
+                    currentDialogue.DialogueLines = new List<string>(DialogueStr.Split("."));
+
+                }
+                else
+                {
+                    Debug.LogError($"Database table \"{DialogueTBName}\" not found! or something else went wrong in the pulling of dialogue");
+                }
+
+            }
+        }
+
+    }
+	/////////////////////////////////////// 
+
+	public void InsertDialogueData(string temp,string name)
+	{
+        string tbname = "DialogueTB" + name;
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"INSERT INTO {tbname} (Info) VALUES ('{temp}')";
+			dbCmd.ExecuteNonQuery();
+
+		}
+	}
+	public void AddUser(string username, string password, string role)
     {
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
