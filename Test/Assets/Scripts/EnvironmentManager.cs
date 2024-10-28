@@ -3,55 +3,50 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using UnityEngine.Rendering; // Required for Volume and VolumeProfile
-using UnityEngine.Rendering.Universal; // Required for URP
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class EnvironmentManager : MonoBehaviour
 {
-    [SerializeField] private Item trashItem; // Reference to your Trash item asset
-    [SerializeField] private GameObject pickUpItemPrefab; // Reference to your PickUpItem prefab
+    [SerializeField] private Item trashItem;
+    [SerializeField] private GameObject pickUpItemPrefab;
     [SerializeField] private Vector3[] trashSpawnPoints;
     [SerializeField] private Transform trashParent;
-    [SerializeField] private Image environmentTint; // Reference to the grey tint UI image
-    [SerializeField] private Volume lightVolume; // Reference to the Volume component on Light2D prefab
+    [SerializeField] private Image environmentTint;
+    [SerializeField] private Volume lightVolume;
 
-    private const int trashSpawnCount = 3; // Number of trash items to spawn
-    private float environmentalHealth = 100f;
-    private const int minHealth = 0; // Minimum health
-    private const int maxHealth = 100; // Maximum health
-    private const float maxTintAlpha = 0.5f; // Maximum alpha for the grey tint
+    private const int trashSpawnCount = 3;
+    public float environmentalHealth { get; private set; } = 100f;
+    private const int minHealth = 0;
+    private const int maxHealth = 100; 
+    private const float maxTintAlpha = 0.5f;
+    private float airQuality = 100f;
+    private float soilHealth = 100f;
 
-    private ColorAdjustments colorAdjustments; // Reference to ColorAdjustments settings
+    public float AirQuality => airQuality;
+    public float SoilHealth => soilHealth;
+    public int TrashCount => trashParent.childCount;
+    private ColorAdjustments colorAdjustments;
 
-    public Action<int> onEnvironmentalHealthChange; // Action to notify when environmental health changes
+    public Action<int> onEnvironmentalHealthChange;
 
     private void Start()
     {
         // Access the Color Adjustments effect directly from the Volume component
-        if (lightVolume.sharedProfile != null)
+        if (lightVolume.sharedProfile != null && lightVolume.sharedProfile.TryGet(out colorAdjustments))
         {
-            // Use TryGet to access ColorAdjustments from the VolumeProfile
-            if (lightVolume.sharedProfile.TryGet(out colorAdjustments))
-            {
-                // Successfully retrieved color adjustments settings
-            }
-            else
-            {
-                Debug.LogWarning("Color Adjustments not found in the Light2D Volume.");
-            }
+            // Successfully retrieved color adjustments settings
+        }
+        else
+        {
+            Debug.LogWarning("Color Adjustments not found in the Light2D Volume.");
         }
 
-        // Set the initial environmental health for testing
-        environmentalHealth = 100f;
-
-        // Invoke the health change to trigger the tint update
-        onEnvironmentalHealthChange?.Invoke((int)environmentalHealth);
-
-        // Update the tint based on the initial environmental health
-        UpdateEnvironmentTint();
+        // Set initial environmental health based on the starting trash count
+        CalculateEnvironmentHealth();
 
         // Spawn trash at the start of the game
-        SpawnTrash(3);
+        SpawnTrash(trashSpawnCount);
     }
 
     private void SpawnTrash(int amount)
@@ -61,7 +56,6 @@ public class EnvironmentManager : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             Vector3 spawnPosition = trashSpawnPoints[i];
-
             GameObject trashObject = Instantiate(GameManager.instance.PickUpItemPrefab, spawnPosition, Quaternion.identity, trashParent);
 
             PickUpItem pickUpItem = trashObject.GetComponent<PickUpItem>();
@@ -71,21 +65,39 @@ public class EnvironmentManager : MonoBehaviour
             }
         }
 
-        // Recalculate environmental health based on the number of trash items present
-        CalculateEnvironmentHealth();
+        CalculateEnvironmentHealth(); // Update health after spawning trash
     }
 
     private void CalculateEnvironmentHealth()
     {
-        int trashCount = trashParent.childCount;
-        ModifyEnvironmentalHealth(-trashCount * 5); // Deduct 5 points for each trash item
+        // Set environmental health based on the amount of trash
+        int trashCount = TrashCount;
+        environmentalHealth = Mathf.Clamp(100 - trashCount * 5, minHealth, maxHealth);
+
+        // Notify any listeners of the updated health value
+        onEnvironmentalHealthChange?.Invoke((int)environmentalHealth);
+
+        Debug.Log($"Environmental health recalculated based on trash count: {environmentalHealth}");
+
+        // Update saturation and environment tint based on new health value
+        UpdateSaturation();
+        UpdateEnvironmentTint();
     }
 
     public void PickUpTrash()
+{
+    // Call this only if there is trash to pick up
+    if (TrashCount > 0)
     {
-        ModifyEnvironmentalHealth(10); // Increase health when trash is picked up
-        CalculateEnvironmentHealth(); // Recalculate after picking up
+        // Log trash picking action
+        Debug.Log("Trash picked up.");
+        
+        // Assume there's logic here to actually remove a trash item
+
+        CalculateEnvironmentHealth(); // Recalculate health when trash is picked up
+        UpdateAirQuality(); // Update air quality after picking up trash
     }
+}
 
     public void UseFertilizer(bool isGood)
     {
@@ -101,48 +113,65 @@ public class EnvironmentManager : MonoBehaviour
 
     private void ModifyEnvironmentalHealth(int amount)
     {
-        environmentalHealth += amount;
-        environmentalHealth = Mathf.Clamp(environmentalHealth, minHealth, maxHealth);
+        environmentalHealth = Mathf.Clamp(environmentalHealth + amount, minHealth, maxHealth);
         onEnvironmentalHealthChange?.Invoke((int)environmentalHealth);
 
         Debug.Log($"Environmental health changed by {amount}. Current health: {environmentalHealth}");
 
-        // Adjust saturation based on health
+        // Adjust saturation based on updated health
+        UpdateSaturation();
+        UpdateEnvironmentTint();
+    }
+
+    private void UpdateSaturation()
+    {
         if (colorAdjustments != null)
         {
-            float saturation = Mathf.Lerp(-100f, 0f, environmentalHealth / maxHealth); // Adjust saturation
+            float saturation = Mathf.Lerp(-100f, 0f, environmentalHealth / maxHealth);
             colorAdjustments.saturation.Override(saturation);
         }
-
-        // Update the tint based on the current environmental health
-        UpdateEnvironmentTint();
     }
 
     private void UpdateEnvironmentTint()
     {
-        // If environmental health is above 80, no tint; below 80, gradually increase tint intensity
         if (environmentTint != null)
         {
-            float tintAlpha = 0f;
-
-            if (environmentalHealth < 80)
-            {
-                tintAlpha = Mathf.Lerp(maxTintAlpha, 0, environmentalHealth / 80f); // Gradually reduce alpha
-            }
-
+            float tintAlpha = environmentalHealth < 80 ? Mathf.Lerp(maxTintAlpha, 0, environmentalHealth / 80f) : 0f;
             Color tint = environmentTint.color;
             tint.a = tintAlpha;
             environmentTint.color = tint;
         }
     }
 
-    public float GetCurrentSaturation()
-{
-    return Mathf.Lerp(-100f, 0f, environmentalHealth / maxHealth); // Adjust according to your saturation calculation
-}
+    public void UpdateAirQuality()
+    {
+        if (TrashCount > 0)
+        {
+            airQuality -= 0.1f * TrashCount;
+            airQuality = Mathf.Clamp(airQuality, 0, 100);
+        }
+    }
+
+    public void UpdateSoilHealth(bool usedSyntheticFertilizer)
+    {
+        soilHealth += usedSyntheticFertilizer ? -2f : 1f;
+        soilHealth = Mathf.Clamp(soilHealth, 0, 100);
+    }
+
+    public void SetEnvironmentHealth(float health)
+    {
+        environmentalHealth = Mathf.Clamp(health, minHealth, maxHealth);
+        onEnvironmentalHealthChange?.Invoke((int)environmentalHealth); // Notify any listeners of the updated health value
+    }
 
     public void NewDayCycle()
     {
-        SpawnTrash(3);
+        SpawnTrash(trashSpawnCount); // Add trash at the start of a new day
+        CalculateEnvironmentHealth(); // Update health for any new trash added
+    }
+
+    public int GetTrashCount()
+    {
+        return TrashCount;
     }
 }
