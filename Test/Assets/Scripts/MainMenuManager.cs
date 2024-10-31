@@ -1,15 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using System.Data;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Mono.Data.Sqlite;
-using Unity.UI;
 using TMPro;
 using System.IO;
 using System;
-using static UnityEngine.UIElements.UxmlAttributeDescription;
-using UnityEngine.UIElements;
+
 
 public class MainMenuManager : MonoBehaviour
 {

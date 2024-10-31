@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
+
 using System.Collections.Generic;
-using UnityEditor.Tilemaps;
 using UnityEngine;
 
 [CreateAssetMenu(menuName ="Data/Dialogue/Dialogue")]
