@@ -5,25 +5,23 @@ using Mono.Data.Sqlite;
 using TMPro;
 using System.IO;
 using System;
-
+using System.Security.Cryptography;
+using System.Text;
 
 public class MainMenuManager : MonoBehaviour
 {
-
-
 	string password;
 	string username;
-	string role="";
+	string role = "";
 
 	private string dbPath;
 	private IDbConnection dbConnection;
 
-	private	GameObject tempobj;
+	private GameObject tempobj;
 
 	[Header("Transition")]
 	[SerializeField] string nameEssentialScene;
 	[SerializeField] string nameMainScene;
-
 
 	[Header("Login")]
 	[SerializeField] TMP_InputField LogUsername;
@@ -32,7 +30,6 @@ public class MainMenuManager : MonoBehaviour
 	[Header("AdminMenu")]
 	[SerializeField] GameObject AdminPanel;
 	[SerializeField] GameObject Loginpanel;
-
 
 	[Header("AddUser")]
 	[SerializeField] GameObject ADDUserPanel;
@@ -60,6 +57,7 @@ public class MainMenuManager : MonoBehaviour
 		dbConnection = new SqliteConnection("URI=file:" + dbPath);
 		dbConnection.Open();
 	}
+
 	public void ExitGame()
 	{
 		Debug.Log("Quitting game");
@@ -68,9 +66,10 @@ public class MainMenuManager : MonoBehaviour
 
 	public void Login()
 	{
-		username=LogUsername.text;
-		password=LogPassword.text;
+		username = LogUsername.text;
+		password = LogPassword.text;
 		tempobj = Loginpanel;
+
 		if (!FindUser(username))
 		{
 			OutputMessage(username + " not found");
@@ -79,38 +78,38 @@ public class MainMenuManager : MonoBehaviour
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT Password,Role FROM Users WHERE Username = '{username}'";
+			dbCmd.CommandText = $"SELECT Password, Role FROM Users WHERE Username = '{username}'";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
-				if (password == reader["Password"].ToString())
+				if (reader.Read())
 				{
-					role = reader["Role"].ToString();
+					string storedHash = reader["Password"].ToString();
+					if (storedHash == HashPassword(password))
+					{
+						role = reader["Role"].ToString();
+						LogUsername.text = "";
+						LogPassword.text = "";
 
-					LogUsername.text = "";
-					LogPassword.text = "";// for clearing textfield data
-
-					if (role != "Admin")
-						StartGame();
+						if (role != "Admin")
+							StartGame();
+						else
+							LoadAdminMenu();
+					}
 					else
-						LoadAdminMenu();
+					{
+						OutputMessage("Invalid password");
+					}
 				}
-				else
-				{
-					OutputMessage("Invalid password");
-					return;
-				}
-
 			}
 		}
-
 	}
 
 	private void LoadAdminMenu()
 	{
 		Loginpanel.SetActive(false);
 		AdminPanel.SetActive(true);
-
 	}
+
 	public void StartGame()
 	{
 		GameManager.userRole = role;
@@ -124,9 +123,9 @@ public class MainMenuManager : MonoBehaviour
 		NotificationPanel.SetActive(true);
 		NotifText.text = message;
 		tempobj.SetActive(false);
-
-		Debug.Log(message); 
+		Debug.Log(message);
 	}
+
 	public void RestorePanel()
 	{
 		NotificationPanel.SetActive(false);
@@ -135,40 +134,55 @@ public class MainMenuManager : MonoBehaviour
 
 	public void AddUser()
 	{
-		 username = ADDUsername.text;
-		 password = ADDPassword.text;
-		 tempobj = ADDUserPanel;
+		username = ADDUsername.text;
+		password = ADDPassword.text;
+		tempobj = ADDUserPanel;
+
 		if (FindUser(username))
 		{
 			OutputMessage("Username Exists");
 			return;
 		}
-		if(username =="")
+		if (string.IsNullOrEmpty(username))
 		{
+			OutputMessage("Enter a username");
 			return;
 		}
-
-		if (password == "")
+		if (string.IsNullOrEmpty(password))
 		{
 			OutputMessage("Enter a password");
 			return;
 		}
-		
+
 		ADDRoleEntry = ADDRoleDp.value;
 		ADDRoleName = ADDRoleDp.options[ADDRoleEntry].text;
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"INSERT INTO Users (Username, Password, Role) VALUES ('{username}', '{password}', '{ADDRoleName}')";
+			string hashedPassword = HashPassword(password);
+			dbCmd.CommandText = $"INSERT INTO Users (Username, Password, Role) VALUES ('{username}', '{hashedPassword}', '{ADDRoleName}')";
 			dbCmd.ExecuteNonQuery();
+			Debug.Log($"Hashed password for '{username}': {hashedPassword}");
 		}
 
 		ADDUsername.text = "";
 		ADDPassword.text = "";
-		
-		OutputMessage("User Successfully ADDed :)");
+		OutputMessage("User Successfully Added :)");
+		Debug.Log("{hashedPassword}");
+	}
 
-
+	private string HashPassword(string password)
+	{
+		using (SHA256 sha256Hash = SHA256.Create())
+		{
+			byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+			StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				builder.Append(bytes[i].ToString("x2"));
+			}
+			return builder.ToString();
+		}
 	}
 
 	public void ConfirmChanges()
@@ -196,30 +210,27 @@ public class MainMenuManager : MonoBehaviour
 				return;
 			}
 		}
-
-		
 	}
+
 	public void RefreshList()
 	{
 		string tuser, trole;
 		MUScrollviewText.text = "Username\tRole\n";
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT Username,Role FROM Users WHERE Role != '{"Admin"}'";
+			dbCmd.CommandText = $"SELECT Username, Role FROM Users WHERE Role != 'Admin'";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
 				while (reader.Read())
 				{
 					tuser = reader["Username"].ToString();
 					trole = reader["Role"].ToString();
-					MUScrollviewText.text += tuser + "\t"+trole+ "\n";
-					
+					MUScrollviewText.text += tuser + "\t" + trole + "\n";
 				}
-
 			}
-
 		}
 	}
+
 	public void DeleteUser()
 	{
 		username = MUUsername.text;
@@ -228,23 +239,21 @@ public class MainMenuManager : MonoBehaviour
 		{
 			using (IDbCommand dbCmd = dbConnection.CreateCommand())
 			{
-				dbCmd.CommandText = $"SELECT Username,Role FROM Users WHERE Username = '{username}' ";
+				dbCmd.CommandText = $"SELECT Username, Role FROM Users WHERE Username = '{username}'";
 				using (IDataReader reader = dbCmd.ExecuteReader())
 				{
-					if (reader["Role"].ToString() == "Admin")
+					if (reader.Read() && reader["Role"].ToString() == "Admin")
 					{
 						OutputMessage("Cannot Delete Admin");
 						return;
 					}
-
 				}
 
-				dbCmd.CommandText = $"Delete FROM Users WHERE Username ='{username}'";
+				dbCmd.CommandText = $"DELETE FROM Users WHERE Username = '{username}'";
 				dbCmd.ExecuteNonQuery();
 
 				MUUsername.text = "";
 				RefreshList();
-
 				OutputMessage(username + " Deleted");
 			}
 		}
@@ -256,7 +265,6 @@ public class MainMenuManager : MonoBehaviour
 				return;
 			}
 		}
-		
 	}
 
 	bool FindUser(string usern)
@@ -276,12 +284,8 @@ public class MainMenuManager : MonoBehaviour
 				{
 					return true;
 				}
-
 			}
-
 		}
 		return false;
-
 	}
-
 }

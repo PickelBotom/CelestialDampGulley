@@ -14,7 +14,6 @@ public class GameManager : MonoBehaviour
     }
     void Start()
     {
-		Debug.LogError(userRole);
 		DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
         inventoryContainer.LoadItemsFromDatabase(dbManager);
         
