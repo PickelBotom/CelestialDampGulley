@@ -7,6 +7,10 @@ using System.IO;
 using UnityEngine.Tilemaps;
 using System;
 using Random = System.Random;
+using TMPro;
+using System.Xml.Linq;
+
+
 
 
 
@@ -21,15 +25,20 @@ public class DatabaseManager : MonoBehaviour
     public static DatabaseManager instance; // Singleton instance
 
 
-    
+
     /// Dialogue stuff
     string DialogueTBName;
-	Random rnum = new Random();
-	int randDialogue;
+    Random rnum = new Random();
+    int randDialogue;
     long DialogueTBSize;
     string DialogueStr;
-	/// 
-	void Awake()
+    /// 
+
+    ///// Trading stuff
+    string TradeTBName;
+   [SerializeField] List<Sprite> Iconlist;
+    /////
+    void Awake()
     {
         if (instance == null)
         {
@@ -62,15 +71,10 @@ public class DatabaseManager : MonoBehaviour
         // Create tables if they don't exist
         CreateTables();
 
-		InsertDialogueData("REDUCE!.REUSE!.RECYCLE!","Wood");
-        InsertDialogueData("tEST2.BLAH .BLEEH", "Wood");
-        InsertDialogueData("TEST23.SADSD", "Wood");
+        LoadDialogueDataIntoTables();
+        //LoadTradeDataIntoTables();
 
-		InsertDialogueData("TTooll test", "Tool");
 
-		InsertDialogueData("Seed test", "Seed");
-
-		InsertDialogueData("sTone test", "Stone");
 
 		PopulateItems();
         TestLoadItems();
@@ -79,12 +83,12 @@ public class DatabaseManager : MonoBehaviour
 
         // Example usage
         AddUser("admin", "admin123", "Admin");
-		AddUser("player", "p1", "Player");
-		AddUser("dev1", "d1", "Developer");
-		AddUser("playertest2", "p2", "Player");
-       
+        AddUser("player", "p1", "Player");
+        AddUser("dev1", "d1", "Developer");
+        AddUser("playertest2", "p2", "Player");
 
-		Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
+
+        Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
         if (testSprite != null)
         {
             Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
@@ -114,34 +118,97 @@ public class DatabaseManager : MonoBehaviour
 
 
             //// dialogue section ////
-			dbCmd.CommandText = @"
+            dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS DialogueTBTut (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Info TEXT
+                )";
+            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS DialogueTBWood (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Info TEXT
                 )";
-			dbCmd.ExecuteNonQuery();
-			
+            dbCmd.ExecuteNonQuery();
+
             dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS DialogueTBStone (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Info TEXT 
                 )";
-			dbCmd.ExecuteNonQuery();
-			dbCmd.CommandText = @"
+            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS DialogueTBTool (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Info TEXT 
                 )";
-			dbCmd.ExecuteNonQuery();
-			dbCmd.CommandText = @"
+            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS DialogueTBSeed (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Info TEXT
                 )";
+            dbCmd.ExecuteNonQuery();
+            //// //////////////// ////
+
+            //// Trade section ////
+            dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS TradeTBWood (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name VARCHAR(25),
+                    Amount INTEGER,
+                    BuyPrice INTEGER,
+                    SellPrice INTEGER,    
+                    Icon BLOB
+                )";
+            dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS TradeTBStone (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name VARCHAR(25),
+                    Amount INTEGER,
+                    BuyPrice INTEGER,
+                    SellPrice INTEGER,    
+                    Icon BLOB
+                )";
+            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS TradeTBTool (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name VARCHAR(25),
+                    Amount INTEGER,
+                     BuyPrice INTEGER,
+                    SellPrice INTEGER,    
+                    Icon BLOB 
+                )";
+            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS TradeTBSeed (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name VARCHAR(25),
+                    Amount INTEGER,
+                    BuyPrice INTEGER,
+                    SellPrice INTEGER,    
+                    Icon BLOB
+                )";
+            dbCmd.ExecuteNonQuery();
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS TradeTBTut (
+                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name VARCHAR(25),
+                    Amount INTEGER,
+                    BuyPrice INTEGER,
+                    SellPrice INTEGER,    
+                    Icon BLOB
+                )";
 			dbCmd.ExecuteNonQuery();
 			//// //////////////// ////
-            
-            
+
+
+
+
+
 			// Add columns to Users table if they don't exist
 			//AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
 			//AddColumnIfNotExist("Users", "Email", "TEXT");
@@ -285,21 +352,21 @@ public class DatabaseManager : MonoBehaviour
             dbCmd.ExecuteNonQuery();
         }
     }
-	///////////// Dialogue stuff /////////////
-	public void PopulateList(DialogueContainer currentDialogue)
-	{
-		currentDialogue.DialogueLines.Clear();
+    ///////////// START DIALOGUE CODE /////////////
+    public void PopulateList(DialogueContainer currentDialogue)
+    {
+        currentDialogue.DialogueLines.Clear();
         DialogueTBName = "DialogueTB" + currentDialogue.actor.TBName;
 
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
             dbCmd.CommandText = $"SELECT COUNT(*) FROM {DialogueTBName} ";
-			 DialogueTBSize = (long)dbCmd.ExecuteScalar();
-            Debug.LogError("Dialogue size : "+ (int)DialogueTBSize);
-		}
+            DialogueTBSize = (long)dbCmd.ExecuteScalar();
+            Debug.LogError("Dialogue size : " + (int)DialogueTBSize);
+        }
         if (DialogueTBSize > 1)
         {
-            randDialogue = rnum.Next(1, (int)DialogueTBSize+1);
+            randDialogue = rnum.Next(1, (int)DialogueTBSize + 1);
         }
         else
         {
@@ -326,18 +393,124 @@ public class DatabaseManager : MonoBehaviour
         }
 
     }
-	/////////////////////////////////////// 
 
-	public void InsertDialogueData(string temp,string name)
-	{
+
+    public void InsertDialogueData(string temp, string name)
+    {
         string tbname = "DialogueTB" + name;
+        //Debug.Log(tbname);
+
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            //byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
+
+            dbCmd.CommandText = $"INSERT INTO {tbname} (Info) " +
+                                $"VALUES (@Info)";
+
+            AddParameterWithValue(dbCmd, "@Info", temp);
+			dbCmd.ExecuteNonQuery();
+		}
+			//using (IDbCommand dbCmd = dbConnection.CreateCommand())
+   //     {
+   //         dbCmd.CommandText = $"INSERT INTO {tbname} (Info) VALUES ('{temp}')"; // caused issues with the word "don't"
+   //         dbCmd.ExecuteNonQuery();
+   //     }
+    }
+
+    /////////////////END DIALOGUE CODE////////////////////// 
+
+
+
+
+    ///////////// START TRADING  CODE /////////////
+    public void PopulateTradeFields(TradingSlots TS, string TbNameCaller)
+    {
+        TradeTBName = "TradeTB" + TbNameCaller;
+
+        // database pull :)
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = $"SELECT * FROM {TradeTBName}"; 
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+
+					TS.Itname = reader["Name"].ToString();
+					TS.amount = int.Parse(reader["Amount"].ToString());
+					TS.sellp = int.Parse(reader["SellPrice"].ToString());
+					TS.buyp = int.Parse(reader["BuyPrice"].ToString());
+
+					// Convert byte array back to sprite
+					if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
+					{
+						byte[] iconBytes = (byte[])reader["Icon"];
+						TS.icon = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
+					}
+					else
+					{
+						Debug.LogWarning($"Icon for crop '{TS.name}' is null.");
+					}
+
+					//TS.ItemName.text = "Name: " + reader["Name"].ToString();
+					//               TS.AmountItems.text = "Amount: " + reader["Amount"].ToString();
+					//               TS.SellPrice.text = "Sell - " + reader["SellPrice"].ToString();
+					//               TS.Buyprice.text = "Buy - " + reader["BuyPrice"].ToString();
+
+					//               // Convert byte array back to sprite
+					//               if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
+					//               {
+					//                   byte[] iconBytes = (byte[])reader["Icon"];
+					//                   TS.ItemImg.sprite = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
+					//               }
+					//               else
+					//               {
+					//                   Debug.LogWarning($"Icon for crop '{TS.name}' is null.");
+					//               }
+					//
+					//public Image ItemImg;
+					//public TMP_Text ItemName;
+					//public TMP_Text AmountItems;
+					//public TMP_Text Buyprice;
+					//public TMP_Text SellPrice;
+					
+
+				}
+
+			}	
+        }
+
+	}
+//	Sprite icon,
+	public void InsertTradeItems(string name,  int amount,int buyp, int sellp,string TBname)
+	{
+		TradeTBName = "TradeTB" + TBname;
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"INSERT INTO {tbname} (Info) VALUES ('{temp}')";
+			//byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
+
+			dbCmd.CommandText = $"INSERT INTO {TradeTBName} (Name, Amount,BuyPrice,SellPrice, Icon) " +
+								$"VALUES (@Name, @Amount, @BuyPrice, @SellPrice, @Icon)";
+
+			AddParameterWithValue(dbCmd, "@Name", name);
+			AddParameterWithValue(dbCmd, "@Amount", amount);
+			//AddParameterWithValue(dbCmd, "@Icon", iconBytes);
+			AddParameterWithValue(dbCmd, "@BuyPrice", buyp);
+			AddParameterWithValue(dbCmd, "@SellPrice", sellp);
 			dbCmd.ExecuteNonQuery();
 
 		}
 	}
+	//Name VARCHAR(25),
+	//Amount INTEGER,
+	//BuyPrice INTEGER,
+	//SellPrice INTEGER,
+	//Icon BLOB
+
+	/////////////////END TRADING CODE////////////////////// 
+
+
+
 	public void AddUser(string username, string password, string role)
     {
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
@@ -794,4 +967,91 @@ public class DatabaseManager : MonoBehaviour
         parameter.Value = value ?? System.DBNull.Value; // Use DBNull.Value for nulls
         command.Parameters.Add(parameter);
     }
+
+
+	/////////////////////////////// DIALOGUE ENTRIES ////////////////////////
+	void LoadDialogueDataIntoTables()
+	{
+		/////////// TUT ////////////
+		InsertDialogueData("REDUCE!.REUSE!.RECYCLE!", "Tut");
+
+		InsertDialogueData("Littering has several negative effects on the environment:." +
+			"Air Pollution: Litter releases harmful gases, including methane, which contributes to air pollution." +
+			"Water Pollution: Litter can end up in rivers, lakes, and oceans, harming marine life." +
+			"Death of Animals: Wildlife can ingest or get entangled in litter. " +
+			"Spread of Disease and Infection: Improperly discarded trash can harbour bacteria and diseases." +
+			"So Stop Littering! To save the dogs, cats, turtles and yourself", "Tut");
+
+		InsertDialogueData("A reminder press the WASD Keys to move." +
+			"Press the TAB Key to open the inventory." +
+			"Use the scroll wheel to select items in your toolbar(The bar at the bottom of your screen)!", "Tut");
+
+		InsertDialogueData("I don't like litter!." +
+			"It makes the place unsightly." +
+			"You best pick it up and put it in the trash can!." +
+			"You do not want to carry trash all day do you and I will pay you just put it in the can", "Tut");
+
+		InsertDialogueData("Talk to people around town to get information." +
+			"Also if you want to buy stuff just go to interact with the chest to trade using the right mouse button", "Tut");
+		/////////// WOOD ///////////
+		InsertDialogueData("If we don't Deforestaion right there won't be no trees left." +
+			"Without trees and stuff we can't breathe!", "Wood");
+
+		InsertDialogueData("We keep chopping trees to expand our farms!." +
+			"We losing trees cause government ain't governing right." +
+			"They corrupt or they don't know enough about them trees!", "Wood");
+
+		InsertDialogueData("We need to do something called Agroforestry." +
+			"Its when you integrat trees with crops and livestock to enhance biodiversity", "Wood");
+		/////////// TOOL ///////////
+		InsertDialogueData("Composters are Tools for making compost on-site." +
+			"It can reduce waste and provide organic matter to enhance soil fertility!", "Tool");
+
+		InsertDialogueData("Soil Testing Kits areEssential for assessing soil health and nutrient levels." +
+			"They allow farmers to tailor their fertilization practices and reduce chemical inputs", "Tool");
+
+		InsertDialogueData("Seed dibblers help in planting seeds at the correct depth and spacing." +
+			" Reducing seed waste :)", "Tool");
+
+		/////////// SEED ///////////
+		InsertDialogueData("Rotating different crops each season helps prevent soil depletion." +
+			"Reduces pest and disease buildup." +
+			"And surprisingly improves soil fertility", "Seed");
+
+		InsertDialogueData("Growing certain plants together can enhance growth. Deter pests and improve pollination." +
+			" For example, planting marigolds alongside vegetables can repel harmful insects", "Seed");
+
+		InsertDialogueData("Sometimes Incorporating native plant varieties can help support local ecosystems." +
+			"By attracting beneficial insects and enhance resilience to local pests and diseases", "Seed");
+		/////////// STONE ///////////
+		InsertDialogueData("Using stones or gravel as mulch can help retain soil moisture." +
+			"Reduce erosion.Suppress weed growth." +
+			"It also helps regulate soil temperature", "Stone");
+
+		InsertDialogueData("Building dry stone walls creates habitat for wildlife and manage soil and water." +
+			"They can create microclimates and protect crops from wind", "Stone");
+
+		InsertDialogueData("Incorporate stones into crop rotation systems.It can improve soil structure and fertility." +
+			"Especially when using rocks that release minerals over time", "Stone");
+        Debug.Log("Dialogue loaded");
+	}
+    /////////////////////////////// END DIALOGUE ENTRIES ///////////////////////////
+
+
+    /////////////////////////////// START TRADE ENTRIES ///////////////////////////
+
+    void LoadTradeDataIntoTables()
+    {
+        // missing sprite to byte
+        //InsertTradeItems(string name, int amount, int buyp, int sellp, string TBname)
+
+        InsertTradeItems("Trash", 1,0,5,"Tut");
+		InsertTradeItems("Trash", 5, 0, 30, "Tut");
+		InsertTradeItems("Trash", 10, 0, 75, "Tut");
+
+
+	}
+    
+	/////////////////////////////// END TRADE ENTRIES /////////////////////////////
+
 }
