@@ -80292,7 +80292,7 @@ GameObject:
   - component: {fileID: 1008745042}
   - component: {fileID: 1008745041}
   m_Layer: 0
-  m_Name: Generic Male NPCs_7
+  m_Name: StoneNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80377,7 +80377,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b008e0cfc59724384d18dd7789619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: 62f16bd791f6eda4f856bf199490ea3e, type: 2}
+  dialogue: {fileID: 11400000, guid: 15e4ec6b1af048547aab65eab4d536e8, type: 2}
 --- !u!61 &1008745042
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -80410,7 +80410,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.011021085, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -80421,7 +80421,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.98}
+  m_Size: {x: 0.4118296, y: 0.98}
   m_EdgeRadius: 0
 --- !u!1 &1222020829
 GameObject:
@@ -83072,7 +83072,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1011178345, guid: e85c13619617a984aad98a668337be41, type: 3}
+  m_Sprite: {fileID: 1491828679, guid: e85c13619617a984aad98a668337be41, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -83092,7 +83092,7 @@ Transform:
   m_GameObject: {fileID: 1302290451}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.39, y: -0.129, z: 0}
+  m_LocalPosition: {x: 0.39, y: -0.276, z: 0}
   m_LocalScale: {x: 0.31941, y: 0.31941, z: 0.31941}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -83110,7 +83110,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b008e0cfc59724384d18dd7789619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: 62f16bd791f6eda4f856bf199490ea3e, type: 2}
+  dialogue: {fileID: 11400000, guid: fe2d94480ce03c14f842cb4ae248b1dd, type: 2}
 --- !u!61 &1302290455
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -83147,7 +83147,7 @@ BoxCollider2D:
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 0.5, y: 1.06}
+    oldSize: {x: 0.5, y: 1}
     newSize: {x: 0.5, y: 1.06}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -83169,7 +83169,7 @@ GameObject:
   - component: {fileID: 1532942533}
   - component: {fileID: 1532942532}
   m_Layer: 0
-  m_Name: Generic Male NPCs_58
+  m_Name: ToolNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83236,7 +83236,7 @@ Transform:
   m_GameObject: {fileID: 1532942529}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.717, y: -0.142, z: 0}
+  m_LocalPosition: {x: -0.717, y: -0.278, z: 0}
   m_LocalScale: {x: 0.33151764, y: 0.33151764, z: 0.33151764}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -83254,7 +83254,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b008e0cfc59724384d18dd7789619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: 62f16bd791f6eda4f856bf199490ea3e, type: 2}
+  dialogue: {fileID: 11400000, guid: 49f51b5c5a0532244957cbeabdf4b49d, type: 2}
 --- !u!61 &1532942533
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -83287,7 +83287,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.000049948692, y: -0.017745584}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -83298,7 +83298,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.5, y: 0.98}
+  m_Size: {x: 0.33759803, y: 0.96450883}
   m_EdgeRadius: 0
 --- !u!1 &1709428694
 GameObject:
@@ -85597,7 +85597,7 @@ GameObject:
   - component: {fileID: 2122311421}
   - component: {fileID: 2122311420}
   m_Layer: 0
-  m_Name: Generic Male NPCs_4
+  m_Name: WoodNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85682,7 +85682,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 25b008e0cfc59724384d18dd7789619c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  dialogue: {fileID: 11400000, guid: 62f16bd791f6eda4f856bf199490ea3e, type: 2}
+  dialogue: {fileID: 11400000, guid: 8dc9e02332c3e454dab2435096796201, type: 2}
 --- !u!61 &2122311421
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -85715,7 +85715,7 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: -0.016320273, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -85726,7 +85726,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 0.58, y: 1}
+  m_Size: {x: 0.46031806, y: 1}
   m_EdgeRadius: 0
 --- !u!1001 &2126836010
 PrefabInstance:
