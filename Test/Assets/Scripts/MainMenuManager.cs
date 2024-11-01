@@ -212,11 +212,9 @@ public class MainMenuManager : MonoBehaviour
 		}
 	}
 
-		
-	}
 
 
-	public bool checkValidPassword(string pass) // must still add to ADDUSER and in future add to EDITPASSWORD
+public bool checkValidPassword(string pass) // must still add to ADDUSER and in future add to EDITPASSWORD
 	{
 		bool validpass = true;
 		string issues = "";
