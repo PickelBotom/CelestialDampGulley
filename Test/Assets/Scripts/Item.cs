@@ -15,6 +15,7 @@ public class Item : ScriptableObject
     public ToolAction onItemUsed = null; // Default to null
     public Crop crop = null; // Default to null
     public int SellPrice = 0; // Default sell price
+    public int BuyPrice = 0;
     public string Description = "No description"; // Default description
     public string Category = "General"; // Default category
     public bool IsTrash = false;

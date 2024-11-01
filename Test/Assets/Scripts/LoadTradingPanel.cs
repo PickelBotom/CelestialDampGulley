@@ -1,115 +1,106 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using TMPro;
 using UnityEngine;
-using static Cinemachine.CinemachineOrbitalTransposer;
-using static UnityEditor.Progress;
+using UnityEngine.UI;
 
 public class LoadTradingPanel : MonoBehaviour
 {
-	//   TradingSlots ts1;
-	//TradingSlots ts2;
-	//TradingSlots ts3;
-	[SerializeField] GameObject TradingPanel;
-	//TradSlots;
+    [SerializeField] GameObject TradingPanel;
+    [SerializeField] private GameObject Inventory;
+    [SerializeField] private TMP_Text playerGoldText;
+    [SerializeField] private Button closeButton;
+
+    private TradeInteractable store;
+    private bool isActive;
+    private int playerGold = 100;
+
+    public string CallerTag;
+
+    private void Start()
+    {
+        UpdatePlayerGoldUI();
+
+
+        if (closeButton != null)
+        {
+            closeButton.onClick.AddListener(CloseTradingPanel);
+        }
+    }
+
+    public void BeginTrading(TradeInteractable store)
+    {
+        this.store = store;
+        Debug.Log("Begin trade");
+        loadTradeItems();
+    }
+
+    public void loadTradeItems()
+    {
+        TradingSlots[] tradeSlots = TradingPanel.GetComponentsInChildren<TradingSlots>();
+        ToggleTradingPanel();
+
+        if (tradeSlots == null || tradeSlots.Length == 0)
+        {
+            Debug.LogError("No trade slots available");
+            return;
+        }
+
+        for (int i = 0; i < tradeSlots.Length; i++)
+        {
+
+            tradeSlots[i].SetupItemSlots(store.TradeItems[i], i);
 
 
 
-	public string CallerTag;
+            Debug.Log("Loaded slot " + i + " for trading.");
+        }
+    }
 
-	[SerializeField] GameObject Inventory;
-	TradeInteractable store;
-	
-	bool isActive;
-	//private void Start()
-	//{
-		
-	//	//gameObject.SetActive(true);
-		
-	//	//TradSlots = GetComponentsInChildren<TradingSlots>();
+    public void ToggleTradingPanel()
+    {
+        isActive = TradingPanel.activeInHierarchy;
+        TradingPanel.SetActive(!isActive);
+    }
 
-	//	//foreach (TradingSlots slot in TradSlots)
-	//	//{
-	//	//	DatabaseManager.instance.PopulateTradeFields(slot, Callertag);// maybe set variable to change and then assign ?
-	//	//	slot.SetupItemSlots();
-	//	//}
+    public void CloseTradingPanel()
+    {
+        TradingPanel.SetActive(false);
+    }
 
-	//}
-	public void BeginTrading(TradeInteractable store) 
-	{
-		this.store = store;
+    public void BuyItems(int amount, int itemId)
+    {
+        Item item = store.TradeItems[itemId];
+        Debug.Log("Bought " + item.Name + " x" + amount);
+    }
 
-		Debug.LogError("Begin trade");
-		loadTradeItems();
-		//ToggleTradingPanel();
+    public void SellItems(int amount, int itemId)
+{
+    Item item = store.TradeItems[itemId];
+    InventoryPanel inventoryPanel = Inventory.GetComponent<InventoryPanel>();
 
-	}
 
-		public void loadTradeItems()
-	{
-		//TradingSlots slot;
-		//int itemid=0;
-		TradingSlots[] TradSlots = TradingPanel.GetComponentsInChildren<TradingSlots>();
-		ToggleTradingPanel();
+    int amountToSell = amount;
+    if (inventoryPanel != null && inventoryPanel.inventory.HasItem(item, amountToSell))
+    {
+        int itemValue = item.SellPrice * amountToSell;
+        inventoryPanel.inventory.RemoveItem(item, amountToSell);
+        playerGold += itemValue;
+        UpdatePlayerGoldUI(); 
 
-		if (TradSlots == null)
-		{
-			Debug.LogError("TradSlo0ts not null");
-			//Debug.LogError(TradSlots[0].name);
-			return;
-		}
-		if (TradSlots == null)
-		{
-			Debug.LogError(TradSlots[0].name);
-		}
-		Debug.LogError("Slots count :"+ TradSlots.Length);
+        Debug.Log($"Sold {item.Name} x{amountToSell} for {itemValue} gold.");
+    }
+    else
+    {
+        Debug.LogWarning("Not enough items to sell.");
+    }
+}
 
-		for (int i = 0; i < TradSlots.Length; i++)
-		{
-			//DatabaseManager.instance.PopulateTradeFields(TradSlots[i].slot, callertag);
-			Debug.LogError("CallerTag :" + CallerTag);
-			TradSlots[i].SetupItemSlots(CallerTag,i);
-			Debug.LogError("Slot Amount"+TradSlots[i].slot.amount);
-
-			
-		}
-
-		//foreach (TradingSlots slot in TradSlots)
-		//{
-		//	DatabaseManager.instance.PopulateTradeFields(slot, callertag);// maybe set variable to change and then assign ?
-		//	slot.SetupItemSlots(itemid);
-		//	itemid++;
-		//	Debug.LogError(slot.amount);
-		//}
-		Debug.LogError("Reaches here");
-		
-	}
-	public void ToggleTradingPanel()
-	{
-	
-		isActive = TradingPanel.activeInHierarchy;
-		if (isActive)
-		{ TradingPanel.SetActive(false);
-
-		}
-		else
-		{	
-			TradingPanel.SetActive(true);
-		}
-			
-	}
-
-	public void BuyItems(int amount,int itemid)
-	{
-		Item it= store.TradeItems[itemid];
-		// interact with inventory
-		Debug.Log("Bought " + it.Name+" "+amount );
-	}
-
-	public void SellItems(int amount, int itemid)
-	{
-		Item it = store.TradeItems[itemid];
-		// interact with inventory
-		Debug.Log("Sold " + it.Name + " " + amount);
-	}
+    private void UpdatePlayerGoldUI()
+{
+    if (playerGoldText != null)
+    {
+        playerGoldText.text = "Gold: " + playerGold;
+    }
+}
 }

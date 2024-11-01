@@ -1,96 +1,72 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
 
 [Serializable]
-public class TradingSlot// : MonoBehaviour
+public class TradingSlot
 {
-	//[SerializeField] public
-
-
-	//[SerializeField] int Callitemid;
-	// Insert variables ?
-
-	public int amount, buyp, sellp;
-	public string Itname= "Default name";
-	public Sprite icon;
-	//[SerializeField] 
-	
-	
-	
-	
+    public int amount; // This is for selling the item
+    public int buyp;
+    public int sellp;
+    public string Itname = "Default name";
+    public Sprite icon;
 }
 
-public class TradingSlots :  MonoBehaviour
+public class TradingSlots : MonoBehaviour
 {
-	public TradingSlot slot;
-	//public TradeSlotsContainer container;
-	[SerializeField] Image ItemImg;
-	[SerializeField] TMP_Text ItemName;
-	[SerializeField] TMP_Text AmountItems;
-	[SerializeField] TMP_Text Buyprice;
-	[SerializeField] TMP_Text SellPrice;
-	int callerId;
-	
-	TradingP ltp;
+    public TradingSlot slot;
+    [SerializeField] Image ItemImg;
+    [SerializeField] TMP_Text ItemName;
+    [SerializeField] TMP_Text AmountItems;
+    [SerializeField] TMP_Text Buyprice;
+    [SerializeField] TMP_Text SellPrice;
+    int callerId;
 
+    TradingP ltp;
 
+    public void SetupItemSlots(Item item, int i)
+    {
+        if (slot == null)
+            slot = new TradingSlot();
 
-	public void SetupItemSlots(string Callertag,int i)
-	{
-		if (slot == null)
-			slot = new TradingSlot();
-		callerId = i;
+        callerId = i;
+        ltp = GetComponentInParent<TradingP>();
 
-		ltp  = GetComponentInParent<TradingP>();
+        if (ltp == null)
+        {
+            Debug.LogError("TradingSlots: Parent TradingP component not found.");
+            return;
+        }
 
-		if (ltp == null)
-		{
-			Debug.LogError("tradingslots ltp null");
-			return;
-		}
-		if (ltp != null)
-		{
-			Debug.LogError("tradingslots ltp found ");			
-		}
+        // Set slot values from the Item properties
+        slot.Itname = item.Name;
+        slot.buyp = item.SellPrice;
+        slot.sellp = item.SellPrice;
+        slot.icon = item.icon;
 
-		DatabaseManager.instance.PopulateTradeFields(slot, Callertag, i+1);
-		//ItemImg.sprite = icon;
-		ItemName.text = "Name: " + slot.Itname;
-		AmountItems.text = "Amount: " + slot.amount.ToString();
-		Buyprice.text = "Buy - " + slot.buyp.ToString();
-		SellPrice.text = "Sell - " + slot.sellp.ToString();
-		//slots[id]= id;
-		//ItemName.text = "Name: " + container.slots[id].Itname;
-		//AmountItems.text = "Amount: " + container.slots[id].amount.ToString();
-		//Buyprice.text = "Buy - " + container.slots[id].buyp.ToString();
-		//SellPrice.text = "Sell - " + container.slots[id].sellp.ToString();
+        // Set amount for selling
+        if (i == 0) slot.amount = 1; // First slot sells 1
+        else if (i == 1) slot.amount = 5; // Second slot sells 5
+        else if (i == 2) slot.amount = 10; // Third slot sells 10
 
-		//if (ltp == null)
-		//{
-		//	Debug.LogError("ltp in Tradslots null");
-		//	return;
-		//}
-	}
+        // Update UI elements based on slot values
+        ItemName.text = "Name: " + slot.Itname;
+        AmountItems.text = "Amount: " + slot.amount.ToString();
+        Buyprice.text = "Buy - " + slot.buyp.ToString();
+        SellPrice.text = "Sell - " + slot.sellp.ToString();
+        ItemImg.sprite = slot.icon;
+    }
 
-	
+    public void BuyItems()
+    {
+        ltp.BuyItems(slot.amount, callerId);
+    }
 
-	public void BuyItems()
-	{
-
-		ltp.BuyItems(slot.amount,callerId);
-
-		//Debug.Log("Bought " + AmountItems.text);
-	}
-
-	public void SellItems()
-	{
-		ltp.SellItems(slot.amount, callerId);
-		//Debug.Log("Bought " + AmountItems.text);
-	}
+    public void SellItems()
+    {
+        ltp.SellItems(slot.amount, callerId);
+    }
 }

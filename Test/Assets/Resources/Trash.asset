@@ -20,7 +20,7 @@ MonoBehaviour:
   onTileMapAction: {fileID: 0}
   onItemUsed: {fileID: 0}
   crop: {fileID: 0}
-  SellPrice: 0
+  SellPrice: 20
   Description: No description
   Category: General
-  IsTrash: 0
+  IsTrash: 1

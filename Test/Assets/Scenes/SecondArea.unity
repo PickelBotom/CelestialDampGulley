@@ -83025,7 +83025,7 @@ GameObject:
   - component: {fileID: 1302290455}
   - component: {fileID: 1302290454}
   m_Layer: 0
-  m_Name: Generic Female NPCs_55
+  m_Name: SeedNPC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

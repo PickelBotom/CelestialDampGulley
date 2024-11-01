@@ -21,6 +21,7 @@ MonoBehaviour:
   onItemUsed: {fileID: 0}
   crop: {fileID: 0}
   SellPrice: 0
+  BuyPrice: 0
   Description: No description
   Category: General
   IsTrash: 0
