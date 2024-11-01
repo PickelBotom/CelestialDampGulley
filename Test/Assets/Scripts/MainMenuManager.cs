@@ -203,6 +203,37 @@ public class MainMenuManager : MonoBehaviour
 
 		
 	}
+
+
+	public bool checkValidPassword(string pass) // must still add to ADDUSER and in future add to EDITPASSWORD
+	{
+		bool validpass = true;
+		string issues = "";
+
+		if (pass.Length < 6)
+		{ 
+			validpass= false;
+			issues += "Password must be more than 6 letters. ";
+		}
+		char[] specialChar = "!@#$%^&*:?".ToCharArray();
+		bool specialchar =false;
+		foreach (char c in specialChar)
+		{
+			if (pass.Contains(c))
+			{
+				specialchar = true;				
+			}
+		}
+		if(specialchar)
+			issues += "Password must contain a special character. ";
+
+		if (issues.Length == 0)
+			OutputMessage(issues);
+
+		return validpass;
+	}
+
+
 	public void RefreshList()
 	{
 		string tuser, trole;

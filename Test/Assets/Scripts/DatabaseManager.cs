@@ -9,6 +9,8 @@ using System;
 using Random = System.Random;
 using TMPro;
 using System.Xml.Linq;
+//using static System.Net.WebRequestMethods;
+
 
 
 
@@ -72,7 +74,7 @@ public class DatabaseManager : MonoBehaviour
         CreateTables();
 
         LoadDialogueDataIntoTables();
-        //LoadTradeDataIntoTables();
+        LoadTradeDataIntoTables();
 
 
 
@@ -423,58 +425,72 @@ public class DatabaseManager : MonoBehaviour
 
 
     ///////////// START TRADING  CODE /////////////
-    public void PopulateTradeFields(TradingSlots TS, string TbNameCaller)
+    public void PopulateTradeFields(TradingSlot TS, string TbNameCaller,int id)
     {
         TradeTBName = "TradeTB" + TbNameCaller;
 
-        // database pull :)
-        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		if (TS != null)
+		{
+			Debug.LogError("TS was found");
+		}
+		if (TS == null)
+		{
+			Debug.LogError("TS is null");
+			return;
+		}
+		// database pull :)
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
-            dbCmd.CommandText = $"SELECT * FROM {TradeTBName}"; 
+            dbCmd.CommandText = $"SELECT * FROM {TradeTBName} WHERE ID = '{id}'"; 
             using (IDataReader reader = dbCmd.ExecuteReader())
             {
-                while (reader.Read())
+              //  Debug.LogWarning("Reading database : "+reader.Read());
+                if (reader.Read())
                 {
+                    Debug.LogWarning("Reader amount" + reader["Amount"].ToString());
 
-					TS.Itname = reader["Name"].ToString();
-					TS.amount = int.Parse(reader["Amount"].ToString());
-					TS.sellp = int.Parse(reader["SellPrice"].ToString());
-					TS.buyp = int.Parse(reader["BuyPrice"].ToString());
+                    TS.Itname = reader["Name"].ToString();
+                    TS.amount = int.Parse(reader["Amount"].ToString());
+                    TS.sellp = int.Parse(reader["SellPrice"].ToString());
+                    TS.buyp = int.Parse(reader["BuyPrice"].ToString());
 
-					// Convert byte array back to sprite
-					if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
-					{
-						byte[] iconBytes = (byte[])reader["Icon"];
-						TS.icon = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
-					}
-					else
-					{
-						Debug.LogWarning($"Icon for crop '{TS.name}' is null.");
-					}
+                    // Convert byte array back to sprite
+                    if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
+                    {
+                        byte[] iconBytes = (byte[])reader["Icon"];
+                        TS.icon = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Icon for crop '{TS.Itname}' is null.");
+                    }
 
-					//TS.ItemName.text = "Name: " + reader["Name"].ToString();
-					//               TS.AmountItems.text = "Amount: " + reader["Amount"].ToString();
-					//               TS.SellPrice.text = "Sell - " + reader["SellPrice"].ToString();
-					//               TS.Buyprice.text = "Buy - " + reader["BuyPrice"].ToString();
+                    //TS.ItemName.text = "Name: " + reader["Name"].ToString();
+                    //               TS.AmountItems.text = "Amount: " + reader["Amount"].ToString();
+                    //               TS.SellPrice.text = "Sell - " + reader["SellPrice"].ToString();
+                    //               TS.Buyprice.text = "Buy - " + reader["BuyPrice"].ToString();
 
-					//               // Convert byte array back to sprite
-					//               if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
-					//               {
-					//                   byte[] iconBytes = (byte[])reader["Icon"];
-					//                   TS.ItemImg.sprite = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
-					//               }
-					//               else
-					//               {
-					//                   Debug.LogWarning($"Icon for crop '{TS.name}' is null.");
-					//               }
-					//
-					//public Image ItemImg;
-					//public TMP_Text ItemName;
-					//public TMP_Text AmountItems;
-					//public TMP_Text Buyprice;
-					//public TMP_Text SellPrice;
-					
+                    //               // Convert byte array back to sprite
+                    //               if (reader["Icon"] != DBNull.Value) // Check if the icon column is not null
+                    //               {
+                    //                   byte[] iconBytes = (byte[])reader["Icon"];
+                    //                   TS.ItemImg.sprite = ConvertByteArrayToSprite(iconBytes); // Convert BLOB to Sprite
+                    //               }
+                    //               else
+                    //               {
+                    //                   Debug.LogWarning($"Icon for crop '{TS.name}' is null.");
+                    //               }
+                    //
+                    //public Image ItemImg;
+                    //public TMP_Text ItemName;
+                    //public TMP_Text AmountItems;
+                    //public TMP_Text Buyprice;
+                    //public TMP_Text SellPrice;
 
+                }
+                else
+                {
+					Debug.LogWarning($"'{id}' not found null.");
 				}
 
 			}	
@@ -482,21 +498,21 @@ public class DatabaseManager : MonoBehaviour
 
 	}
 //	Sprite icon,
-	public void InsertTradeItems(string name,  int amount,int buyp, int sellp,string TBname)
+	public void InsertTradeItems(string name, int amount,int buyp, int sellp,string TBname, Sprite icon)
 	{
 		TradeTBName = "TradeTB" + TBname;
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			//byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
+			byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
 
 			dbCmd.CommandText = $"INSERT INTO {TradeTBName} (Name, Amount,BuyPrice,SellPrice, Icon) " +
 								$"VALUES (@Name, @Amount, @BuyPrice, @SellPrice, @Icon)";
 
 			AddParameterWithValue(dbCmd, "@Name", name);
-			AddParameterWithValue(dbCmd, "@Amount", amount);
-			//AddParameterWithValue(dbCmd, "@Icon", iconBytes);
+			AddParameterWithValue(dbCmd, "@Amount", amount);			
 			AddParameterWithValue(dbCmd, "@BuyPrice", buyp);
 			AddParameterWithValue(dbCmd, "@SellPrice", sellp);
+			AddParameterWithValue(dbCmd, "@Icon", iconBytes);
 			dbCmd.ExecuteNonQuery();
 
 		}
@@ -1044,13 +1060,19 @@ public class DatabaseManager : MonoBehaviour
     {
         // missing sprite to byte
         //InsertTradeItems(string name, int amount, int buyp, int sellp, string TBname)
+        if (Iconlist[0] != null)
+        {
+            Debug.LogError("Icons found");
+          
+        }
+		Sprite cropSprites = Resources.Load<Sprite>("Art/roguelikeitems/roguelikeitems_58");
 
-        InsertTradeItems("Trash", 1,0,5,"Tut");
-		InsertTradeItems("Trash", 5, 0, 30, "Tut");
-		InsertTradeItems("Trash", 10, 0, 75, "Tut");
+		InsertTradeItems("Trash", 1, 0, 5, "Tut", cropSprites);
+        InsertTradeItems("Trash", 5, 0, 30, "Tut", cropSprites);
+        InsertTradeItems("Trash", 10, 0, 75, "Tut", cropSprites);
 
 
-	}
+    }
     
 	/////////////////////////////// END TRADE ENTRIES /////////////////////////////
 

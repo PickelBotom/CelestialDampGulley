@@ -11,11 +11,11 @@ public class LoadTradingPanel : MonoBehaviour
 	//TradingSlots ts2;
 	//TradingSlots ts3;
 	[SerializeField] GameObject TradingPanel;
-	TradingSlots[] TradSlots;
-	
-	string callertag;
-	
-	public string CallerTag { set { callertag = value; } } 
+	//TradSlots;
+
+
+
+	public string CallerTag;
 
 	[SerializeField] GameObject Inventory;
 	TradeInteractable store;
@@ -41,34 +41,62 @@ public class LoadTradingPanel : MonoBehaviour
 
 		Debug.LogError("Begin trade");
 		loadTradeItems();
-		ToggleTradingPanel();
+		//ToggleTradingPanel();
 
 	}
 
 		public void loadTradeItems()
 	{
-		int itemid=0;
-		TradSlots = TradingPanel.GetComponents<TradingSlots>();
+		//TradingSlots slot;
+		//int itemid=0;
+		TradingSlots[] TradSlots = TradingPanel.GetComponentsInChildren<TradingSlots>();
+		ToggleTradingPanel();
+
 		if (TradSlots == null)
 		{
-			Debug.Log("TradSlo0ts null");
+			Debug.LogError("TradSlo0ts not null");
+			//Debug.LogError(TradSlots[0].name);
 			return;
 		}
-		foreach (TradingSlots slot in TradSlots)
+		if (TradSlots == null)
 		{
-			DatabaseManager.instance.PopulateTradeFields(slot, callertag);// maybe set variable to change and then assign ?
-			slot.SetupItemSlots(itemid);
-			itemid++;
+			Debug.LogError(TradSlots[0].name);
 		}
-		ToggleTradingPanel();
+		Debug.LogError("Slots count :"+ TradSlots.Length);
+
+		for (int i = 0; i < TradSlots.Length; i++)
+		{
+			//DatabaseManager.instance.PopulateTradeFields(TradSlots[i].slot, callertag);
+			Debug.LogError("CallerTag :" + CallerTag);
+			TradSlots[i].SetupItemSlots(CallerTag,i);
+			Debug.LogError("Slot Amount"+TradSlots[i].slot.amount);
+
+			
+		}
+
+		//foreach (TradingSlots slot in TradSlots)
+		//{
+		//	DatabaseManager.instance.PopulateTradeFields(slot, callertag);// maybe set variable to change and then assign ?
+		//	slot.SetupItemSlots(itemid);
+		//	itemid++;
+		//	Debug.LogError(slot.amount);
+		//}
+		Debug.LogError("Reaches here");
+		
 	}
 	public void ToggleTradingPanel()
-	{ 
+	{
+	
 		isActive = TradingPanel.activeInHierarchy;
 		if (isActive)
-			TradingPanel.SetActive(false);
+		{ TradingPanel.SetActive(false);
+
+		}
 		else
+		{	
 			TradingPanel.SetActive(true);
+		}
+			
 	}
 
 	public void BuyItems(int amount,int itemid)

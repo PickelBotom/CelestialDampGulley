@@ -107,6 +107,7 @@
     <Compile Include="Assets\Scripts\ToolAction.cs" />
     <Compile Include="Assets\Characters\Farmer\PlayerController.cs" />
     <Compile Include="Assets\Scripts\TilemapCropsManager.cs" />
+    <Compile Include="Assets\Scripts\TradeSlotsContainer.cs" />
     <Compile Include="Assets\Scripts\SeedTile.cs" />
     <Compile Include="Assets\Scripts\TilePickUpAction.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -119,6 +120,7 @@
     <Compile Include="Assets\Scripts\GameSceneManager.cs" />
     <Compile Include="Assets\Scripts\SpriteUtils.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
+    <Compile Include="Assets\Scripts\TradingP.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\Scripts\ItemToolbarPanel.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
