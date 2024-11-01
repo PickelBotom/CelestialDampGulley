@@ -42,10 +42,12 @@ public class MainMenuManager : MonoBehaviour
 	[Header("ManageUser")]
 	[SerializeField] GameObject ManageUserPanel;
 	[SerializeField] TMP_InputField MUUsername;
+	[SerializeField] TMP_InputField MUPassword;
 	[SerializeField] TMP_Dropdown MURoleDp;
 	[SerializeField] TextMeshProUGUI MUScrollviewText;
 	int MURoleEntry;
 	string MURoleName;
+
 
 	[Header("Notifications")]
 	[SerializeField] GameObject NotificationPanel;
@@ -154,6 +156,9 @@ public class MainMenuManager : MonoBehaviour
 			return;
 		}
 
+		if(!checkValidPassword(password))
+			return;
+
 		ADDRoleEntry = ADDRoleDp.value;
 		ADDRoleName = ADDRoleDp.options[ADDRoleEntry].text;
 
@@ -188,9 +193,21 @@ public class MainMenuManager : MonoBehaviour
 	public void ConfirmChanges()
 	{
 		username = MUUsername.text;
+		password = MUPassword.text;
 		tempobj = ManageUserPanel;
 		if (FindUser(username))
 		{
+			if (!string.IsNullOrEmpty(password))
+			{
+				if (!checkValidPassword(password))
+					return;
+				string hashedPassword = HashPassword(password);
+				using (IDbCommand dbCmd = dbConnection.CreateCommand())
+				{
+					dbCmd.CommandText = $"Update Users SET Password = '{hashedPassword}' WHERE Username = '{username}'";
+					dbCmd.ExecuteNonQuery();
+				}
+			}
 			MURoleEntry = MURoleDp.value;
 			MURoleName = MURoleDp.options[MURoleEntry].text;
 			using (IDbCommand dbCmd = dbConnection.CreateCommand())
@@ -200,7 +217,8 @@ public class MainMenuManager : MonoBehaviour
 			}
 			RefreshList();
 			MUUsername.text = "";
-			OutputMessage(username + " Role Successfully changed!");
+			MUPassword.text = "";
+			OutputMessage(username + " Successfully Updated!");
 		}
 		else 
 		{
@@ -222,7 +240,7 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 		if (pass.Length < 6)
 		{ 
 			validpass= false;
-			issues += "Password must be more than 6 letters. ";
+			issues += "Password must be more than 6 letters.\n";
 		}
 		char[] specialChar = "!@#$%^&*:?".ToCharArray();
 		bool specialchar =false;
@@ -233,10 +251,13 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 				specialchar = true;				
 			}
 		}
-		if(specialchar)
+		if (!specialchar)
+		{
+			validpass = false;
 			issues += "Password must contain a special character. ";
 
-		if (issues.Length == 0)
+		}
+		if (issues.Length != 0)
 			OutputMessage(issues);
 
 		return validpass;

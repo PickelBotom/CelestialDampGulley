@@ -9,6 +9,9 @@ using System;
 using Random = System.Random;
 using TMPro;
 using System.Xml.Linq;
+using System.Security.Cryptography;
+using System.Text;
+
 //using static System.Net.WebRequestMethods;
 
 
@@ -75,7 +78,7 @@ public class DatabaseManager : MonoBehaviour
 
         LoadDialogueDataIntoTables();
         LoadTradeDataIntoTables();
-
+        LoadUserDataIntotables();
 
 
 		PopulateItems();
@@ -84,11 +87,7 @@ public class DatabaseManager : MonoBehaviour
         AddSingleItemToInventory("CornSeeds", "Items", 500);
 
         // Example usage
-        AddUser("admin", "admin123", "Admin");
-        AddUser("player", "p1", "Player");
-        AddUser("dev1", "d1", "Developer");
-        AddUser("playertest2", "p2", "Player");
-
+        
 
         Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
         if (testSprite != null)
@@ -104,7 +103,8 @@ public class DatabaseManager : MonoBehaviour
 
     }
 
-    private void CreateTables()
+
+	private void CreateTables()
     {
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
@@ -1073,7 +1073,31 @@ public class DatabaseManager : MonoBehaviour
 
 
     }
-    
+
 	/////////////////////////////// END TRADE ENTRIES /////////////////////////////
+
+
+	private void LoadUserDataIntotables()
+	{
+		AddUser("admin", HashPassword("admin123"), "Admin");
+		AddUser("player", HashPassword("p1"), "Player");
+		AddUser("dev1", HashPassword("d1"), "Developer");
+		AddUser("playertest2", HashPassword("p2"), "Player");
+		AddUser("P1", HashPassword("x"), "Player");
+
+	}
+	private string HashPassword(string password)
+	{
+		using (SHA256 sha256Hash = SHA256.Create())
+		{
+			byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
+			StringBuilder builder = new StringBuilder();
+			for (int i = 0; i < bytes.Length; i++)
+			{
+				builder.Append(bytes[i].ToString("x2"));
+			}
+			return builder.ToString();
+		}
+	}
 
 }
