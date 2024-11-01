@@ -20,6 +20,7 @@ public class EnvironmentManager : MonoBehaviour
     private const int minHealth = 0;
     private const int maxHealth = 100; 
     private const float maxTintAlpha = 0.5f;
+
     private float airQuality = 100f;
     private float soilHealth = 100f;
 
@@ -28,10 +29,17 @@ public class EnvironmentManager : MonoBehaviour
     public int TrashCount => trashParent.childCount;
     private ColorAdjustments colorAdjustments;
 
+    private const float airQualityDecayRate = 0.1f;
+    private const float airQualityIncreaseRate = 0.05f;
+    private const float airQualityUpdateInterval = 5f;
+
     public Action<int> onEnvironmentalHealthChange;
 
     private void Start()
     {
+        // Start periodic air quality updates
+        InvokeRepeating(nameof(UpdateAirQuality), airQualityUpdateInterval, airQualityUpdateInterval);
+        
         // Access the Color Adjustments effect directly from the Volume component
         if (lightVolume.sharedProfile != null && lightVolume.sharedProfile.TryGet(out colorAdjustments))
         {
@@ -85,19 +93,15 @@ public class EnvironmentManager : MonoBehaviour
     }
 
     public void PickUpTrash()
-{
-    // Call this only if there is trash to pick up
-    if (TrashCount > 0)
     {
-        // Log trash picking action
-        Debug.Log("Trash picked up.");
-        
-        // Assume there's logic here to actually remove a trash item
-
-        CalculateEnvironmentHealth(); // Recalculate health when trash is picked up
-        UpdateAirQuality(); // Update air quality after picking up trash
+        // Call this only if there is trash to pick up
+        if (TrashCount > 0)
+        {
+            Debug.Log("Trash picked up.");
+            
+            CalculateEnvironmentHealth(); // Recalculate health when trash is picked up
+        }
     }
-}
 
     public void UseFertilizer(bool isGood)
     {
@@ -143,13 +147,20 @@ public class EnvironmentManager : MonoBehaviour
         }
     }
 
-    public void UpdateAirQuality()
+    private void UpdateAirQuality()
     {
+        // Decrease air quality based on the amount of trash, or increase if all trash is picked up
         if (TrashCount > 0)
         {
-            airQuality -= 0.1f * TrashCount;
-            airQuality = Mathf.Clamp(airQuality, 0, 100);
+            airQuality -= airQualityDecayRate * TrashCount;
         }
+        else
+        {
+            airQuality += airQualityIncreaseRate;
+        }
+
+        airQuality = Mathf.Clamp(airQuality, 0, 100); // Keep air quality within bounds
+        Debug.Log($"Air quality updated: {airQuality}");
     }
 
     public void UpdateSoilHealth(bool usedSyntheticFertilizer)
