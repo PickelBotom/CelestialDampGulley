@@ -12,33 +12,75 @@ public class GameManager : MonoBehaviour
 
 
 	PlayerSaveData playerSaveData;
+
 	private void Awake(){
         instance = this;
     }
     void Start()
     {
-		DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
-
-        inventoryContainer.LoadItemsFromDatabase(dbManager);
-
-       // LoadData();
-
-
+		Debug.LogError("UserID :"+ userid);
 
         
+
+		
+        DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+
+		tutorialManager.LoadTutfromID(1);
+
+		switch (DatabaseManager.instance.getRoleID(userid))
+        {
+            case (1):// player
+                {
+                    loadPlayerInventory();
+
+					break;
+                }
+			case (2):// Dev
+				{
+                    LoadDevInventory();
+					break;
+				}
+
+			case (3):// Admin
+				{
+                    LoadDevInventory();
+					break;
+				}
+
+		}
+
+		inventoryContainer.LoadItemsFromDatabase(dbManager);
+        
+       // LoadData();
+
     }
     public GameObject player;
     public ItemContainer inventoryContainer;
     public ItemDragAnDropContainer dragAndDropController;
     public DayNightController TimeController;
-    public DialogueSystem dialogueSystem;
-    public SaveLoadSystem saveLoadSystem;
+    public DialogueSystem dialogueSystem; 
+    public TutorialManager tutorialManager;
 
-	public static string userRole="blah";
+	public SaveLoadSystem saveLoadSystem;
+
+	public static int userid;
     string encrypteddata;
 
 	[Header("Transition")]
-	[SerializeField] string nameMainMenuScene;
+	[SerializeField] string nameMainMenuScene= "MainMenuScene";
+
+
+
+    void loadPlayerInventory()
+    {
+        Debug.LogError("Player Loaded");
+    }
+
+    void LoadDevInventory()
+    {
+        Debug.LogError("Player Loaded");
+
+	}
 
 	public void AddItemToInventory(Item item, int count)
     {
@@ -80,7 +122,6 @@ public class GameManager : MonoBehaviour
 
     public void LoadMainMenuScene()
     {
-
 		SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
 	}
 }

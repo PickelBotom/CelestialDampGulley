@@ -12,9 +12,7 @@ using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using static UnityEditor.Progress;
-
-
-//using static System.Net.WebRequestMethods;
+using Unity.VisualScripting;
 
 
 
@@ -31,8 +29,6 @@ public class DatabaseManager : MonoBehaviour
     private IDbConnection dbConnection;
     public static DatabaseManager instance; // Singleton instance
 
-
-
     /// Dialogue stuff
     string DialogueTBName;
     Random rnum = new Random();
@@ -45,6 +41,7 @@ public class DatabaseManager : MonoBehaviour
     string TradeTBName;
    [SerializeField] List<Sprite> Iconlist;
     /////
+    
     void Awake()
     {
         if (instance == null)
@@ -78,10 +75,10 @@ public class DatabaseManager : MonoBehaviour
         // Create tables if they don't exist
         CreateTables();
 
-        LoadDialogueDataIntoTables();
-        LoadTradeDataIntoTables();
+        //LoadDialogueDataIntoTables();
+        //LoadTradeDataIntoTables();
         LoadUserDataIntotables();
-
+        LoadTutTableData();
 
 		PopulateItems();
         TestLoadItems();
@@ -110,16 +107,36 @@ public class DatabaseManager : MonoBehaviour
     {
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
-            // Create Users table
-            dbCmd.CommandText = @"
+
+			// Roles table
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS Roles (
+                    RoleID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    UserType VARCHAR(25)
+                )";
+			dbCmd.ExecuteNonQuery();
+
+			// Create Users table
+			dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Users (
                     UserID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Username TEXT, 
                     Password TEXT, 
-                    Role TEXT
+                    RoleID INTEGER,
+                    FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
                 )";
             dbCmd.ExecuteNonQuery();
+           
 
+            // Tuttable
+			dbCmd.CommandText = @" 
+                CREATE TABLE IF NOT EXISTS TutTable (
+                    TUTID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    TUTInfo TEXT
+                )";
+			dbCmd.ExecuteNonQuery();
+
+            // Savedata table
 			dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS SaveData (
                     SaveID INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -130,93 +147,94 @@ public class DatabaseManager : MonoBehaviour
 			dbCmd.ExecuteNonQuery();
 
 
-			//// dialogue section ////
-			dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS DialogueTBTut (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Info TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS DialogueTBWood (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Info TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
 
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS DialogueTBStone (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Info TEXT 
-                )";
-            dbCmd.ExecuteNonQuery();
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS DialogueTBTool (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Info TEXT 
-                )";
-            dbCmd.ExecuteNonQuery();
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS DialogueTBSeed (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Info TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
-            //// //////////////// ////
+			////// dialogue section ////
+			//dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS DialogueTBTut (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Info TEXT
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS DialogueTBWood (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Info TEXT
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
 
-            //// Trade section ////
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS TradeTBWood (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name VARCHAR(25),
-                    Amount INTEGER,
-                    BuyPrice INTEGER,
-                    SellPrice INTEGER,    
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS DialogueTBStone (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Info TEXT 
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS DialogueTBTool (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Info TEXT 
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS DialogueTBSeed (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Info TEXT
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         //// //////////////// ////
 
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS TradeTBStone (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name VARCHAR(25),
-                    Amount INTEGER,
-                    BuyPrice INTEGER,
-                    SellPrice INTEGER,    
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS TradeTBTool (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name VARCHAR(25),
-                    Amount INTEGER,
-                     BuyPrice INTEGER,
-                    SellPrice INTEGER,    
-                    Icon BLOB 
-                )";
-            dbCmd.ExecuteNonQuery();
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS TradeTBSeed (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name VARCHAR(25),
-                    Amount INTEGER,
-                    BuyPrice INTEGER,
-                    SellPrice INTEGER,    
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
-			dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS TradeTBTut (
-                    ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name VARCHAR(25),
-                    Amount INTEGER,
-                    BuyPrice INTEGER,
-                    SellPrice INTEGER,    
-                    Icon BLOB
-                )";
-			dbCmd.ExecuteNonQuery();
-			//// //////////////// ////
+   //         //// Trade section ////
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS TradeTBWood (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Name VARCHAR(25),
+   //                 Amount INTEGER,
+   //                 BuyPrice INTEGER,
+   //                 SellPrice INTEGER,    
+   //                 Icon BLOB
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS TradeTBStone (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Name VARCHAR(25),
+   //                 Amount INTEGER,
+   //                 BuyPrice INTEGER,
+   //                 SellPrice INTEGER,    
+   //                 Icon BLOB
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS TradeTBTool (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Name VARCHAR(25),
+   //                 Amount INTEGER,
+   //                  BuyPrice INTEGER,
+   //                 SellPrice INTEGER,    
+   //                 Icon BLOB 
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+   //         dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS TradeTBSeed (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Name VARCHAR(25),
+   //                 Amount INTEGER,
+   //                 BuyPrice INTEGER,
+   //                 SellPrice INTEGER,    
+   //                 Icon BLOB
+   //             )";
+   //         dbCmd.ExecuteNonQuery();
+			//dbCmd.CommandText = @"
+   //             CREATE TABLE IF NOT EXISTS TradeTBTut (
+   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
+   //                 Name VARCHAR(25),
+   //                 Amount INTEGER,
+   //                 BuyPrice INTEGER,
+   //                 SellPrice INTEGER,    
+   //                 Icon BLOB
+   //             )";
+			//dbCmd.ExecuteNonQuery();
+			////// //////////////// ////
 
 
 
@@ -312,32 +330,32 @@ public class DatabaseManager : MonoBehaviour
             //    )";
             //dbCmd.ExecuteNonQuery();
 
-            // Create Biomes table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Biomes (
-                    BiomeID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Description TEXT, 
-                    FloraFauna TEXT, 
-                    EnvironmentalHealth INTEGER, 
-                    Climate TEXT, 
-                    BuildingID INTEGER, 
-                    Resources TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
+            //// Create Biomes table
+            //dbCmd.CommandText = @"
+            //    CREATE TABLE IF NOT EXISTS Biomes (
+            //        BiomeID INTEGER PRIMARY KEY AUTOINCREMENT, 
+            //        Name TEXT, 
+            //        Description TEXT, 
+            //        FloraFauna TEXT, 
+            //        EnvironmentalHealth INTEGER, 
+            //        Climate TEXT, 
+            //        BuildingID INTEGER, 
+            //        Resources TEXT
+            //    )";
+            //dbCmd.ExecuteNonQuery();
 
-            // Create EcosystemMetrics table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS EcosystemMetrics (
-                    MetricID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    BiomeID INTEGER, 
-                    MetricName TEXT, 
-                    Value INTEGER, 
-                    LastUpdated TEXT, 
-                    ImpactFactors TEXT, 
-                    FOREIGN KEY(BiomeID) REFERENCES Biomes(BiomeID)
-                )";
-            dbCmd.ExecuteNonQuery();
+            //// Create EcosystemMetrics table
+            //dbCmd.CommandText = @"
+            //    CREATE TABLE IF NOT EXISTS EcosystemMetrics (
+            //        MetricID INTEGER PRIMARY KEY AUTOINCREMENT, 
+            //        BiomeID INTEGER, 
+            //        MetricName TEXT, 
+            //        Value INTEGER, 
+            //        LastUpdated TEXT, 
+            //        ImpactFactors TEXT, 
+            //        FOREIGN KEY(BiomeID) REFERENCES Biomes(BiomeID)
+            //    )";
+            //dbCmd.ExecuteNonQuery();
 
             //// Create Buildings table
             //dbCmd.CommandText = @"
@@ -365,6 +383,35 @@ public class DatabaseManager : MonoBehaviour
             dbCmd.ExecuteNonQuery();
         }
     }
+
+    //   // get role of user ID
+    public int getRoleID(int userid)
+    {
+        int roleid = 0;
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = $"SELECT RoleID" +
+                $" FROM Users " +
+                $"WHERE UserID = {userid}";
+
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    roleid = int.Parse(reader["RoleID"].ToString());
+                }
+                else
+                {
+                    Debug.LogError($" something else went wrong in the pulling of Role ID");
+                }
+            }
+        }
+        return roleid;
+    }
+
+
+
+
     ///////////// START DIALOGUE CODE /////////////
     public void PopulateList(DialogueContainer currentDialogue)
     {
@@ -528,24 +575,59 @@ public class DatabaseManager : MonoBehaviour
 
 		}
 	}
-	//Name VARCHAR(25),
-	//Amount INTEGER,
-	//BuyPrice INTEGER,
-	//SellPrice INTEGER,
-	//Icon BLOB
+    //Name VARCHAR(25),
+    //Amount INTEGER,
+    //BuyPrice INTEGER,
+    //SellPrice INTEGER,
+    //Icon BLOB
 
-	/////////////////END TRADING CODE////////////////////// 
+    /////////////////END TRADING CODE////////////////////// 
+
+
+    /////////////////Start Tutorial CODE////////////////////// 
+
+    void AddTut(string tutinfo)
+    {
+            
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
+            {
+
+                dbCmd.CommandText = $"INSERT INTO TutTable (TUTInfo) " +
+                                    $"VALUES (@Info)";
+
+                AddParameterWithValue(dbCmd, "@Info", tutinfo);
+                dbCmd.ExecuteNonQuery();
+            }
+      
+
+    }
+	///	/////////////////END Tutorial CODE////////////////////// 
 
 
 
-	public void AddUser(string username, string password, string role)
+	public void AddUser(string username, string password, int role)
     {
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
-            dbCmd.CommandText = $"INSERT INTO Users (Username, Password, Role) VALUES ('{username}', '{password}', '{role}')";
-            dbCmd.ExecuteNonQuery();
+            dbCmd.CommandText = $"INSERT INTO Users (Username, Password, RoleID) " +
+                $"VALUES (@Username,@Password,@RoleID)";
+
+			AddParameterWithValue(dbCmd, "@Username", username);
+			AddParameterWithValue(dbCmd, "@Password", HashPassword (password) ); // Convert bool to integer
+			AddParameterWithValue(dbCmd, "@RoleID", role);
+			dbCmd.ExecuteNonQuery();
         }
     }
+
+    public void AddUserType(string type)
+    {
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+			dbCmd.CommandText = $"INSERT INTO Roles (UserType) VALUES ('{type}')";
+			dbCmd.ExecuteNonQuery();
+		}		
+    }
+
 
     public void AddItem(string name, Sprite icon, bool isStackable)
 {
@@ -1065,6 +1147,13 @@ public class DatabaseManager : MonoBehaviour
     /////////////////////////////// END DIALOGUE ENTRIES ///////////////////////////
 
 
+    void LoadTutTableData()
+    {
+        AddTut("Use the WASD Keys to move around.\n Use the TAB key to open the Inventory.\n Use the Esc key to open the menu");
+		AddTut("You can Right Click on the items to drag and drop them into the top row to add them to the toolbar.");
+	}
+
+
     /////////////////////////////// START TRADE ENTRIES ///////////////////////////
 
     void LoadTradeDataIntoTables()
@@ -1088,15 +1177,31 @@ public class DatabaseManager : MonoBehaviour
 	/////////////////////////////// END TRADE ENTRIES /////////////////////////////
 
 
+
+
+
 	private void LoadUserDataIntotables()
 	{
-		AddUser("admin", HashPassword("admin123"), "Admin");
-		AddUser("player", HashPassword("p1"), "Player");
-		AddUser("dev1", HashPassword("d1"), "Developer");
-		AddUser("playertest2", HashPassword("p2"), "Player");
-		AddUser("P1", HashPassword("x"), "Player");
+
+        FillUserTypes();
+
+		AddUser("admin", "admin123", 3);
+		AddUser("player", "p1", 1);
+		AddUser("dev1", "d1", 2);
+		AddUser("playertest2", "p2", 1);
+		AddUser("P1", "x", 1);
 
 	}
+
+	private void FillUserTypes()
+	{
+        AddUserType("Player");
+        AddUserType("Developer");
+        AddUserType("Admin");
+	}
+
+
+
 	private string HashPassword(string password)
 	{
 		using (SHA256 sha256Hash = SHA256.Create())
@@ -1133,4 +1238,31 @@ public class DatabaseManager : MonoBehaviour
         return encD;
 	}
 
+	internal string PopulateTutfield(int tutID)
+	{
+        //dbConnection = new SqliteConnection("URI=file:" + dbPath);
+        //dbConnection.Open();
+        if (dbConnection == null)
+        {
+            Debug.LogError("Database connection is not initialized.");
+        }
+
+			string tutdata="";
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"SELECT * FROM TutTable WHERE ID = {tutID} ";
+			using (IDataReader reader = dbCmd.ExecuteReader())
+			{
+				if (reader.Read())
+				{
+					tutdata = reader["Info"].ToString();
+				}
+				else
+				{
+					Debug.LogError($"Database table \"{DialogueTBName}\" not found! or something else went wrong in the pulling of dialogue");
+				}
+			}
+		}
+        return tutdata;
+	}
 }
