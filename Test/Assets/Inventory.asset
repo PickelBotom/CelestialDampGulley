@@ -13,63 +13,63 @@ MonoBehaviour:
   m_Name: Inventory
   m_EditorClassIdentifier: 
   slots:
+  - item: {fileID: 11400000, guid: 6d3b3c3495166ad43b40012dab0cd140, type: 2}
+    count: 485
   - item: {fileID: 11400000, guid: 0500121dd01ce284bb0c3688b1d83145, type: 2}
-    count: 1
+    count: 0
+  - item: {fileID: 11400000, guid: 6bf4d872e4370bb4dba5959385ae8231, type: 2}
+    count: 0
+  - item: {fileID: 11400000, guid: 7fa0425eda3fd7c4c96b99875cb14d25, type: 2}
+    count: 10
   - item: {fileID: 11400000, guid: 646f60c8e9957414eac3ae39466aa588, type: 2}
-    count: 1
-  - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 11400000, guid: 67a4e9eb91fee7845abc9b32ff40f524, type: 2}
     count: 1
-  - item: {fileID: 11400000, guid: e0343c7a0051c6043a7253339b8e5ede, type: 2}
-    count: 500
-  - item: {fileID: 11400000, guid: 7fa0425eda3fd7c4c96b99875cb14d25, type: 2}
-    count: 2
+  - item: {fileID: 11400000, guid: 1549b516238a13d49975c828bc0c8029, type: 2}
+    count: 45
   - item: {fileID: 11400000, guid: 9cb3a8fbe9c83724388829195e95aee3, type: 2}
     count: 6
-  - item: {fileID: 11400000, guid: 1549b516238a13d49975c828bc0c8029, type: 2}
-    count: 5
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0
   - item: {fileID: 0}
-    count: 1
+    count: 0

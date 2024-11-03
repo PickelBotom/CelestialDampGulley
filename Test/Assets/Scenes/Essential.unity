@@ -2496,6 +2496,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 380fcc91a1bfddb41a34c45e53f23bd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &332070291
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332070259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2040779d2bbe30447a24f670f33931a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MenuPanel: {fileID: 1428990567}
+  InventoryPanel: {fileID: 1467408046}
+  environmentStatsTab: {fileID: 1498880309}
 --- !u!1 &384630780
 GameObject:
   m_ObjectHideFlags: 0
@@ -4441,7 +4456,7 @@ MonoBehaviour:
   m_InputType: 0
   m_AsteriskChar: 42
   m_KeyboardType: 0
-  m_LineType: 0
+  m_LineType: 2
   m_HideMobileInput: 0
   m_HideSoftKeyboard: 0
   m_CharacterValidation: 0
@@ -6506,7 +6521,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 0
+  m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -10953,7 +10968,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1916860194
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12626,16 +12641,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
       insertIndex: -1
       addedObject: {fileID: 332070281}
+    - targetCorrespondingSourceObject: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 332070291}
   m_SourcePrefab: {fileID: 100100000, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 1515701225}
   - {fileID: 946657270}
   - {fileID: 3886123793566316555}
   - {fileID: 519420032}
   - {fileID: 678431670}
-  - {fileID: 1515701225}
   - {fileID: 432351856}
   - {fileID: 2284959250977068521}
   - {fileID: 1047908551}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,24 +7,36 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance;
+  
     public GameObject PickUpItemPrefab;
 
 
 
 	PlayerSaveData playerSaveData;
+	public static GameManager instance { get; private set; }
 
-	private void Awake(){
-        instance = this;
+	private void Awake()
+	{
+		// Ensure only one instance of GameManager exists
+		if (instance != null && instance != this)
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+		instance = this; // Set the singleton instance
+		DontDestroyOnLoad(gameObject);
+		
     }
+
     void Start()
     {
 		Debug.LogError("UserID :"+ userid);
 
-        
+		nameMainMenuScene = "MainMenuScene";
 
-		
-        DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+
+		//	DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
 
 		tutorialManager.LoadTutfromID(1);
 
@@ -49,7 +62,9 @@ public class GameManager : MonoBehaviour
 
 		}
 
-		inventoryContainer.LoadItemsFromDatabase(dbManager);
+
+
+		//inventoryContainer.LoadItemsFromDatabase(dbManager);
         
        // LoadData();
 
@@ -64,10 +79,12 @@ public class GameManager : MonoBehaviour
 	public SaveLoadSystem saveLoadSystem;
 
 	public static int userid;
+   
     string encrypteddata;
+    bool inventoryTut;
 
 	[Header("Transition")]
-	[SerializeField] string nameMainMenuScene= "MainMenuScene";
+	[SerializeField] string nameMainMenuScene;
 
 
 
@@ -123,5 +140,17 @@ public class GameManager : MonoBehaviour
     public void LoadMainMenuScene()
     {
 		SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
+	}
+
+	internal void Checktut()
+	{
+        if (!tutorialManager.CheckIsActive())
+        {
+            if (!inventoryTut)
+            {
+                tutorialManager.LoadTutfromID(2);
+                inventoryTut = true;
+            }
+        }
 	}
 }

@@ -27,7 +27,7 @@ public class DatabaseManager : MonoBehaviour
 {
     private string dbPath;
     private IDbConnection dbConnection;
-    public static DatabaseManager instance; // Singleton instance
+    //public static DatabaseManager instance; // Singleton instance
 
     /// Dialogue stuff
     string DialogueTBName;
@@ -40,67 +40,88 @@ public class DatabaseManager : MonoBehaviour
     ///// Trading stuff
     string TradeTBName;
    [SerializeField] List<Sprite> Iconlist;
-    /////
-    
-    void Awake()
-    {
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject); // Keeps the database manager alive across scenes
-        }
-        else
-        {
-            Destroy(gameObject);
-        }
-    }
+	/////
 
-    void Start()
-    {
-        dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
+	public static DatabaseManager instance { get; private set; }
 
-        DeleteDatabase();
+	private void Awake()
+	{
+		// Ensure only one instance of DatabaseManager exists
+		if (instance != null && instance != this)
+		{
+			Destroy(gameObject);
+			return;
+		}
 
-        // Set up the database path
-        // Create the database file if it does not exist
-        if (!File.Exists(dbPath))
-        {
-            SqliteConnection.CreateFile(dbPath);
-        }
+		instance = this; // Set the singleton instance
+		DontDestroyOnLoad(gameObject); // Persist across scenes
 
-        // Open the connection
-        dbConnection = new SqliteConnection("URI=file:" + dbPath);
-        dbConnection.Open();
+		InitializeDatabase(); // Initialize the database connection
+	}
+	
+    //void Awake()
+	//   {
+	//       if (instance == null)
+	//       {
+	//           instance = this;
+	//           DontDestroyOnLoad(gameObject); // Keeps the database manager alive across scenes
+	//       }
+	//       else
+	//       {
+	//           Destroy(gameObject);
+	//       }
+	//   }
 
-        // Create tables if they don't exist
-        CreateTables();
+	private void InitializeDatabase()
+	{
+		// Example: Initialize your database connection
+		// dbConnection = new SQLiteConnection("YourConnectionString");
+		// dbConnection.Open();
+		dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
 
-        //LoadDialogueDataIntoTables();
-        //LoadTradeDataIntoTables();
-        LoadUserDataIntotables();
-        LoadTutTableData();
+		DeleteDatabase();
 
-		PopulateItems();
-        TestLoadItems();
-        AddSingleItemToInventory("WheatSeeds", "Items", 500);
-        AddSingleItemToInventory("CornSeeds", "Items", 500);
+		// Set up the database path
+		// Create the database file if it does not exist
+		if (!File.Exists(dbPath))
+		{
+			SqliteConnection.CreateFile(dbPath);
+		}
 
-        // Example usage
-        
+		// Open the connection
+		dbConnection = new SqliteConnection("URI=file:" + dbPath);
+		dbConnection.Open();
 
-        Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
-        if (testSprite != null)
-        {
-            Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
-        }
-        else
-        {
-            Debug.LogWarning("Failed to load sprite manually from Resources.");
-        }
 
-        // Close the connection when done
+		CreateTables();
 
-    }
+		//LoadDialogueDataIntoTables();
+		//LoadTradeDataIntoTables();
+		LoadUserDataIntotables();
+		LoadTutTableData();
+
+		//PopulateItems();
+		TestLoadItems();
+		//AddSingleItemToInventory("WheatSeeds", "Items", 500);
+		//AddSingleItemToInventory("CornSeeds", "Items", 500);
+
+		// Example usage
+
+
+		Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
+		if (testSprite != null)
+		{
+			Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
+		}
+		else
+		{
+			Debug.LogWarning("Failed to load sprite manually from Resources.");
+		}
+
+		// Close the connection when done
+	}
+
+
 
 
 	private void CreateTables()
@@ -374,11 +395,10 @@ public class DatabaseManager : MonoBehaviour
             dbCmd.CommandText = @"
                 CREATE TABLE Items (
                     ItemID INTEGER PRIMARY KEY,
-                    TredID INTEGER,
                     Stackable BOOLEAN,
                     SellPrice INTEGER,
-                    BuyPrice INTEGER,
-                    FOREIGN KEY (TredID) REFERENCES Trade(TredID)
+                    BuyPrice INTEGER
+
                 )";
             dbCmd.ExecuteNonQuery();
 
@@ -1044,16 +1064,16 @@ public class DatabaseManager : MonoBehaviour
         return sprite;
     }
 
-    public void PopulateItems()
-    {
-        // Load sprites from Resources/Art folder
-        Sprite[] cropSprites = Resources.LoadAll<Sprite>("Art/Crop_Spritesheet");
+    //public void PopulateItems()
+    //{
+    //    // Load sprites from Resources/Art folder
+    //    Sprite[] cropSprites = Resources.LoadAll<Sprite>("Art/Crop_Spritesheet");
 
 
-        AddItem("Corn Seeds", cropSprites[108], true); // Assign first sprite
-        AddItem("Wheat Seeds", cropSprites[61], true); // Assign second sprite
+    //    AddItem("Corn Seeds", cropSprites[108], true); // Assign first sprite
+    //    AddItem("Wheat Seeds", cropSprites[61], true); // Assign second sprite
         
-    }
+    //}
 
     public Sprite LoadSpriteFromSheet(string spriteName)
     {
@@ -1193,7 +1213,7 @@ public class DatabaseManager : MonoBehaviour
     void LoadTutTableData()
     {
         AddTut("Use the WASD Keys to move around.\n Use the TAB key to open the Inventory.\n Use the Esc key to open the menu");
-		AddTut("You can Right Click on the items to drag and drop them into the top row to add them to the toolbar.");
+		AddTut("Right Click on the items to drag and drop them into the top row to add them to the toolbar.\n You can also Right Click with a selected Item to interact with the world.");
 	}
 
 
@@ -1327,26 +1347,20 @@ public class DatabaseManager : MonoBehaviour
 
 	internal string PopulateTutfield(int tutID)
 	{
-        //dbConnection = new SqliteConnection("URI=file:" + dbPath);
-        //dbConnection.Open();
-        if (dbConnection == null)
-        {
-            Debug.LogError("Database connection is not initialized.");
-        }
 
 			string tutdata="";
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT * FROM TutTable WHERE ID = {tutID} ";
+			dbCmd.CommandText = $"SELECT * FROM TutTable WHERE TUTID = {tutID} ";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
 				if (reader.Read())
 				{
-					tutdata = reader["Info"].ToString();
+					tutdata = reader["TUTInfo"].ToString();
 				}
 				else
 				{
-					Debug.LogError($"Database table \"{DialogueTBName}\" not found! or something else went wrong in the pulling of dialogue");
+					Debug.LogError($" something else went wrong in the pulling of Tutdata");
 				}
 			}
 		}
@@ -1391,6 +1405,53 @@ public void InsertDialogue(int dialId, string info)
     }
 }
 
-
-
 }
+
+
+
+//void Start()
+//   {
+//       //dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
+
+//       //DeleteDatabase();
+
+//       //// Set up the database path
+//       //// Create the database file if it does not exist
+//       //if (!File.Exists(dbPath))
+//       //{
+//       //    SqliteConnection.CreateFile(dbPath);
+//       //}
+
+//       //// Open the connection
+//       //dbConnection = new SqliteConnection("URI=file:" + dbPath);
+//       //dbConnection.Open();
+
+//       // Create tables if they don't exist
+//       CreateTables();
+
+//       //LoadDialogueDataIntoTables();
+//       //LoadTradeDataIntoTables();
+//       LoadUserDataIntotables();
+//       LoadTutTableData();
+
+//	PopulateItems();
+//       TestLoadItems();
+//       AddSingleItemToInventory("WheatSeeds", "Items", 500);
+//       AddSingleItemToInventory("CornSeeds", "Items", 500);
+
+//       // Example usage
+
+
+//       Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
+//       if (testSprite != null)
+//       {
+//           Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
+//       }
+//       else
+//       {
+//           Debug.LogWarning("Failed to load sprite manually from Resources.");
+//       }
+
+//       // Close the connection when done
+
+//   }
