@@ -11,6 +11,8 @@ using TMPro;
 using System.Xml.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using static UnityEditor.Progress;
+
 
 //using static System.Net.WebRequestMethods;
 
@@ -111,16 +113,25 @@ public class DatabaseManager : MonoBehaviour
             // Create Users table
             dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS Users (
-                    Id INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    UserID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Username TEXT, 
                     Password TEXT, 
                     Role TEXT
                 )";
             dbCmd.ExecuteNonQuery();
 
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS SaveData (
+                    SaveID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    EncryptedData TEXT,
+                    UserID INTEGER,
+                    FOREIGN KEY (UserID) REFERENCES Users(UserID) 
+                )"; //// to be editted userid or roleID
+			dbCmd.ExecuteNonQuery();
 
-            //// dialogue section ////
-            dbCmd.CommandText = @"
+
+			//// dialogue section ////
+			dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS DialogueTBTut (
                     ID INTEGER PRIMARY KEY AUTOINCREMENT, 
                     Info TEXT
@@ -1098,6 +1109,28 @@ public class DatabaseManager : MonoBehaviour
 			}
 			return builder.ToString();
 		}
+	}
+
+	internal void SaveEncrypteddata(string encD) // add userID 
+	{
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"INSERT INTO InventoryItems (EncryptedData) " +
+								$"VALUES (@EncryptedData)";
+
+			AddParameterWithValue(dbCmd, "@EncryptedData", encD);
+		}
+	}
+
+	internal string LaodEncrypteddata()
+	{
+        string encD="";
+
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			
+		}
+        return encD;
 	}
 
 }

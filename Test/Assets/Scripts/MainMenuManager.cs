@@ -19,6 +19,10 @@ public class MainMenuManager : MonoBehaviour
 
 	private GameObject tempobj;
 
+	[Header("MainMenu")]
+	[SerializeField] GameObject MainMenuPanel;
+	[SerializeField] GameObject BackgroundPNG;
+
 	[Header("Transition")]
 	[SerializeField] string nameEssentialScene;
 	[SerializeField] string nameMainScene;
@@ -55,6 +59,11 @@ public class MainMenuManager : MonoBehaviour
 
 	private void Start()
 	{
+		MainMenuPanel.SetActive(true);
+		BackgroundPNG.SetActive(true);
+		Loginpanel.SetActive(false);
+		AdminPanel.SetActive(false);
+
 		dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
 		dbConnection = new SqliteConnection("URI=file:" + dbPath);
 		dbConnection.Open();

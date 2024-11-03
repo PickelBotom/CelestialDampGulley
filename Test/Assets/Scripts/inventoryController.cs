@@ -18,7 +18,9 @@ public class InventoryController : MonoBehaviour
 
     private bool isEnvironmentStatsOpen = false;
 
-    void Start()
+    [SerializeField] GameObject Menupanel;
+
+	void Start()
     {
         if (statsButton != null)
         {
@@ -69,6 +71,7 @@ public class InventoryController : MonoBehaviour
         else
         {
             panel.SetActive(false); // Hide main inventory panel
+            Menupanel.SetActive(false);
             environmentStatsTab.SetActive(true); // Show environment stats tab
             isEnvironmentStatsOpen = true;
 
@@ -77,7 +80,7 @@ public class InventoryController : MonoBehaviour
     }
 
     // Close the environment stats panel
-    private void CloseEnvironmentStatsPanel()
+    public void CloseEnvironmentStatsPanel()
     {
         environmentStatsTab.SetActive(false);
         isEnvironmentStatsOpen = false;

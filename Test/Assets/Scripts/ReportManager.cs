@@ -8,7 +8,7 @@ public class ReportManager : MonoBehaviour
     private string logFilePath;
     private StreamWriter logWriter;
 
-    [SerializeField] Button saveLogButton; // Button to trigger the save
+   // [SerializeField] Button saveLogButton; // Button to trigger the save
 
     private void Start()
     {
@@ -18,7 +18,7 @@ public class ReportManager : MonoBehaviour
         logWriter = new StreamWriter(logFilePath, true);
         Application.logMessageReceived += CaptureLog;
         
-        saveLogButton.onClick.AddListener(SaveLogsToFile);
+        //saveLogButton.onClick.AddListener(SaveLogsToFile);
     }
 
     private void CaptureLog(string logString, string stackTrace, LogType type)
@@ -39,7 +39,7 @@ public class ReportManager : MonoBehaviour
     private void OnApplicationQuit()
     {
         // Clean up
-        Application.logMessageReceived -= CaptureLog;
+       // Application.logMessageReceived -= CaptureLog;
         logWriter.Close();
     }
 }

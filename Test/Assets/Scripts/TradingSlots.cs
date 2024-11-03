@@ -43,7 +43,7 @@ public class TradingSlots : MonoBehaviour
 
         // Set slot values from the Item properties
         slot.Itname = item.Name;
-        slot.buyp = item.SellPrice;
+        slot.buyp = item.BuyPrice;
         slot.sellp = item.SellPrice;
         slot.icon = item.icon;
 
