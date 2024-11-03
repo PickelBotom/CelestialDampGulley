@@ -21,7 +21,6 @@ public class LoadTradingPanel : MonoBehaviour
     {
         UpdatePlayerGoldUI();
 
-
         if (closeButton != null)
         {
             closeButton.onClick.AddListener(CloseTradingPanel);
@@ -36,26 +35,28 @@ public class LoadTradingPanel : MonoBehaviour
     }
 
     public void loadTradeItems()
+{
+    TradingSlots[] tradeSlots = TradingPanel.GetComponentsInChildren<TradingSlots>();
+    ToggleTradingPanel();
+
+    if (tradeSlots == null || tradeSlots.Length == 0)
     {
-        TradingSlots[] tradeSlots = TradingPanel.GetComponentsInChildren<TradingSlots>();
-        ToggleTradingPanel();
-
-        if (tradeSlots == null || tradeSlots.Length == 0)
-        {
-            Debug.LogError("No trade slots available");
-            return;
-        }
-
-        for (int i = 0; i < tradeSlots.Length; i++)
-        {
-
-            tradeSlots[i].SetupItemSlots(store.TradeItems[i], i);
-
-
-
-            Debug.Log("Loaded slot " + i + " for trading.");
-        }
+        Debug.LogError("No trade slots available");
+        return;
     }
+
+    for (int i = 0; i < tradeSlots.Length; i++)
+    {
+        // Get the item from the store
+        Item item = store.GetTradeItems()[i];
+        int amountForSale = store.GetSellAmount(i); // Get the amount for sale from TradeInteractable
+
+        // Setup item slot with the amount obtained
+        tradeSlots[i].SetupItemSlots(item, i, amountForSale); // Add a parameter for the amount
+        Debug.Log("Loaded slot " + i + " for trading.");
+    }
+}
+
 
     public void ToggleTradingPanel()
     {
@@ -69,38 +70,60 @@ public class LoadTradingPanel : MonoBehaviour
     }
 
     public void BuyItems(int amount, int itemId)
-    {
-        Item item = store.TradeItems[itemId];
-        Debug.Log("Bought " + item.Name + " x" + amount);
-    }
-
-    public void SellItems(int amount, int itemId)
 {
     Item item = store.TradeItems[itemId];
-    InventoryPanel inventoryPanel = Inventory.GetComponent<InventoryPanel>();
+    int totalCost = item.BuyPrice * amount; // Calculate total cost
 
-
-    int amountToSell = amount;
-    if (inventoryPanel != null && inventoryPanel.inventory.HasItem(item, amountToSell))
+    // Check if player has enough gold
+    if (playerGold >= totalCost)
     {
-        int itemValue = item.SellPrice * amountToSell;
-        inventoryPanel.inventory.RemoveItem(item, amountToSell);
-        playerGold += itemValue;
-        UpdatePlayerGoldUI(); 
+        // Add item to inventory
+        InventoryPanel inventoryPanel = Inventory.GetComponent<InventoryPanel>();
+        if (inventoryPanel != null)
+        {
+            inventoryPanel.inventory.Add(item, amount); // Assuming AddItem adds the item to the inventory
+            playerGold -= totalCost; // Deduct total cost from player gold
+            UpdatePlayerGoldUI(); // Update the UI to reflect new gold amount
 
-        Debug.Log($"Sold {item.Name} x{amountToSell} for {itemValue} gold.");
+            Debug.Log($"Bought {item.Name} x{amount} for {totalCost} gold.");
+        }
+        else
+        {
+            Debug.LogWarning("Inventory panel not found.");
+        }
     }
     else
     {
-        Debug.LogWarning("Not enough items to sell.");
+        Debug.LogWarning("Not enough gold to buy.");
     }
 }
 
-    private void UpdatePlayerGoldUI()
-{
-    if (playerGoldText != null)
+    public void SellItems(int amount, int itemId)
     {
-        playerGoldText.text = "Gold: " + playerGold;
+        Item item = store.TradeItems[itemId];
+        InventoryPanel inventoryPanel = Inventory.GetComponent<InventoryPanel>();
+
+        int amountToSell = amount;
+        if (inventoryPanel != null && inventoryPanel.inventory.HasItem(item, amountToSell))
+        {
+            int itemValue = item.SellPrice * amountToSell; // Calculate total value
+            inventoryPanel.inventory.RemoveItem(item, amountToSell);
+            playerGold += itemValue;
+            UpdatePlayerGoldUI();
+
+            Debug.Log($"Sold {item.Name} x{amountToSell} for {itemValue} gold.");
+        }
+        else
+        {
+            Debug.LogWarning("Not enough items to sell.");
+        }
     }
-}
+
+    private void UpdatePlayerGoldUI()
+    {
+        if (playerGoldText != null)
+        {
+            playerGoldText.text = "Gold: " + playerGold;
+        }
+    }
 }

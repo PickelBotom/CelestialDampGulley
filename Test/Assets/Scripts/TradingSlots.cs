@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +11,7 @@ public class TradingSlot
     public int sellp;
     public string Itname = "Default name";
     public Sprite icon;
+    
 }
 
 public class TradingSlots : MonoBehaviour
@@ -20,44 +19,49 @@ public class TradingSlots : MonoBehaviour
     public TradingSlot slot;
     [SerializeField] Image ItemImg;
     [SerializeField] TMP_Text ItemName;
-    [SerializeField] TMP_Text AmountItems;
+    [SerializeField] TMP_Text AmountItems; // Display the amount to sell
     [SerializeField] TMP_Text Buyprice;
     [SerializeField] TMP_Text SellPrice;
     int callerId;
 
     TradingP ltp;
 
-    public void SetupItemSlots(Item item, int i)
+    public void SetupItemSlots(Item item, int i, int amountForSale) // Add the amount parameter
+{
+    if (slot == null)
+        slot = new TradingSlot();
+
+    callerId = i;
+    ltp = GetComponentInParent<TradingP>();
+
+    if (ltp == null)
     {
-        if (slot == null)
-            slot = new TradingSlot();
+        Debug.LogError("TradingSlots: Parent TradingP component not found.");
+        return;
+    }
 
-        callerId = i;
-        ltp = GetComponentInParent<TradingP>();
+    // Set slot values from the Item properties
+    slot.Itname = item.Name;
+    slot.buyp = item.BuyPrice;
+    slot.sellp = item.SellPrice;
+    slot.icon = item.icon;
 
-        if (ltp == null)
-        {
-            Debug.LogError("TradingSlots: Parent TradingP component not found.");
-            return;
-        }
+    // Set the amount to the one from TradeInteractable
+    slot.amount = amountForSale;
 
-        // Set slot values from the Item properties
-        slot.Itname = item.Name;
-        slot.buyp = item.BuyPrice;
-        slot.sellp = item.SellPrice;
-        slot.icon = item.icon;
+    // Update UI elements based on slot values
+    ItemName.text = "Name: " + slot.Itname;
+    AmountItems.text = "Amount: " + slot.amount.ToString(); // Display the amount
+    Buyprice.text = "Buy - " + (slot.buyp * slot.amount).ToString();
+    SellPrice.text = "Sell - " + (slot.sellp * slot.amount).ToString(); 
+    ItemImg.sprite = slot.icon;
+}
 
-        // Set amount for selling
-        if (i == 0) slot.amount = 1; // First slot sells 1
-        else if (i == 1) slot.amount = 5; // Second slot sells 5
-        else if (i == 2) slot.amount = 10; // Third slot sells 10
 
-        // Update UI elements based on slot values
-        ItemName.text = "Name: " + slot.Itname;
-        AmountItems.text = "Amount: " + slot.amount.ToString();
-        Buyprice.text = "Buy - " + slot.buyp.ToString();
-        SellPrice.text = "Sell - " + slot.sellp.ToString();
-        ItemImg.sprite = slot.icon;
+    public void UpdateAmount(int newAmount)
+    {
+        slot.amount = newAmount; // Update the amount based on UI input
+        AmountItems.text = "Amount: " + slot.amount.ToString(); // Update the display
     }
 
     public void BuyItems()
