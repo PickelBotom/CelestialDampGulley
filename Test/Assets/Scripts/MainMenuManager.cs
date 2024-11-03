@@ -7,6 +7,7 @@ using System.IO;
 using System;
 using System.Security.Cryptography;
 using System.Text;
+using UnityEngine.UI;
 
 public class MainMenuManager : MonoBehaviour
 {
@@ -56,6 +57,10 @@ public class MainMenuManager : MonoBehaviour
 	[Header("Notifications")]
 	[SerializeField] GameObject NotificationPanel;
 	[SerializeField] TMP_InputField NotifText;
+
+	[Header("Settings")]
+	[SerializeField] GameObject SettingsPanel;
+	
 
 	private void Start()
 	{
@@ -141,6 +146,27 @@ public class MainMenuManager : MonoBehaviour
 	{
 		NotificationPanel.SetActive(false);
 		tempobj.SetActive(true);
+	}
+
+	public void RestoreSettingPaneltoPrevious()
+	{
+		SettingsPanel.SetActive(false);
+		tempobj.SetActive(true);
+	}
+
+	public void SetpreviousMMPanel()
+	{
+		tempobj = MainMenuPanel;
+		SettingsPanel.SetActive(true);
+		tempobj.SetActive(false);
+	}
+	public void SetpreviousMMAPanel()
+	{
+		tempobj = AdminPanel;
+		SettingsPanel.SetActive(true);
+		tempobj.SetActive(false);
+
+
 	}
 
 	public void AddUser()
@@ -349,4 +375,13 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 		}
 		return false;
 	}
+
+
+	public void SetFullScreen(bool IsfullSc)
+	{ 
+		Screen.fullScreen = IsfullSc;
+		Debug.Log("Fullscreen: "+ IsfullSc);
+	}
+
+
 }
