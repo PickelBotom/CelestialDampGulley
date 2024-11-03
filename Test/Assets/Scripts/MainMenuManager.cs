@@ -13,7 +13,7 @@ public class MainMenuManager : MonoBehaviour
 {
 	string password;
 	string username;
-	string role = "";
+	int userid = 0;
 
 	private string dbPath;
 	private IDbConnection dbConnection;
@@ -94,7 +94,7 @@ public class MainMenuManager : MonoBehaviour
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT Password, Role FROM Users WHERE Username = '{username}'";
+			dbCmd.CommandText = $"SELECT Password, UserID FROM Users WHERE Username = '{username}'";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
 				if (reader.Read())
@@ -102,11 +102,11 @@ public class MainMenuManager : MonoBehaviour
 					string storedHash = reader["Password"].ToString();
 					if (storedHash == HashPassword(password))
 					{
-						role = reader["Role"].ToString();
+						userid = int.Parse(reader["UserID"].ToString());
 						LogUsername.text = "";
 						LogPassword.text = "";
 
-						if (role != "Admin")
+						if (getRole(userid) != "Admin")
 							StartGame();
 						else
 							LoadAdminMenu();
@@ -128,7 +128,9 @@ public class MainMenuManager : MonoBehaviour
 
 	public void StartGame()
 	{
-		GameManager.userRole = role;
+		GameManager.userid = userid;
+		Debug.LogError(GameManager.userid);
+
 		dbConnection.Close();
 		SceneManager.LoadScene(nameMainScene, LoadSceneMode.Single);
 		SceneManager.LoadScene(nameEssentialScene, LoadSceneMode.Additive);
@@ -381,6 +383,32 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 	{ 
 		Screen.fullScreen = IsfullSc;
 		Debug.Log("Fullscreen: "+ IsfullSc);
+	}
+
+	// get role of user ID
+	public string getRole(int userid)
+	{
+		string role = "Player";
+		using (IDbCommand dbCmd = dbConnection.CreateCommand())
+		{
+			dbCmd.CommandText = $"SELECT Users.UserID, Roles.UserType" +
+				$" FROM Users " +
+				$"JOIN Roles ON Users.RoleID = Roles.RoleID " +
+				$"WHERE Users.UserID = {userid}";
+
+			using (IDataReader reader = dbCmd.ExecuteReader())
+			{
+				if (reader.Read())
+				{
+					role = reader.GetString(1);
+				}
+				else
+				{
+					Debug.LogError($" something else went wrong in the pulling of Role Types");
+				}
+			}
+		}
+		return role;
 	}
 
 

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,39 +7,97 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager instance;
+  
     public GameObject PickUpItemPrefab;
 
 
 
 	PlayerSaveData playerSaveData;
-	private void Awake(){
-        instance = this;
+	public static GameManager instance { get; private set; }
+
+	private void Awake()
+	{
+		// Ensure only one instance of GameManager exists
+		if (instance != null && instance != this)
+		{
+			Destroy(gameObject);
+			return;
+		}
+
+		instance = this; // Set the singleton instance
+		DontDestroyOnLoad(gameObject);
+		
     }
+
     void Start()
     {
-		DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+		Debug.LogError("UserID :"+ userid);
 
-        inventoryContainer.LoadItemsFromDatabase(dbManager);
+		nameMainMenuScene = "MainMenuScene";
 
+
+		//	DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+
+		tutorialManager.LoadTutfromID(1);
+
+		switch (DatabaseManager.instance.getRoleID(userid))
+        {
+            case (1):// player
+                {
+                    loadPlayerInventory();
+
+					break;
+                }
+			case (2):// Dev
+				{
+                    LoadDevInventory();
+					break;
+				}
+
+			case (3):// Admin
+				{
+                    LoadDevInventory();
+					break;
+				}
+
+		}
+
+
+
+		//inventoryContainer.LoadItemsFromDatabase(dbManager);
+        
        // LoadData();
 
-
-
-        
     }
     public GameObject player;
     public ItemContainer inventoryContainer;
     public ItemDragAnDropContainer dragAndDropController;
     public DayNightController TimeController;
-    public DialogueSystem dialogueSystem;
-    public SaveLoadSystem saveLoadSystem;
+    public DialogueSystem dialogueSystem; 
+    public TutorialManager tutorialManager;
 
-	public static string userRole="blah";
+	public SaveLoadSystem saveLoadSystem;
+
+	public static int userid;
+   
     string encrypteddata;
+    bool inventoryTut;
 
 	[Header("Transition")]
 	[SerializeField] string nameMainMenuScene;
+
+
+
+    void loadPlayerInventory()
+    {
+        Debug.LogError("Player Loaded");
+    }
+
+    void LoadDevInventory()
+    {
+        Debug.LogError("Player Loaded");
+
+	}
 
 	public void AddItemToInventory(Item item, int count)
     {
@@ -80,7 +139,18 @@ public class GameManager : MonoBehaviour
 
     public void LoadMainMenuScene()
     {
-
 		SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
+	}
+
+	internal void Checktut()
+	{
+        if (!tutorialManager.CheckIsActive())
+        {
+            if (!inventoryTut)
+            {
+                tutorialManager.LoadTutfromID(2);
+                inventoryTut = true;
+            }
+        }
 	}
 }

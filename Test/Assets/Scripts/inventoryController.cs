@@ -18,7 +18,8 @@ public class InventoryController : MonoBehaviour
 
     private bool isEnvironmentStatsOpen = false;
 
-    [SerializeField] GameObject Menupanel;
+	private bool tutorialpopup = false;
+	[SerializeField] GameObject Menupanel;
 
 	void Start()
     {
@@ -43,19 +44,24 @@ public class InventoryController : MonoBehaviour
         // Toggle main inventory panel with Tab key
         if (Input.GetKeyDown(KeyCode.Tab))
         {
-            if (isEnvironmentStatsOpen)
+            if (!Menupanel.activeInHierarchy)
             {
-                // Close environment stats and show main inventory if stats panel is open
-                CloseEnvironmentStatsPanel();
-                panel.SetActive(true);
-            }
-            else
-            {
-                // Toggle main inventory and toolbar visibility
-                bool isActive = !panel.activeInHierarchy;
-                panel.SetActive(isActive);
-                toolbarPanel.SetActive(!isActive);
-            }
+				GameManager.instance.Checktut();
+
+				if (isEnvironmentStatsOpen)
+				{
+					// Close environment stats and show main inventory if stats panel is open
+					CloseEnvironmentStatsPanel();
+					panel.SetActive(true);
+				}
+				else
+				{
+					// Toggle main inventory and toolbar visibility
+					bool isActive = !panel.activeInHierarchy;
+					panel.SetActive(isActive);
+					toolbarPanel.SetActive(!isActive);
+				}
+			}           
         }
     }
 
@@ -71,7 +77,7 @@ public class InventoryController : MonoBehaviour
         else
         {
             panel.SetActive(false); // Hide main inventory panel
-            Menupanel.SetActive(false);
+            //Menupanel.SetActive(false);
             environmentStatsTab.SetActive(true); // Show environment stats tab
             isEnvironmentStatsOpen = true;
 
