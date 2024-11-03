@@ -352,17 +352,60 @@ public class DatabaseManager : MonoBehaviour
             //    )";
             //dbCmd.ExecuteNonQuery();
 
-            // Create Items table
+// New Additions for the DB refactoring
             dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Items (
-                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Name TEXT,
+                CREATE TABLE Items (
+                    ItemID INTEGER PRIMARY KEY,
+                    TredID INTEGER,
                     Stackable BOOLEAN,
-                    Icon BLOB,
-                    CropID INTEGER,
-                    FOREIGN KEY(CropID) REFERENCES Crops(CropID)
+                    SellPrice INTEGER,
+                    BuyPrice INTEGER,
+                    FOREIGN KEY (TredID) REFERENCES Trade(TredID)
                 )";
             dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+            CREATE TABLE ItemTypes (
+                ItemTypeID INTEGER PRIMARY KEY,
+                Type TEXT CHECK(Type IN ('Crops', 'Seeds', 'Tools'))
+            )";
+            dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+            CREATE TABLE Trade (
+                TredID INTEGER PRIMARY KEY,
+                NPCID INTEGER,
+                ItemID INTEGER,
+                FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+            )";
+            dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+            CREATE TABLE NPC (
+                NPCID INTEGER PRIMARY KEY,
+                NPCType TEXT NOT NULL
+            )";
+
+            dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+            CREATE TABLE NPC_Dial (
+                NPCID INTEGER,
+                DialID INTEGER,
+                PRIMARY KEY (NPCID, DialID),
+                FOREIGN KEY (NPCID) REFERENCES NPC(NPCID),
+                FOREIGN KEY (DialID) REFERENCES Dialogue(DialID)
+            )";
+            dbCmd.ExecuteNonQuery();
+
+            dbCmd.CommandText = @"
+            CREATE TABLE Dialogue (
+                DialID INTEGER PRIMARY KEY,
+                Info TEXT NOT NULL
+            )";
+            dbCmd.ExecuteNonQuery();
+
+
         }
     }
     ///////////// START DIALOGUE CODE /////////////
@@ -1132,5 +1175,90 @@ public class DatabaseManager : MonoBehaviour
 		}
         return encD;
 	}
+
+    public void InsertItem(int itemId, int tredId, bool stackable, int sellPrice, int buyPrice)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO Items (ItemID, TredID, Stackable, SellPrice, BuyPrice) " +
+                            "VALUES (@ItemID, @TredID, @Stackable, @SellPrice, @BuyPrice)";
+
+        AddParameterWithValue(dbCmd, "@ItemID", itemId);
+        AddParameterWithValue(dbCmd, "@TredID", tredId);
+        AddParameterWithValue(dbCmd, "@Stackable", stackable);
+        AddParameterWithValue(dbCmd, "@SellPrice", sellPrice);
+        AddParameterWithValue(dbCmd, "@BuyPrice", buyPrice);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+//New insert methods for DB refactoring
+    public void InsertItemType(int itemTypeId, string type)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO ItemTypes (ItemTypeID, Type) VALUES (@ItemTypeID, @Type)";
+
+        AddParameterWithValue(dbCmd, "@ItemTypeID", itemTypeId);
+        AddParameterWithValue(dbCmd, "@Type", type);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+
+    public void InsertTrade(int tredId, int npcId, int itemId)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO Trade (TredID, NPCID, ItemID) VALUES (@TredID, @NPCID, @ItemID)";
+
+        AddParameterWithValue(dbCmd, "@TredID", tredId);
+        AddParameterWithValue(dbCmd, "@NPCID", npcId);
+        AddParameterWithValue(dbCmd, "@ItemID", itemId);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+
+public void InsertNPC(int npcId, string npcType)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO NPC (NPCID, NPCType) VALUES (@NPCID, @NPCType)";
+
+        AddParameterWithValue(dbCmd, "@NPCID", npcId);
+        AddParameterWithValue(dbCmd, "@NPCType", npcType);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+
+public void InsertNPCDial(int npcId, int dialId)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO NPC_Dial (NPCID, DialID) VALUES (@NPCID, @DialID)";
+
+        AddParameterWithValue(dbCmd, "@NPCID", npcId);
+        AddParameterWithValue(dbCmd, "@DialID", dialId);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+
+public void InsertDialogue(int dialId, string info)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "INSERT INTO Dialogue (DialID, Info) VALUES (@DialID, @Info)";
+
+        AddParameterWithValue(dbCmd, "@DialID", dialId);
+        AddParameterWithValue(dbCmd, "@Info", info);
+
+        dbCmd.ExecuteNonQuery();
+    }
+}
+
+
 
 }
