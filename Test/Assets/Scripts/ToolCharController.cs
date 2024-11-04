@@ -5,8 +5,7 @@ using UnityEngine;
 public class ToolCharController : MonoBehaviour
 {
     PlayerController player;
-    Rigidbody2D rb2d;
-    ToolBarController toolBarController;
+    Rigidbody2D rb2d;  
     Animator animator;
 
     [SerializeField] float offsetDistance = 0.11f;
@@ -17,6 +16,8 @@ public class ToolCharController : MonoBehaviour
     [SerializeField] ToolAction onTilePickUp; 
     [SerializeField] EnvironmentManager environmentManager; // Add this reference
 
+    [SerializeField] ToolBarController toolBarController;
+
     Vector3Int selectedTilePosition;
     bool selectable;
 
@@ -24,7 +25,6 @@ public class ToolCharController : MonoBehaviour
     {
         player = GetComponent<PlayerController>();
         rb2d = GetComponent<Rigidbody2D>();
-        toolBarController = GetComponent<ToolBarController>();
         animator = GetComponent<Animator>();
     }
 
