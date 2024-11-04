@@ -2468,19 +2468,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
   m_PrefabInstance: {fileID: 3886123793566316555}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &332070269
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 332070259}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 674ab7537929e114e87476407c0292d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  toolbarSize: 12
 --- !u!114 &332070270
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12794,6 +12781,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1093337059}
     - target: {fileID: 8981667144858941449, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
+      propertyPath: toolBarController
+      value: 
+      objectReference: {fileID: 927977181}
+    - target: {fileID: 8981667144858941449, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
       propertyPath: environmentManager
       value: 
       objectReference: {fileID: 2079821512}
@@ -12805,9 +12796,6 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 332070269}
     - targetCorrespondingSourceObject: {fileID: 5865140930327043108, guid: 2b0d25caf81ffc844a4c6d821378a878, type: 3}
       insertIndex: -1
       addedObject: {fileID: 332070270}

@@ -36,6 +36,11 @@ public class GameManager : MonoBehaviour
 
 		nameMainMenuScene = "MainMenuScene";
 
+		foreach (var slot in inventoryContainer.slots) // just to make sure its cleared for the testings
+		{
+			slot.Clear();
+		}
+
 
 		switch (DatabaseManager.instance.getRoleID(userid))
         {
@@ -66,7 +71,7 @@ public class GameManager : MonoBehaviour
 
 	public SaveLoadSystem saveLoadSystem;
 
-	public static int userid=5;
+	public static int userid=1;
    
     string encrypteddata;
     
