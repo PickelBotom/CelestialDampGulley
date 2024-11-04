@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3962194849618059808}
   - component: {fileID: 3731125473121271923}
   - component: {fileID: 3301324904099715690}
+  - component: {fileID: 3838617049466020428}
   m_Layer: 5
   m_Name: InventoryButton
   m_TagString: Untagged
@@ -139,6 +140,21 @@ MonoBehaviour:
   icon: {fileID: 5688528874500724813}
   text: {fileID: 1426736638577436114}
   highlight: {fileID: 824810477476420086}
+--- !u!114 &3838617049466020428
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4184226868318343533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_FirstSelected: {fileID: 0}
+  m_sendNavigationEvents: 1
+  m_DragThreshold: 10
 --- !u!1 &6280017310446145661
 GameObject:
   m_ObjectHideFlags: 0

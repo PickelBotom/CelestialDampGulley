@@ -9,13 +9,15 @@ public class GameManager : MonoBehaviour
 
   
     public GameObject PickUpItemPrefab;
-
-
 	PlayerSaveData playerSaveData;
 	public static GameManager instance { get; private set; }
+    private DatabaseManager dbManager;
+    public Item[] itemAssets;
+    public ItemContainer inventoryContainer;
 
 	private void Awake()
 	{
+        dbManager = FindObjectOfType<DatabaseManager>();
 		// Ensure only one instance of GameManager exists
 		if (instance != null && instance != this)
 		{
@@ -35,48 +37,26 @@ public class GameManager : MonoBehaviour
 		nameMainMenuScene = "MainMenuScene";
 
 
-        
-        //	DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
-          LoadData();
-
-        if (!startTut)
-        {
-            tutorialManager.LoadTutfromID(1);
-            startTut = true;
-        }
-
-
 		switch (DatabaseManager.instance.getRoleID(userid))
         {
-            case (1):// player
+            case 1: // Player
+                LoadData();
+                LoadPlayerInventory();
+                break;
+
+            default: // Dev and Admin (and any other role)
+                LoadDevInventory();
+                break;
+        }
+
+        if (!startTut)
                 {
-                    loadPlayerInventory();
-
-					break;
+                    tutorialManager.LoadTutfromID(1);
+                    startTut = true;
                 }
-			case (2):// Dev
-				{
-                    LoadDevInventory();
-					break;
-				}
-
-			case (3):// Admin
-				{
-                    LoadDevInventory();
-					break;
-				}
-
-		}
-
-
-
-		//inventoryContainer.LoadItemsFromDatabase(dbManager);
-        
-       // LoadData();
 
     }
     public GameObject player;
-    public ItemContainer inventoryContainer;
     public ItemDragAnDropContainer dragAndDropController;
     public DayNightController TimeController;
     public DialogueSystem dialogueSystem; 
@@ -98,17 +78,44 @@ public class GameManager : MonoBehaviour
 
 
 
-    void loadPlayerInventory()
+    void LoadPlayerInventory()
+{
+    // Check if the player has an inventory linked to their user account
+    if (DatabaseManager.instance.InventoryExists(userid))
     {
+        // Load the player's inventory from the database if necessary
+        var playerItems = DatabaseManager.instance.LoadPlayerInventory(userid);
+        foreach (var item in playerItems)
+        {
+            dbManager.AddSingleItemToInventory(item.Name, "InventoryItems", item.Amount);
+            Debug.Log($"Loaded {item.Amount} of {item.Name} from database.");
+        }
+    }
+    else
+    {
+        // Load default inventory if no inventory exists
+        LoadDefaultInventory();
+    }
+}
 
-        Debug.LogError("Player inventory Loaded");
+void LoadDevInventory()
+{
+    // Load a predefined inventory for dev/admin
+    foreach (var item in itemAssets) // Iterate over your item assets
+    {
+        AddItemToInventory(item, 999); // You can adjust the quantity as needed
+        Debug.Log($"Added {item.Name} to the inventory with amount 999.");
     }
 
-    void LoadDevInventory()
-    {
+    player.GetComponent<Currency>().gold = 99999;
+}
 
-        Debug.LogError("Dev inventory Loaded");
-	}
+void LoadDefaultInventory()
+{
+
+    Debug.Log("Default inventory is empty lol");
+
+}
 
 	public void AddItemToInventory(Item item, int count)
     {
@@ -171,6 +178,10 @@ public class GameManager : MonoBehaviour
 
     public void LoadMainMenuScene()
 {
+    foreach (var slot in inventoryContainer.slots)
+    {
+        slot.Clear();
+    }
 
     DatabaseManager.instance.SaveTradeDataToFile();
 

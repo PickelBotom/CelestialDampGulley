@@ -258,15 +258,18 @@ public class DatabaseManager : MonoBehaviour
 			// Create InventoryItems table
 			dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS InventoryItems (
-                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Category TEXT, 
-                    Effect TEXT, 
-                    CraftingRecipe TEXT, 
-                    SellPrice INTEGER, 
-                    Description TEXT, 
-                    Icon BLOB,
-                    SpriteName TEXT
+                ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                UserID INTEGER,          
+                Name TEXT, 
+                Category TEXT, 
+                Effect TEXT, 
+                CraftingRecipe TEXT, 
+                SellPrice INTEGER, 
+                Description TEXT, 
+                Icon BLOB,
+                SpriteName TEXT,
+                Quantity INTEGER DEFAULT 0,
+                FOREIGN KEY (UserID) REFERENCES Users(UserID)
                 )";
 			dbCmd.ExecuteNonQuery();
 
@@ -1409,5 +1412,53 @@ public void SaveTradeDataToFile()
     Debug.Log($"Trade session data saved to {filePath}");
 }
 
+public bool InventoryExists(int userId)
+{
+    //using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    //{
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "SELECT COUNT(*) FROM InventoryItems WHERE UserID = @userId";
+            var userIdParam = new SqliteParameter("@userId", userId);
+            dbCmd.Parameters.Add(userIdParam);
+            int count = Convert.ToInt32(dbCmd.ExecuteScalar());
+            return count > 0;
+        }
+    //}
+}
+
+public List<Item> LoadPlayerInventory(int userId)
+{
+    List<Item> playerItems = new List<Item>();
+    //using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    //{
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "SELECT Name, Quantity FROM InventoryItems WHERE UserID = @userId";
+            var userIdParam = new SqliteParameter("@userId", userId);
+            dbCmd.Parameters.Add(userIdParam);
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    string name = reader.GetString(0);
+                    int quantity = reader.GetInt32(1);
+                    playerItems.Add(new Item { Name = name, Amount = quantity });
+                }
+            }
+        }
+    //}
+    return playerItems;
+}
+
+/* public List<Item> LoadDevInventory()
+{
+    List<Item> devItems = new List<Item>();
+    // Logic to load predefined dev/admin inventory items
+    // You can either define them here or fetch from a specific table
+    devItems.Add(new Item { Name = "DevItem1", Amount = 10 });
+    devItems.Add(new Item { Name = "DevItem2", Amount = 5 });
+    return devItems;
+} */
 
 }

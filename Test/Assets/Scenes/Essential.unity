@@ -5748,8 +5748,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PickUpItemPrefab: {fileID: 7786724302323698976, guid: 4d35704cc607c614080ea7a283ee46a0, type: 3}
-  player: {fileID: 332070259}
+  itemAssets:
+  - {fileID: 11400000, guid: 0500121dd01ce284bb0c3688b1d83145, type: 2}
+  - {fileID: 11400000, guid: 6bf4d872e4370bb4dba5959385ae8231, type: 2}
+  - {fileID: 11400000, guid: 646f60c8e9957414eac3ae39466aa588, type: 2}
+  - {fileID: 11400000, guid: f661ba24b7c3d28419d7abd5762be3b7, type: 2}
+  - {fileID: 11400000, guid: 6d3b3c3495166ad43b40012dab0cd140, type: 2}
+  - {fileID: 11400000, guid: 1549b516238a13d49975c828bc0c8029, type: 2}
+  - {fileID: 11400000, guid: 67a4e9eb91fee7845abc9b32ff40f524, type: 2}
+  - {fileID: 11400000, guid: 9cb3a8fbe9c83724388829195e95aee3, type: 2}
+  - {fileID: 11400000, guid: 7fa0425eda3fd7c4c96b99875cb14d25, type: 2}
   inventoryContainer: {fileID: 11400000, guid: fc4a4b3b9d52dde459c28d3f813f604e, type: 2}
+  player: {fileID: 332070259}
   dragAndDropController: {fileID: 946657274}
   TimeController: {fileID: 946657271}
   dialogueSystem: {fileID: 40056797}
