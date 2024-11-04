@@ -12,7 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
   m_Name: Pick
   m_EditorClassIdentifier: 
+  ItemID: 0
   Name: Pick
   stackable: 0
   icon: {fileID: 485173941, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
   OnAction: {fileID: 11400000, guid: bada6eaa6e98bac4a82a371b6de776a0, type: 2}
+  onTileMapAction: {fileID: 0}
+  onItemUsed: {fileID: 0}
+  crop: {fileID: 0}
+  SellPrice: 30
+  BuyPrice: 500
+  Amount: 0
+  Description: No description
+  Category: General
+  IsTrash: 0

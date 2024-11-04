@@ -21,5 +21,8 @@ MonoBehaviour:
   onItemUsed: {fileID: 0}
   crop: {fileID: 0}
   SellPrice: 20
+  BuyPrice: 30
+  Amount: 0
   Description: Grain for making bread
   Category: Crop
+  IsTrash: 0

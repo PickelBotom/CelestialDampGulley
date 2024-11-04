@@ -12,8 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8659d0447f67dae4c94cf7451ab97ca4, type: 3}
   m_Name: Plow
   m_EditorClassIdentifier: 
+  ItemID: 0
   Name: Plow
   stackable: 0
   icon: {fileID: -399185955, guid: d18c326f04669c742acc6b5c4ae9989e, type: 3}
   OnAction: {fileID: 0}
   onTileMapAction: {fileID: 11400000, guid: 84b8e65655524c347905a43b02af02d7, type: 2}
+  onItemUsed: {fileID: 0}
+  crop: {fileID: 0}
+  SellPrice: 10
+  BuyPrice: 50
+  Amount: 0
+  Description: No description
+  Category: General
+  IsTrash: 0
