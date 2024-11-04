@@ -8,7 +8,8 @@ public class Currency : MonoBehaviour
 	public int gold;
 	[SerializeField] TMP_Text GoldText;
 
-	private void Start()
+
+	public void UpdateGold()
 	{
 		GoldText.text = gold + " Gold";
 	}

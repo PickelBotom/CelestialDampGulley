@@ -7,6 +7,7 @@ public class MenuCaller : MonoBehaviour
 	[SerializeField] GameObject MenuPanel;
 	[SerializeField] GameObject InventoryPanel;
 	[SerializeField] GameObject environmentStatsTab;
+	[SerializeField] GameObject Toolbar;
 	// Update is called once per frame
 	void Update()
 	{
@@ -16,11 +17,13 @@ public class MenuCaller : MonoBehaviour
 			{
 				InventoryPanel.SetActive(false);
 				environmentStatsTab.SetActive(false);
+				Toolbar.SetActive(false);
 				MenuPanel.SetActive(true);
 			}
 			else 
-			{
+			{				
 				MenuPanel.SetActive(false);
+				Toolbar.SetActive(true);
 			}
 		}
 	}
