@@ -172,6 +172,8 @@ void LoadDefaultInventory()
         inventoryTut = playerSaveData.tutinv;
 		startTut = playerSaveData.tutstart;
 
+        player.GetComponent<Currency>().UpdateGold();
+
 		/// put playerSave Data into other fields
 	}
 
