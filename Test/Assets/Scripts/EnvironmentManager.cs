@@ -16,13 +16,13 @@ public class EnvironmentManager : MonoBehaviour
     [SerializeField] private Volume lightVolume;
 
     private const int trashSpawnCount = 3;
-    public float environmentalHealth { get; private set; } = 100f;
+    public float environmentalHealth { get;  set; } = 100f;
     private const int minHealth = 0;
     private const int maxHealth = 100; 
     private const float maxTintAlpha = 0.5f;
 
-    private float airQuality = 100f;
-    private float soilHealth = 100f;
+    public float airQuality = 100f;
+    public float soilHealth = 100f;
 
     public float AirQuality => airQuality;
     public float SoilHealth => soilHealth;

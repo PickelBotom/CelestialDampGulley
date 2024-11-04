@@ -47,19 +47,29 @@ public class DatabaseManager : MonoBehaviour
 	private void Awake()
 	{
 		// Ensure only one instance of DatabaseManager exists
-		if (instance != null && instance != this)
+		if (instance == null)
 		{
-			Destroy(gameObject);
-			return;
+			instance = this;
+			DontDestroyOnLoad(gameObject);
+			InitializeDatabase(); // Initialize the database connection
+		}
+		else
+		{
+			Destroy(gameObject); // Destroy this instance if another exists
 		}
 
-		instance = this; // Set the singleton instance
-		DontDestroyOnLoad(gameObject); // Persist across scenes
-
-		InitializeDatabase(); // Initialize the database connection
 	}
-	
-    //void Awake()
+
+	private void OnDestroy()
+	{
+		if (dbConnection != null)
+		{
+			dbConnection.Close();
+			dbConnection.Dispose();
+		}
+		
+	}
+	//void Awake()
 	//   {
 	//       if (instance == null)
 	//       {
@@ -74,9 +84,7 @@ public class DatabaseManager : MonoBehaviour
 
 	private void InitializeDatabase()
 	{
-		// Example: Initialize your database connection
-		// dbConnection = new SQLiteConnection("YourConnectionString");
-		// dbConnection.Open();
+
 		dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
 
 		DeleteDatabase();
@@ -1279,24 +1287,38 @@ public class DatabaseManager : MonoBehaviour
 		}
 	}
 
-	internal void SaveEncrypteddata(string encD) // add userID 
+	internal void SaveEncrypteddata(string encD,int id) // add userID 
 	{
+        Debug.LogError("Save encrypt DB");
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"INSERT INTO InventoryItems (EncryptedData) " +
-								$"VALUES (@EncryptedData)";
+			dbCmd.CommandText = $"INSERT INTO SaveData (EncryptedData,UserID) " +
+								$"VALUES (@EncryptedData,@UserID)";
 
 			AddParameterWithValue(dbCmd, "@EncryptedData", encD);
+			AddParameterWithValue(dbCmd, "@UserID", id);
+			dbCmd.ExecuteNonQuery();
 		}
 	}
 
-	internal string LaodEncrypteddata()
+	internal string LoadEncrypteddata(int id)
 	{
         string encD="";
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			
+			dbCmd.CommandText = $"SELECT EncryptedData FROM SaveData WHERE UserID = '{id}' ORDER BY SaveID DESC LIMIT 1";
+			using (IDataReader reader = dbCmd.ExecuteReader())
+			{
+                if (reader.Read())
+                {
+                    encD = reader.GetString(0);
+                }
+                else 
+                {
+                    Debug.LogWarning("no save data");   
+                }
+            }
 		}
         return encD;
 	}
@@ -1348,7 +1370,7 @@ public class DatabaseManager : MonoBehaviour
 	internal string PopulateTutfield(int tutID)
 	{
 
-			string tutdata="";
+		string tutdata="";
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
 			dbCmd.CommandText = $"SELECT * FROM TutTable WHERE TUTID = {tutID} ";
@@ -1406,52 +1428,3 @@ public void InsertDialogue(int dialId, string info)
 }
 
 }
-
-
-
-//void Start()
-//   {
-//       //dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
-
-//       //DeleteDatabase();
-
-//       //// Set up the database path
-//       //// Create the database file if it does not exist
-//       //if (!File.Exists(dbPath))
-//       //{
-//       //    SqliteConnection.CreateFile(dbPath);
-//       //}
-
-//       //// Open the connection
-//       //dbConnection = new SqliteConnection("URI=file:" + dbPath);
-//       //dbConnection.Open();
-
-//       // Create tables if they don't exist
-//       CreateTables();
-
-//       //LoadDialogueDataIntoTables();
-//       //LoadTradeDataIntoTables();
-//       LoadUserDataIntotables();
-//       LoadTutTableData();
-
-//	PopulateItems();
-//       TestLoadItems();
-//       AddSingleItemToInventory("WheatSeeds", "Items", 500);
-//       AddSingleItemToInventory("CornSeeds", "Items", 500);
-
-//       // Example usage
-
-
-//       Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
-//       if (testSprite != null)
-//       {
-//           Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
-//       }
-//       else
-//       {
-//           Debug.LogWarning("Failed to load sprite manually from Resources.");
-//       }
-
-//       // Close the connection when done
-
-//   }

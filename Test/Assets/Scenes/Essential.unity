@@ -5711,6 +5711,7 @@ GameObject:
   - component: {fileID: 946657275}
   - component: {fileID: 946657276}
   - component: {fileID: 946657277}
+  - component: {fileID: 946657278}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -5737,6 +5738,8 @@ MonoBehaviour:
   TimeController: {fileID: 946657271}
   dialogueSystem: {fileID: 40056797}
   tutorialManager: {fileID: 1916860197}
+  environmentManager: {fileID: 2079821512}
+  saveLoadSystem: {fileID: 946657278}
   nameMainMenuScene: 
 --- !u!4 &946657270
 Transform:
@@ -5911,6 +5914,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d02ac600f1b33e14b8662664fd99ea9a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &946657278
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 946657268}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0ee0aec870e188748a576fe83567b0bb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &948320766
@@ -12147,6 +12162,8 @@ MonoBehaviour:
   trashParent: {fileID: 654915635}
   environmentTint: {fileID: 284374734}
   lightVolume: {fileID: 2055562188}
+  airQuality: 100
+  soilHealth: 100
 --- !u!4 &2079821513
 Transform:
   m_ObjectHideFlags: 0

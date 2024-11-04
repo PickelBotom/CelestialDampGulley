@@ -19,7 +19,7 @@ public class LoadTradingPanel : MonoBehaviour
 
     private void Start()
     {
-        UpdatePlayerGoldUI();
+        //UpdatePlayerGoldUI();
 
 
         if (closeButton != null)

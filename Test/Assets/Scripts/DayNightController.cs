@@ -32,6 +32,7 @@ public class DayNightController : MonoBehaviour
     void Start()
     {
         time = startTime;
+
     }
 
     public void Sub(TimeAgent tagent)
