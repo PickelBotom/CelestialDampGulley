@@ -14,7 +14,7 @@ public class GameManager : MonoBehaviour
     private DatabaseManager dbManager;
     public Item[] itemAssets;
     public ItemContainer inventoryContainer;
-
+    
 	private void Awake()
 	{
         dbManager = FindObjectOfType<DatabaseManager>();
@@ -45,6 +45,8 @@ public class GameManager : MonoBehaviour
 		{
 			slot.Clear();
 		}
+
+        LoadItemAssetData();
 
 
 		switch (DatabaseManager.instance.getRoleID(userid))
@@ -86,6 +88,29 @@ public class GameManager : MonoBehaviour
 	[Header("Transition")]
 	[SerializeField] string nameMainMenuScene;
 
+
+    void LoadItemAssetData()
+    {
+		List<Item> tempitems = DatabaseManager.instance.PullItemInfo();
+        int i =0;
+
+		//foreach (Item it in tempitems)
+  //      {
+		//	Debug.LogWarning("Temp items ids = " + it.ItemID);
+		//}
+        Debug.Log("Temp items count = "+tempitems.Count);
+        foreach (Item item in itemAssets)
+        {
+            item.ItemID = tempitems[i].ItemID;
+            item.Name = tempitems[i].Name;
+            item.stackable = tempitems[i].stackable;
+            item.SellPrice = tempitems[i].SellPrice;
+            item.BuyPrice = tempitems[i].BuyPrice;
+            item.Category = tempitems[i].Category;
+            i++;
+        }
+        Debug.LogError("Loaded ItemASset data!");
+    }
 
 
     void LoadPlayerInventory()
@@ -220,7 +245,7 @@ void LoadDefaultInventory()
 
     SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
 }
-	internal void Checktut()
+	internal void CheckInvtut()
 	{
         if (!tutorialManager.CheckIsActive())
         {
@@ -231,4 +256,17 @@ void LoadDefaultInventory()
             }
         }
 	}
+
+	//internal void CheckEnvtut()
+	//{
+	//	if (!tutorialManager.CheckIsActive())
+	//	{
+	//		if (!inventoryTut)
+	//		{
+	//			tutorialManager.LoadTutfromID(2);
+	//			inventoryTut = true;
+	//		}
+	//	}
+	//}
+
 }

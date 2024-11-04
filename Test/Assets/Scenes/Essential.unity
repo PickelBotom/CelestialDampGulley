@@ -5859,7 +5859,7 @@ MonoBehaviour:
   dayLightColor: {r: 1, g: 1, b: 1, a: 1}
   globalLight: {fileID: 304498464}
   environmentManager: {fileID: 2079821512}
-  timeScale: 3000
+  timeScale: 1500
   startTime: 28800
 --- !u!114 &946657272
 MonoBehaviour:

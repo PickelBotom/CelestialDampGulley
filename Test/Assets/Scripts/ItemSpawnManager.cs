@@ -18,4 +18,12 @@ public class ItemSpawnManager : MonoBehaviour
         
     }
 
+	//public void SpawnTrashItem(Vector3 position, Item item, int count)
+	//{
+	//	GameObject o = Instantiate(pickUpItemPrefab, position, Quaternion.identity);
+	//	o.GetComponent<PickUpItem>().Set(item, count);
+
+	//}
+
+
 }

@@ -112,9 +112,11 @@ public class DatabaseManager : MonoBehaviour
         FillNPCTable();
         LoadDialogueDataIntoTable();
         FIllNPCDial();
+        InsertItemData();
+
 
 		//PopulateItems();
-		TestLoadItems();
+		//TestLoadItems();
 		//AddSingleItemToInventory("WheatSeeds", "Items", 500);
 		//AddSingleItemToInventory("CornSeeds", "Items", 500);
 
@@ -181,21 +183,23 @@ public class DatabaseManager : MonoBehaviour
 			dbCmd.ExecuteNonQuery();
 
 
-// New Additions for the DB refactoring
+// Items and trade stuff
             dbCmd.CommandText = @"
                 CREATE TABLE Items (
-                    ItemID INTEGER PRIMARY KEY,
+                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    Name VARCHAR(25),
                     Stackable BOOLEAN,
                     SellPrice INTEGER,
-                    BuyPrice INTEGER
-                    
+                    BuyPrice INTEGER,
+                    ItemTypeID INTEGER, 
+                    FOREIGN KEY (ItemTypeID) REFERENCES ItemTypes(ItemTypeID)
                 )";
             dbCmd.ExecuteNonQuery();
 
             dbCmd.CommandText = @"
             CREATE TABLE ItemTypes (
-                ItemTypeID INTEGER PRIMARY KEY,
-                Type TEXT CHECK(Type IN ('Crops', 'Seeds', 'Tools'))
+                ItemTypeID INTEGER PRIMARY KEY AUTOINCREMENT,
+                Type TEXT CHECK(Type IN ('Crop', 'Seed', 'Tool','Wood','Stone','Trash'))
             )";
             dbCmd.ExecuteNonQuery();
 
@@ -212,7 +216,7 @@ public class DatabaseManager : MonoBehaviour
                     FOREIGN KEY (NPCID) REFERENCES NPC(NPCID)
             )";
             dbCmd.ExecuteNonQuery();
-
+// NPC Dialogue side
             dbCmd.CommandText = @"
             CREATE TABLE NPC (
                 NPCID INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -258,7 +262,7 @@ public class DatabaseManager : MonoBehaviour
 			// Create InventoryItems table
 			dbCmd.CommandText = @"
                 CREATE TABLE IF NOT EXISTS InventoryItems (
-                ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                InvItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
                 UserID INTEGER,          
                 Name TEXT, 
                 Category TEXT, 
@@ -1157,6 +1161,37 @@ public class DatabaseManager : MonoBehaviour
         InsertNPCDial(5, 17);
 	}
 
+    void InsertItemData()
+    {
+        InsertItemType("Tool");
+		InsertItemType("Seed");
+		InsertItemType("Crop");
+		InsertItemType("Trash");
+		InsertItemType("Wood");
+		InsertItemType("Stone");
+
+        //Tools
+        InsertItem("Axe", false, 20, 250, 1); //1
+		InsertItem("Pick", false, 30, 500, 1);//2
+		InsertItem("Plow", false, 10, 50, 1);//3
+		InsertItem("Sword", false, 50, 350, 1);//4
+
+		//Seeds
+		InsertItem("WheatSeed", true, 10, 20, 2);//5
+
+		//Crops
+		InsertItem("Wheat", true, 40, 60, 3);//6
+
+		//Trash
+		InsertItem("Trash", true, 10, 30, 4);//7
+
+		//Wood
+		InsertItem("Logs", true, 5, 10, 5);//8
+
+		//Stone
+		InsertItem("Rocks", true, 5, 10, 6);//9
+	}
+
 	private string HashPassword(string password)
 	{
 		using (SHA256 sha256Hash = SHA256.Create())
@@ -1207,16 +1242,16 @@ public class DatabaseManager : MonoBehaviour
         return encD;
 	}
 
-    public void InsertItem(int itemId, int tredId, bool stackable, int sellPrice, int buyPrice)
+    public void InsertItem( string name, bool stackable, int sellPrice, int buyPrice, int itemTypeId)
 {
     using (IDbCommand dbCmd = dbConnection.CreateCommand())
     {
-        dbCmd.CommandText = "INSERT INTO Items (ItemID, TredID, Stackable, SellPrice, BuyPrice) " +
-                            "VALUES (@ItemID, @TredID, @Stackable, @SellPrice, @BuyPrice)";
+        dbCmd.CommandText = "INSERT INTO Items (ItemTypeID,Name,  Stackable, SellPrice, BuyPrice) " +
+							"VALUES (@ItemTypeID,@Name, @Stackable, @SellPrice, @BuyPrice)";
 
-        AddParameterWithValue(dbCmd, "@ItemID", itemId);
-        AddParameterWithValue(dbCmd, "@TredID", tredId);
-        AddParameterWithValue(dbCmd, "@Stackable", stackable);
+        AddParameterWithValue(dbCmd, "@ItemTypeID", itemTypeId);
+		AddParameterWithValue(dbCmd, "@Name", name);
+		AddParameterWithValue(dbCmd, "@Stackable", stackable);
         AddParameterWithValue(dbCmd, "@SellPrice", sellPrice);
         AddParameterWithValue(dbCmd, "@BuyPrice", buyPrice);
 
@@ -1224,32 +1259,61 @@ public class DatabaseManager : MonoBehaviour
     }
 }
 //New insert methods for DB refactoring
-    public void InsertItemType(int itemTypeId, string type)
+    public void InsertItemType( string type)
 {
     using (IDbCommand dbCmd = dbConnection.CreateCommand())
     {
-        dbCmd.CommandText = "INSERT INTO ItemTypes (ItemTypeID, Type) VALUES (@ItemTypeID, @Type)";
+        dbCmd.CommandText = "INSERT INTO ItemTypes ( Type) VALUES ( @Type)";
 
-        AddParameterWithValue(dbCmd, "@ItemTypeID", itemTypeId);
         AddParameterWithValue(dbCmd, "@Type", type);
 
         dbCmd.ExecuteNonQuery();
     }
 }
 
-    public void InsertTrade(int tredId, int npcId, int itemId)
-{
-    using (IDbCommand dbCmd = dbConnection.CreateCommand())
-    {
-        dbCmd.CommandText = "INSERT INTO Trade (TredID, NPCID, ItemID) VALUES (@TredID, @NPCID, @ItemID)";
+    public List<Item> PullItemInfo()
+    { 
+        List<Item> items = new List<Item>();
 
-        AddParameterWithValue(dbCmd, "@TredID", tredId);
-        AddParameterWithValue(dbCmd, "@NPCID", npcId);
-        AddParameterWithValue(dbCmd, "@ItemID", itemId);
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = $" SELECT * FROM Items JOIN ItemTypes ON Items.ItemTypeID = ItemTypes.ItemTypeID";
 
-        dbCmd.ExecuteNonQuery();
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+               while (reader.Read())
+               {
+					    Item tempitem = new Item();
+					// Access the columns by index or name
+					    tempitem.ItemID = int.Parse(reader["ItemID"].ToString());
+                        tempitem.Name = reader["Name"].ToString();
+                        tempitem.stackable = Convert.ToBoolean(reader["Stackable"]);
+                        tempitem.SellPrice = int.Parse(reader["SellPrice"].ToString());
+                        tempitem.BuyPrice = int.Parse(reader["BuyPrice"].ToString());
+                        tempitem.Category = reader["Type"].ToString();
+
+                    items.Add(tempitem);
+               }
+                
+            }
+            return items;
+        }
     }
-}
+
+
+//    public void InsertTrade(int tredId, int npcId, int itemId)
+//{
+//    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+//    {
+//        dbCmd.CommandText = "INSERT INTO Trade (TredID, NPCID, ItemID) VALUES (@TredID, @NPCID, @ItemID)";
+
+//        AddParameterWithValue(dbCmd, "@TredID", tredId);
+//        AddParameterWithValue(dbCmd, "@NPCID", npcId);
+//        AddParameterWithValue(dbCmd, "@ItemID", itemId);
+
+//        dbCmd.ExecuteNonQuery();
+//    }
+//}
 
 	internal string PopulateTutfield(int tutID)
 	{

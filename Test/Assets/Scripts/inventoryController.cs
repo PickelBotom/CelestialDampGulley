@@ -46,7 +46,7 @@ public class InventoryController : MonoBehaviour
         {
             if (!Menupanel.activeInHierarchy)
             {
-				GameManager.instance.Checktut();
+				GameManager.instance.CheckInvtut();
 
 				if (isEnvironmentStatsOpen)
 				{
