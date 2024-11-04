@@ -108,6 +108,8 @@ void LoadDevInventory()
     }
 
     player.GetComponent<Currency>().gold = 99999;
+
+    player.GetComponent<Currency>().UpdateGold();
 }
 
 void LoadDefaultInventory()
