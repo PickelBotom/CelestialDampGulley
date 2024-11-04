@@ -138,10 +138,14 @@ public class GameManager : MonoBehaviour
 
 
     public void LoadMainMenuScene()
-    {
-		SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
-	}
+{
 
+    DatabaseManager.instance.SaveTradeDataToFile();
+
+    DatabaseManager.instance.ClearTradeTable();
+
+    SceneManager.LoadScene(nameMainMenuScene, LoadSceneMode.Single);
+}
 	internal void Checktut()
 	{
         if (!tutorialManager.CheckIsActive())

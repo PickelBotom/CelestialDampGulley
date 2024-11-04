@@ -196,6 +196,21 @@ MonoBehaviour:
     m_Scale: 1
     m_AtlasIndex: 0
     m_ClassDefinitionType: 0
+  - m_Index: 17
+    m_Metrics:
+      m_Width: 29.71875
+      m_Height: 29.71875
+      m_HorizontalBearingX: 23.046875
+      m_HorizontalBearingY: 37.234375
+      m_HorizontalAdvance: 88.15625
+    m_GlyphRect:
+      m_X: 109
+      m_Y: 957
+      m_Width: 30
+      m_Height: 31
+    m_Scale: 1
+    m_AtlasIndex: 0
+    m_ClassDefinitionType: 0
   - m_Index: 19
     m_Metrics:
       m_Width: 76.53125
@@ -1005,6 +1020,10 @@ MonoBehaviour:
     m_GlyphIndex: 16
     m_Scale: 1
   - m_ElementType: 1
+    m_Unicode: 46
+    m_GlyphIndex: 17
+    m_Scale: 1
+  - m_ElementType: 1
     m_Unicode: 48
     m_GlyphIndex: 19
     m_Scale: 1
@@ -1442,6 +1461,10 @@ MonoBehaviour:
     m_Y: 780
     m_Width: 98
     m_Height: 130
+  - m_X: 98
+    m_Y: 946
+    m_Width: 51
+    m_Height: 52
   m_FreeGlyphRects:
   - m_X: 98
     m_Y: 130
@@ -1463,14 +1486,6 @@ MonoBehaviour:
     m_Y: 0
     m_Width: 7
     m_Height: 1023
-  - m_X: 0
-    m_Y: 982
-    m_Width: 196
-    m_Height: 41
-  - m_X: 98
-    m_Y: 946
-    m_Width: 98
-    m_Height: 77
   - m_X: 345
     m_Y: 910
     m_Width: 678
@@ -1483,6 +1498,18 @@ MonoBehaviour:
     m_Y: 390
     m_Width: 466
     m_Height: 260
+  - m_X: 0
+    m_Y: 998
+    m_Width: 196
+    m_Height: 25
+  - m_X: 0
+    m_Y: 982
+    m_Width: 98
+    m_Height: 41
+  - m_X: 149
+    m_Y: 946
+    m_Width: 47
+    m_Height: 77
   m_fontInfo:
     Name: Electronic Highway Sign
     PointSize: 144

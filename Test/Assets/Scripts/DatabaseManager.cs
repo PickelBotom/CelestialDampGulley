@@ -44,6 +44,8 @@ public class DatabaseManager : MonoBehaviour
 
 	public static DatabaseManager instance { get; private set; }
 
+    
+
 	private void Awake()
 	{
 		// Ensure only one instance of DatabaseManager exists
@@ -164,107 +166,9 @@ public class DatabaseManager : MonoBehaviour
                     EncryptedData TEXT,
                     UserID INTEGER,
                     FOREIGN KEY (UserID) REFERENCES Users(UserID) 
-                )"; //// to be editted userid or roleID
+                )";
 			dbCmd.ExecuteNonQuery();
 
-
-
-			////// dialogue section ////
-			//dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBTut (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBWood (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBStone (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBTool (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBSeed (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         //// //////////////// ////
-
-   //         //// Trade section ////
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBWood (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBStone (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBTool (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                  BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBSeed (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-			//dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBTut (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-			//dbCmd.ExecuteNonQuery();
-			////// //////////////// ////
-
-
-
-
-
-			// Add columns to Users table if they don't exist
-			//AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
-			//AddColumnIfNotExist("Users", "Email", "TEXT");
-			//AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
 
 			// Create Crops table without Yield column
 			dbCmd.CommandText = @"
@@ -280,116 +184,23 @@ public class DatabaseManager : MonoBehaviour
             )";
             dbCmd.ExecuteNonQuery();
 
-            // Create Animals table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Animals (
-                    AnimalID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Type TEXT, 
-                    Habitat TEXT, 
-                    Benefit TEXT, 
-                    Diet TEXT, 
-                    Behavior TEXT, 
-                    Description TEXT,
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
-
             // Create InventoryItems table
             dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS InventoryItems (
-                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Category TEXT, 
-                    Effect TEXT, 
-                    CraftingRecipe TEXT, 
-                    SellPrice INTEGER, 
-                    Description TEXT, 
+                ItemID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    UserID INTEGER,
+                    Name TEXT,
+                    Category TEXT,
+                    Effect TEXT,
+                    CraftingRecipe TEXT,
+                    SellPrice INTEGER,
+                    Description TEXT,
                     Icon BLOB,
-                    SpriteName TEXT
+                    SpriteName TEXT,
+                    Quantity INTEGER DEFAULT 0,
+                    FOREIGN KEY (UserID) REFERENCES Users(UserID)
                 )";
             dbCmd.ExecuteNonQuery();
 
-            // Create PlayerStats table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS PlayerStats (
-                    PlayerID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Username TEXT, 
-                    Level INTEGER, 
-                    ExperiencePoints INTEGER, 
-                    Coins INTEGER, 
-                    Reputation INTEGER, 
-                    Achievements TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
-
-            //// Create NPCs table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS NPCs (
-            //        NPCID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Role TEXT, 
-            //        Affiliation TEXT, 
-            //        FriendshipLevel INTEGER, 
-            //        QuestsOffered TEXT, 
-            //        Backstory TEXT,
-            //        Icon BLOB
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            // Create Quests table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Quests (
-            //        QuestID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Title TEXT, 
-            //        Description TEXT, 
-            //        Requirements TEXT, 
-            //        Rewards TEXT, 
-            //        Status TEXT, 
-            //        NPCID INTEGER, 
-            //        FOREIGN KEY(NPCID) REFERENCES NPCs(NPCID)
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create Biomes table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Biomes (
-            //        BiomeID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Description TEXT, 
-            //        FloraFauna TEXT, 
-            //        EnvironmentalHealth INTEGER, 
-            //        Climate TEXT, 
-            //        BuildingID INTEGER, 
-            //        Resources TEXT
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create EcosystemMetrics table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS EcosystemMetrics (
-            //        MetricID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        BiomeID INTEGER, 
-            //        MetricName TEXT, 
-            //        Value INTEGER, 
-            //        LastUpdated TEXT, 
-            //        ImpactFactors TEXT, 
-            //        FOREIGN KEY(BiomeID) REFERENCES Biomes(BiomeID)
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create Buildings table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Buildings (
-            //        BuildingID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Function TEXT, 
-            //        Cost INTEGER, 
-            //        Requirements TEXT, 
-            //        Benefits TEXT, 
-            //        Description TEXT
-            //    )";
-            //dbCmd.ExecuteNonQuery();
 
 // New Additions for the DB refactoring
             dbCmd.CommandText = @"
@@ -411,10 +222,14 @@ public class DatabaseManager : MonoBehaviour
 
             dbCmd.CommandText = @"
             CREATE TABLE Trade (
-                TredID INTEGER PRIMARY KEY,
-                NPCID INTEGER,
-                ItemID INTEGER,
-                FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
+                    TradeID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    NPCID INTEGER,
+                    ItemID INTEGER,
+                    TradeType TEXT CHECK(TradeType IN ('buy', 'sell')), -- Specify if trade is a buy or sell
+                    Quantity INTEGER NOT NULL,                          -- Track amount of items traded
+                    TradeTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Log the trade time
+                    FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
+                    FOREIGN KEY (NPCID) REFERENCES NPC(NPCID)
             )";
             dbCmd.ExecuteNonQuery();
 
@@ -447,7 +262,6 @@ public class DatabaseManager : MonoBehaviour
         }
     }
 
-    //   // get role of user ID
     public int getRoleID(int userid)
     {
         int roleid = 0;
@@ -1405,53 +1219,114 @@ public void InsertDialogue(int dialId, string info)
     }
 }
 
+public void LogTrade(string tradeType, int itemID, int quantity, int totalValue)
+{
+    using (var connection = new SqliteConnection(dbPath))
+    {
+        try
+        {
+            connection.Open();
+            using (var command = connection.CreateCommand())
+            {
+                command.CommandText = @"
+                    INSERT INTO Trade (Type, ItemID, Quantity, TotalValue, TradeDate) 
+                    VALUES (@type, @itemID, @quantity, @totalValue, @date);
+                ";
+                
+                command.Parameters.AddWithValue("@type", tradeType); // "buy" or "sell"
+                command.Parameters.AddWithValue("@itemID", itemID);
+                command.Parameters.AddWithValue("@quantity", quantity);
+                command.Parameters.AddWithValue("@totalValue", totalValue);
+                command.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
+                command.ExecuteNonQuery();
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Failed to log trade: " + ex.Message);
+        }
+        finally
+        {
+            connection.Close();
+        }
+    }
+}
+
+public List<string> GetTradeData()
+{
+    List<string> tradeData = new List<string>();
+
+    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    {
+        dbConnection.Open();
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "SELECT * FROM Trade";
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    int tradeID = reader.GetInt32(0);
+                    int itemID = reader.GetInt32(1);
+                    string type = reader.GetString(2); // Assuming you added Type to Trade table
+                    tradeData.Add($"TradeID: {tradeID}, ItemID: {itemID}, Type: {type}");
+                }
+            }
+        }
+    }
+
+    return tradeData;
 }
 
 
 
-//void Start()
-//   {
-//       //dbPath = Path.Combine(Application.persistentDataPath, "gameDatabase.db");
+public void ClearTradeTable()
+{
+    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    {
+        dbConnection.Open();
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "DELETE FROM Trade";
+            dbCmd.ExecuteNonQuery();
+        }
+    }
+}
 
-//       //DeleteDatabase();
+public void SaveTradeDataToFile()
+{
+    List<string> tradeData = new List<string>();
 
-//       //// Set up the database path
-//       //// Create the database file if it does not exist
-//       //if (!File.Exists(dbPath))
-//       //{
-//       //    SqliteConnection.CreateFile(dbPath);
-//       //}
+    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    {
+        dbConnection.Open();
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "SELECT ItemID, Amount, Type, Price FROM Trade";
+            
+            using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                // Collect trade data entries
+                while (reader.Read())
+                {
+                    int itemID = reader.GetInt32(0);
+                    int amount = reader.GetInt32(1);
+                    string type = reader.GetString(2);
+                    int price = reader.GetInt32(3);
+                    
+                    tradeData.Add($"ItemID: {itemID}, Amount: {amount}, Type: {type}, Price: {price}");
+                }
+            }
+        }
+    }
 
-//       //// Open the connection
-//       //dbConnection = new SqliteConnection("URI=file:" + dbPath);
-//       //dbConnection.Open();
+    // Define file path and save data
+    string filePath = Path.Combine(Application.persistentDataPath, "TradeSession.txt");
+    File.WriteAllLines(filePath, tradeData);
 
-//       // Create tables if they don't exist
-//       CreateTables();
-
-//       //LoadDialogueDataIntoTables();
-//       //LoadTradeDataIntoTables();
-//       LoadUserDataIntotables();
-//       LoadTutTableData();
-
-//	PopulateItems();
-//       TestLoadItems();
-//       AddSingleItemToInventory("WheatSeeds", "Items", 500);
-//       AddSingleItemToInventory("CornSeeds", "Items", 500);
-
-//       // Example usage
+    Debug.Log($"Trade session data saved to {filePath}");
+}
 
 
-//       Sprite testSprite = Resources.Load<Sprite>("Art/Crop_Spritesheet");
-//       if (testSprite != null)
-//       {
-//           Debug.Log("Successfully loaded sprite manually: " + testSprite.name);
-//       }
-//       else
-//       {
-//           Debug.LogWarning("Failed to load sprite manually from Resources.");
-//       }
-
-//       // Close the connection when done
-
-//   }
+}
