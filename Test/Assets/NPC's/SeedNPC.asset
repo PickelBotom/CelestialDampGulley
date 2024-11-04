@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: SeedNPC
   m_EditorClassIdentifier: 
   Name: SeedNPC
-  TBName: Seed
+  NPCType: Seed
   portrait: {fileID: 1491828679, guid: e85c13619617a984aad98a668337be41, type: 3}

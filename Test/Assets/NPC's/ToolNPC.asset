@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: ToolNPC
   m_EditorClassIdentifier: 
   Name: ToolNPC
-  TBName: Tool
+  NPCType: Tool
   portrait: {fileID: 1681160779, guid: 916cb8aec1c6b6447a2b90f5a10234f5, type: 3}

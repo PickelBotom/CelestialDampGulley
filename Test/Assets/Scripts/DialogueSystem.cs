@@ -72,7 +72,7 @@ public class DialogueSystem : MonoBehaviour
     public void Initialize(DialogueContainer dialogueContainer){
         Show(true);
         currentDialogue = dialogueContainer;
-		DatabaseManager.instance.PopulateList(currentDialogue);
+		DatabaseManager.instance.PopulateDialogueList(currentDialogue);
 		currentTextLine = 0;
         CycleLine();
         UpdatePortrait();

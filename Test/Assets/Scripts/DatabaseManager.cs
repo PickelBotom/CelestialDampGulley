@@ -103,10 +103,13 @@ public class DatabaseManager : MonoBehaviour
 
 		CreateTables();
 
-		//LoadDialogueDataIntoTables();
+		
 		//LoadTradeDataIntoTables();
 		LoadUserDataIntotables();
 		LoadTutTableData();
+        FillNPCTable();
+        LoadDialogueDataIntoTable();
+        FIllNPCDial();
 
 		//PopulateItems();
 		TestLoadItems();
@@ -176,229 +179,6 @@ public class DatabaseManager : MonoBehaviour
 			dbCmd.ExecuteNonQuery();
 
 
-
-			////// dialogue section ////
-			//dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBTut (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBWood (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBStone (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBTool (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS DialogueTBSeed (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Info TEXT
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         //// //////////////// ////
-
-   //         //// Trade section ////
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBWood (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBStone (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBTool (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                  BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB 
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-   //         dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBSeed (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-   //         dbCmd.ExecuteNonQuery();
-			//dbCmd.CommandText = @"
-   //             CREATE TABLE IF NOT EXISTS TradeTBTut (
-   //                 ID INTEGER PRIMARY KEY AUTOINCREMENT, 
-   //                 Name VARCHAR(25),
-   //                 Amount INTEGER,
-   //                 BuyPrice INTEGER,
-   //                 SellPrice INTEGER,    
-   //                 Icon BLOB
-   //             )";
-			//dbCmd.ExecuteNonQuery();
-			////// //////////////// ////
-
-
-
-
-
-			// Add columns to Users table if they don't exist
-			//AddColumnIfNotExist("Users", "PasswordHash", "TEXT");
-			//AddColumnIfNotExist("Users", "Email", "TEXT");
-			//AddColumnIfNotExist("Users", "AccessLevel", "TEXT");
-
-			// Create Crops table without Yield column
-			dbCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS Crops (
-                CropID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                Name TEXT, 
-                GrowthTime INTEGER, 
-                SellPrice INTEGER, 
-                Description TEXT, 
-                Icon BLOB,
-                SpriteName TEXT,
-                Stackable BOOLEAN
-            )";
-            dbCmd.ExecuteNonQuery();
-
-            // Create Animals table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS Animals (
-                    AnimalID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Type TEXT, 
-                    Habitat TEXT, 
-                    Benefit TEXT, 
-                    Diet TEXT, 
-                    Behavior TEXT, 
-                    Description TEXT,
-                    Icon BLOB
-                )";
-            dbCmd.ExecuteNonQuery();
-
-            // Create InventoryItems table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS InventoryItems (
-                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Category TEXT, 
-                    Effect TEXT, 
-                    CraftingRecipe TEXT, 
-                    SellPrice INTEGER, 
-                    Description TEXT, 
-                    Icon BLOB,
-                    SpriteName TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
-
-            // Create PlayerStats table
-            dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS PlayerStats (
-                    PlayerID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Username TEXT, 
-                    Level INTEGER, 
-                    ExperiencePoints INTEGER, 
-                    Coins INTEGER, 
-                    Reputation INTEGER, 
-                    Achievements TEXT
-                )";
-            dbCmd.ExecuteNonQuery();
-
-            //// Create NPCs table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS NPCs (
-            //        NPCID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Role TEXT, 
-            //        Affiliation TEXT, 
-            //        FriendshipLevel INTEGER, 
-            //        QuestsOffered TEXT, 
-            //        Backstory TEXT,
-            //        Icon BLOB
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            // Create Quests table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Quests (
-            //        QuestID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Title TEXT, 
-            //        Description TEXT, 
-            //        Requirements TEXT, 
-            //        Rewards TEXT, 
-            //        Status TEXT, 
-            //        NPCID INTEGER, 
-            //        FOREIGN KEY(NPCID) REFERENCES NPCs(NPCID)
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create Biomes table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Biomes (
-            //        BiomeID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Description TEXT, 
-            //        FloraFauna TEXT, 
-            //        EnvironmentalHealth INTEGER, 
-            //        Climate TEXT, 
-            //        BuildingID INTEGER, 
-            //        Resources TEXT
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create EcosystemMetrics table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS EcosystemMetrics (
-            //        MetricID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        BiomeID INTEGER, 
-            //        MetricName TEXT, 
-            //        Value INTEGER, 
-            //        LastUpdated TEXT, 
-            //        ImpactFactors TEXT, 
-            //        FOREIGN KEY(BiomeID) REFERENCES Biomes(BiomeID)
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
-            //// Create Buildings table
-            //dbCmd.CommandText = @"
-            //    CREATE TABLE IF NOT EXISTS Buildings (
-            //        BuildingID INTEGER PRIMARY KEY AUTOINCREMENT, 
-            //        Name TEXT, 
-            //        Function TEXT, 
-            //        Cost INTEGER, 
-            //        Requirements TEXT, 
-            //        Benefits TEXT, 
-            //        Description TEXT
-            //    )";
-            //dbCmd.ExecuteNonQuery();
-
 // New Additions for the DB refactoring
             dbCmd.CommandText = @"
                 CREATE TABLE Items (
@@ -406,7 +186,7 @@ public class DatabaseManager : MonoBehaviour
                     Stackable BOOLEAN,
                     SellPrice INTEGER,
                     BuyPrice INTEGER
-
+                    
                 )";
             dbCmd.ExecuteNonQuery();
 
@@ -423,12 +203,12 @@ public class DatabaseManager : MonoBehaviour
                 NPCID INTEGER,
                 ItemID INTEGER,
                 FOREIGN KEY (ItemID) REFERENCES Items(ItemID)
-            )";
+            )"; // type,  userid, once u logout print and clear
             dbCmd.ExecuteNonQuery();
 
             dbCmd.CommandText = @"
             CREATE TABLE NPC (
-                NPCID INTEGER PRIMARY KEY,
+                NPCID INTEGER PRIMARY KEY AUTOINCREMENT,
                 NPCType TEXT NOT NULL
             )";
 
@@ -446,14 +226,45 @@ public class DatabaseManager : MonoBehaviour
 
             dbCmd.CommandText = @"
             CREATE TABLE Dialogue (
-                DialID INTEGER PRIMARY KEY,
+                DialID INTEGER PRIMARY KEY AUTOINCREMENT,
                 Info TEXT NOT NULL
             )";
             dbCmd.ExecuteNonQuery();
 
 
-        }
-    }
+			// Create Crops table without Yield column
+			dbCmd.CommandText = @"
+            CREATE TABLE IF NOT EXISTS Crops (
+                CropID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                Name TEXT, 
+                GrowthTime INTEGER, 
+                SellPrice INTEGER, 
+                Description TEXT, 
+                Icon BLOB,
+                SpriteName TEXT,
+                Stackable BOOLEAN
+            )";
+			dbCmd.ExecuteNonQuery();
+
+
+
+			// Create InventoryItems table
+			dbCmd.CommandText = @"
+                CREATE TABLE IF NOT EXISTS InventoryItems (
+                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
+                    Name TEXT, 
+                    Category TEXT, 
+                    Effect TEXT, 
+                    CraftingRecipe TEXT, 
+                    SellPrice INTEGER, 
+                    Description TEXT, 
+                    Icon BLOB,
+                    SpriteName TEXT
+                )";
+			dbCmd.ExecuteNonQuery();
+
+		}
+	}
 
     //   // get role of user ID
     public int getRoleID(int userid)
@@ -484,30 +295,56 @@ public class DatabaseManager : MonoBehaviour
 
 
     ///////////// START DIALOGUE CODE /////////////
-    public void PopulateList(DialogueContainer currentDialogue)
+    public void PopulateDialogueList(DialogueContainer currentDialogue)
     {
-        currentDialogue.DialogueLines.Clear();
-        DialogueTBName = "DialogueTB" + currentDialogue.actor.TBName;
+        int id;
 
+		string role = currentDialogue.actor.NPCType;
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
-            dbCmd.CommandText = $"SELECT COUNT(*) FROM {DialogueTBName} ";
-            DialogueTBSize = (long)dbCmd.ExecuteScalar();
-            Debug.LogError("Dialogue size : " + (int)DialogueTBSize);
-        }
-        if (DialogueTBSize > 1)
-        {
-            randDialogue = rnum.Next(1, (int)DialogueTBSize + 1);
-        }
-        else
-        {
-            randDialogue = 1;
-        }
-
-        using (IDbCommand dbCmd = dbConnection.CreateCommand())
-        {
-            dbCmd.CommandText = $"SELECT * FROM {DialogueTBName} WHERE ID = {randDialogue} ";
+            dbCmd.CommandText = $"SELECT NPCID FROM NPC WHERE NPCType = '{role}'";
             using (IDataReader reader = dbCmd.ExecuteReader())
+            {
+                if (reader.Read())
+                {
+                    id = reader.GetInt32(0);
+                }
+                else
+                {
+                    Debug.LogError("Role provided is invalid");
+                    return;
+                }
+			}
+
+		}
+		
+
+        //using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        //{
+        //    dbCmd.CommandText = $"SELECT COUNT(*) FROM NPC_Dial WHERE NPCID = {id}";
+        //    DialogueTBSize = (long)dbCmd.ExecuteScalar();
+        //    Debug.LogError("Dialogue size : " + (int)DialogueTBSize);
+        //}
+        //if (DialogueTBSize > 1)
+        //{
+        //    randDialogue = rnum.Next(1, (int)DialogueTBSize + 1);
+        //}
+        //else
+        //{
+        //    randDialogue = 1;
+        //}
+
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+
+			dbCmd.CommandText = $" SELECT d.Info FROM Dialogue d " +
+                $"JOIN NPC_Dial nd ON d.DialID = nd.DialID  " +
+                $"WHERE nd.NPCID = @NPCID " +
+                $"ORDER BY RANDOM() LIMIT 1";
+
+			AddParameterWithValue(dbCmd, "@NPCID", id);
+
+			using (IDataReader reader = dbCmd.ExecuteReader())
             {
                 if (reader.Read())
                 {
@@ -517,7 +354,7 @@ public class DatabaseManager : MonoBehaviour
                 }
                 else
                 {
-                    Debug.LogError($"Database table \"{DialogueTBName}\" not found! or something else went wrong in the pulling of dialogue");
+                    Debug.LogError($" something went wrong in the pulling of dialogue");
                 }
 
             }
@@ -526,27 +363,27 @@ public class DatabaseManager : MonoBehaviour
     }
 
 
-    public void InsertDialogueData(string temp, string name)
-    {
-        string tbname = "DialogueTB" + name;
-        //Debug.Log(tbname);
+  //  public void InsertDialogue(string temp, string name)
+  //  {
+  //      string tbname = "DialogueTB" + name;
+  //      //Debug.Log(tbname);
 
-        using (IDbCommand dbCmd = dbConnection.CreateCommand())
-        {
-            //byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
+  //      using (IDbCommand dbCmd = dbConnection.CreateCommand())
+  //      {
+  //          //byte[] iconBytes = ConvertSpriteToByteArray(icon); // Convert sprite to byte array
 
-            dbCmd.CommandText = $"INSERT INTO {tbname} (Info) " +
-                                $"VALUES (@Info)";
+  //          dbCmd.CommandText = $"INSERT INTO {tbname} (Info) " +
+  //                              $"VALUES (@Info)";
 
-            AddParameterWithValue(dbCmd, "@Info", temp);
-			dbCmd.ExecuteNonQuery();
-		}
-			//using (IDbCommand dbCmd = dbConnection.CreateCommand())
-   //     {
-   //         dbCmd.CommandText = $"INSERT INTO {tbname} (Info) VALUES ('{temp}')"; // caused issues with the word "don't"
-   //         dbCmd.ExecuteNonQuery();
-   //     }
-    }
+  //          AddParameterWithValue(dbCmd, "@Info", temp);
+		//	dbCmd.ExecuteNonQuery();
+		//}
+		//	//using (IDbCommand dbCmd = dbConnection.CreateCommand())
+  // //     {
+  // //         dbCmd.CommandText = $"INSERT INTO {tbname} (Info) VALUES ('{temp}')"; // caused issues with the word "don't"
+  // //         dbCmd.ExecuteNonQuery();
+  // //     }
+  //  }
 
     /////////////////END DIALOGUE CODE////////////////////// 
 
@@ -1150,69 +987,70 @@ public class DatabaseManager : MonoBehaviour
 
 
 	/////////////////////////////// DIALOGUE ENTRIES ////////////////////////
-	void LoadDialogueDataIntoTables()
+	void LoadDialogueDataIntoTable()
 	{
 		/////////// TUT ////////////
-		InsertDialogueData("REDUCE!.REUSE!.RECYCLE!", "Tut");
 
-		InsertDialogueData("Littering has several negative effects on the environment:." +
+		InsertDialogue("REDUCE!.REUSE!.RECYCLE!");
+
+		InsertDialogue("Littering has several negative effects on the environment:." +
 			"Air Pollution: Litter releases harmful gases, including methane, which contributes to air pollution." +
 			"Water Pollution: Litter can end up in rivers, lakes, and oceans, harming marine life." +
 			"Death of Animals: Wildlife can ingest or get entangled in litter. " +
 			"Spread of Disease and Infection: Improperly discarded trash can harbour bacteria and diseases." +
-			"So Stop Littering! To save the dogs, cats, turtles and yourself", "Tut");
+			"So Stop Littering! To save the dogs, cats, turtles and yourself");
 
-		InsertDialogueData("A reminder press the WASD Keys to move." +
+		InsertDialogue("A reminder press the WASD Keys to move." +
 			"Press the TAB Key to open the inventory." +
-			"Use the scroll wheel to select items in your toolbar(The bar at the bottom of your screen)!", "Tut");
+			"Use the scroll wheel to select items in your toolbar(The bar at the bottom of your screen)!");
 
-		InsertDialogueData("I don't like litter!." +
+		InsertDialogue("I don't like litter!." +
 			"It makes the place unsightly." +
 			"You best pick it up and put it in the trash can!." +
-			"You do not want to carry trash all day do you and I will pay you just put it in the can", "Tut");
+			"You do not want to carry trash all day do you and I will pay you just put it in the can");
 
-		InsertDialogueData("Talk to people around town to get information." +
-			"Also if you want to buy stuff just go to interact with the chest to trade using the right mouse button", "Tut");
+		InsertDialogue("Talk to people around town to get information." +
+			"Also if you want to buy stuff just go to interact with the chest to trade using the right mouse button");
 		/////////// WOOD ///////////
-		InsertDialogueData("If we don't Deforestaion right there won't be no trees left." +
-			"Without trees and stuff we can't breathe!", "Wood");
+		InsertDialogue("If we don't Deforestaion right there won't be no trees left." +
+			"Without trees and stuff we can't breathe!");
 
-		InsertDialogueData("We keep chopping trees to expand our farms!." +
+		InsertDialogue("We keep chopping trees to expand our farms!." +
 			"We losing trees cause government ain't governing right." +
-			"They corrupt or they don't know enough about them trees!", "Wood");
+			"They corrupt or they don't know enough about them trees!");
 
-		InsertDialogueData("We need to do something called Agroforestry." +
-			"Its when you integrat trees with crops and livestock to enhance biodiversity", "Wood");
+		InsertDialogue("We need to do something called Agroforestry." +
+			"Its when you integrat trees with crops and livestock to enhance biodiversity");
 		/////////// TOOL ///////////
-		InsertDialogueData("Composters are Tools for making compost on-site." +
-			"It can reduce waste and provide organic matter to enhance soil fertility!", "Tool");
+		InsertDialogue("Composters are Tools for making compost on-site." +
+			"It can reduce waste and provide organic matter to enhance soil fertility!");
 
-		InsertDialogueData("Soil Testing Kits areEssential for assessing soil health and nutrient levels." +
-			"They allow farmers to tailor their fertilization practices and reduce chemical inputs", "Tool");
+		InsertDialogue("Soil Testing Kits areEssential for assessing soil health and nutrient levels." +
+			"They allow farmers to tailor their fertilization practices and reduce chemical inputs");
 
-		InsertDialogueData("Seed dibblers help in planting seeds at the correct depth and spacing." +
-			" Reducing seed waste :)", "Tool");
+		InsertDialogue("Seed dibblers help in planting seeds at the correct depth and spacing." +
+			" Reducing seed waste :)");
 
 		/////////// SEED ///////////
-		InsertDialogueData("Rotating different crops each season helps prevent soil depletion." +
+		InsertDialogue("Rotating different crops each season helps prevent soil depletion." +
 			"Reduces pest and disease buildup." +
-			"And surprisingly improves soil fertility", "Seed");
+			"And surprisingly improves soil fertility");
 
-		InsertDialogueData("Growing certain plants together can enhance growth. Deter pests and improve pollination." +
-			" For example, planting marigolds alongside vegetables can repel harmful insects", "Seed");
+		InsertDialogue("Growing certain plants together can enhance growth. Deter pests and improve pollination." +
+			" For example, planting marigolds alongside vegetables can repel harmful insects");
 
-		InsertDialogueData("Sometimes Incorporating native plant varieties can help support local ecosystems." +
-			"By attracting beneficial insects and enhance resilience to local pests and diseases", "Seed");
+		InsertDialogue("Sometimes Incorporating native plant varieties can help support local ecosystems." +
+			"By attracting beneficial insects and enhance resilience to local pests and diseases");
 		/////////// STONE ///////////
-		InsertDialogueData("Using stones or gravel as mulch can help retain soil moisture." +
+		InsertDialogue("Using stones or gravel as mulch can help retain soil moisture." +
 			"Reduce erosion.Suppress weed growth." +
-			"It also helps regulate soil temperature", "Stone");
+			"It also helps regulate soil temperature");
 
-		InsertDialogueData("Building dry stone walls creates habitat for wildlife and manage soil and water." +
-			"They can create microclimates and protect crops from wind", "Stone");
+		InsertDialogue("Building dry stone walls creates habitat for wildlife and manage soil and water." +
+			"They can create microclimates and protect crops from wind");
 
-		InsertDialogueData("Incorporate stones into crop rotation systems.It can improve soil structure and fertility." +
-			"Especially when using rocks that release minerals over time", "Stone");
+		InsertDialogue("Incorporate stones into crop rotation systems.It can improve soil structure and fertility." +
+			"Especially when using rocks that release minerals over time");
         Debug.Log("Dialogue loaded");
 	}
     /////////////////////////////// END DIALOGUE ENTRIES ///////////////////////////
@@ -1271,7 +1109,42 @@ public class DatabaseManager : MonoBehaviour
         AddUserType("Admin");
 	}
 
+    void FillNPCTable()
+    {
+        InsertNPC("Tut");
+		InsertNPC("Wood"); 
+		InsertNPC("Tool"); 
+		InsertNPC("Seed"); 
+		InsertNPC("Stone"); 
 
+	}
+
+    void FIllNPCDial()
+    {
+        // TUT
+        InsertNPCDial(1, 1);
+		InsertNPCDial(1, 2);
+		InsertNPCDial(1, 3);
+		InsertNPCDial(1, 4);
+		InsertNPCDial(1, 5);
+		//WOOD
+		InsertNPCDial(2, 6);
+		InsertNPCDial(2, 7);
+		InsertNPCDial(2, 8);
+
+		//TOOL
+		InsertNPCDial(3, 9);
+		InsertNPCDial(3, 10);
+		InsertNPCDial(3, 11);
+		//SEED
+		InsertNPCDial(4, 12);
+		InsertNPCDial(4, 13);
+		InsertNPCDial(4, 14);
+		//Stone
+		InsertNPCDial(5, 15);
+		InsertNPCDial(5, 16);
+        InsertNPCDial(5, 17);
+	}
 
 	private string HashPassword(string password)
 	{
@@ -1388,13 +1261,13 @@ public class DatabaseManager : MonoBehaviour
 		}
         return tutdata;
 	}
-public void InsertNPC(int npcId, string npcType)
+public void InsertNPC( string npcType)
 {
     using (IDbCommand dbCmd = dbConnection.CreateCommand())
     {
-        dbCmd.CommandText = "INSERT INTO NPC (NPCID, NPCType) VALUES (@NPCID, @NPCType)";
+        dbCmd.CommandText = "INSERT INTO NPC (NPCType) VALUES ( @NPCType)";
 
-        AddParameterWithValue(dbCmd, "@NPCID", npcId);
+
         AddParameterWithValue(dbCmd, "@NPCType", npcType);
 
         dbCmd.ExecuteNonQuery();
@@ -1414,13 +1287,11 @@ public void InsertNPCDial(int npcId, int dialId)
     }
 }
 
-public void InsertDialogue(int dialId, string info)
+public void InsertDialogue(string info)
 {
     using (IDbCommand dbCmd = dbConnection.CreateCommand())
     {
-        dbCmd.CommandText = "INSERT INTO Dialogue (DialID, Info) VALUES (@DialID, @Info)";
-
-        AddParameterWithValue(dbCmd, "@DialID", dialId);
+        dbCmd.CommandText = "INSERT INTO Dialogue ( Info) VALUES ( @Info)";
         AddParameterWithValue(dbCmd, "@Info", info);
 
         dbCmd.ExecuteNonQuery();

@@ -18,7 +18,7 @@ public class InventoryController : MonoBehaviour
 
     private bool isEnvironmentStatsOpen = false;
 
-	private bool tutorialpopup = false;
+	//private bool tutorialpopup = false;
 	[SerializeField] GameObject Menupanel;
 
 	void Start()

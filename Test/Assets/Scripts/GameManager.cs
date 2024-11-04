@@ -100,13 +100,14 @@ public class GameManager : MonoBehaviour
 
     void loadPlayerInventory()
     {
+
         Debug.LogError("Player inventory Loaded");
     }
 
     void LoadDevInventory()
     {
-        Debug.LogError("Dev inventory Loaded");
 
+        Debug.LogError("Dev inventory Loaded");
 	}
 
 	public void AddItemToInventory(Item item, int count)
