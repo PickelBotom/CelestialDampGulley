@@ -14,8 +14,21 @@ public class PlayerSaveData
 	public float airquality;
 	public float soilHealth;
 	public float EnvironmentalHealth;
+
+	public bool tutstart;
+	public bool tutinv;
+
+	public PlayerSaveData()
+	{
+		GoldAmount = 1000;
+		EnvironmentalHealth = 100f;
+		airquality = 100f;
+	    soilHealth = 100f;
+	    tutstart = false;
+	    tutinv = false;
+	}
 }
-public  class SaveLoadSystem 
+public  class SaveLoadSystem : MonoBehaviour
 {
 
 	//public  SaveLoadSystem instance;
@@ -38,7 +51,7 @@ public  class SaveLoadSystem
 		string stringData = Utils.DecryptAES(encrypted);
 		
 		PlayerSaveData derivedPSD = new PlayerSaveData();
-
+		Debug.Log(stringData);
 		derivedPSD = JsonUtility.FromJson<PlayerSaveData>(stringData);
 		Debug.Log("Deserialized: " + derivedPSD.GoldAmount);
 		return derivedPSD;

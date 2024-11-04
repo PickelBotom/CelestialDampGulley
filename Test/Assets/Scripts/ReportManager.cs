@@ -48,7 +48,21 @@ public class ReportManager : MonoBehaviour
         }
     }
 
-    private void OnApplicationQuit()
+	private void OnDestroy()
+	{
+		Application.logMessageReceived -= CaptureLog;
+
+		lock (_lock)
+		{
+			if (logWriter != null)
+			{
+				logWriter.Close();
+				logWriter = null;
+			}
+		}
+	}
+
+	private void OnApplicationQuit()
     {
         // Clean up
         Application.logMessageReceived -= CaptureLog;

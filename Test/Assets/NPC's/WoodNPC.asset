@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: WoodNPC
   m_EditorClassIdentifier: 
   Name: WoodNPC
-  TBName: Wood
+  NPCType: Wood
   portrait: {fileID: -892250995, guid: 916cb8aec1c6b6447a2b90f5a10234f5, type: 3}

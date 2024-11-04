@@ -196,13 +196,13 @@ public class MainMenuManager : MonoBehaviour
 		if(!checkValidPassword(password))
 			return;
 
-		ADDRoleEntry = ADDRoleDp.value;
-		ADDRoleName = ADDRoleDp.options[ADDRoleEntry].text;
+		ADDRoleEntry = ADDRoleDp.value+1;
+		//ADDRoleName = ADDRoleDp.options[ADDRoleEntry].text;
 
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
 			string hashedPassword = HashPassword(password);
-			dbCmd.CommandText = $"INSERT INTO Users (Username, Password, Role) VALUES ('{username}', '{hashedPassword}', '{ADDRoleName}')";
+			dbCmd.CommandText = $"INSERT INTO Users (Username, Password, RoleID) VALUES ('{username}', '{hashedPassword}', '{ADDRoleEntry}')";
 			dbCmd.ExecuteNonQuery();
 			Debug.Log($"Hashed password for '{username}': {hashedPassword}");
 		}
@@ -245,11 +245,11 @@ public class MainMenuManager : MonoBehaviour
 					dbCmd.ExecuteNonQuery();
 				}
 			}
-			MURoleEntry = MURoleDp.value;
-			MURoleName = MURoleDp.options[MURoleEntry].text;
+			MURoleEntry = MURoleDp.value+1;
+			//MURoleName = MURoleDp.options[MURoleEntry].text;
 			using (IDbCommand dbCmd = dbConnection.CreateCommand())
 			{
-				dbCmd.CommandText = $"Update Users SET Role = '{MURoleName}' WHERE Username = '{username}'";
+				dbCmd.CommandText = $"Update Users SET RoleID = '{MURoleEntry}' WHERE Username = '{username}'";
 				dbCmd.ExecuteNonQuery();
 			}
 			RefreshList();
@@ -307,13 +307,19 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 		MUScrollviewText.text = "Username\tRole\n";
 		using (IDbCommand dbCmd = dbConnection.CreateCommand())
 		{
-			dbCmd.CommandText = $"SELECT Username, Role FROM Users WHERE Role != 'Admin'";
+			dbCmd.CommandText = @"
+					  SELECT Users.Username, Roles.UserType
+					  FROM Users
+					  JOIN Roles ON Users.RoleID = Roles.RoleID
+					  WHERE Roles.UserType <> 'Admin'";
+
+			//dbCmd.CommandText = $"SELECT Username, RoleID FROM Users WHERE Role != 'Admin'";
 			using (IDataReader reader = dbCmd.ExecuteReader())
 			{
 				while (reader.Read())
 				{
 					tuser = reader["Username"].ToString();
-					trole = reader["Role"].ToString();
+					trole = reader["UserType"].ToString();
 					MUScrollviewText.text += tuser + "\t" + trole + "\n";
 				}
 			}
@@ -328,10 +334,10 @@ public bool checkValidPassword(string pass) // must still add to ADDUSER and in 
 		{
 			using (IDbCommand dbCmd = dbConnection.CreateCommand())
 			{
-				dbCmd.CommandText = $"SELECT Username, Role FROM Users WHERE Username = '{username}'";
+				dbCmd.CommandText = $"SELECT Username, Roles.UserType FROM Users  JOIN Roles ON Users.RoleID = Roles.RoleID WHERE Username = '{username}'";
 				using (IDataReader reader = dbCmd.ExecuteReader())
 				{
-					if (reader.Read() && reader["Role"].ToString() == "Admin")
+					if (reader.Read() && reader["UserType"].ToString() == "Admin")
 					{
 						OutputMessage("Cannot Delete Admin");
 						return;

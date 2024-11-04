@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Currency : MonoBehaviour
 {
-	[SerializeField] int gold;
+	public int gold;
 	[SerializeField] TMP_Text GoldText;
 
 	private void Start()

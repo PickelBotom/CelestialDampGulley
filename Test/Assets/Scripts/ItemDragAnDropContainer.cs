@@ -57,10 +57,15 @@ public class ItemDragAnDropContainer : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnDestroy()
+	{
+        Destroy(this);
+    }
+
+	// Update is called once per frame
+	void Update()
     {
-        if(itemIcon.activeInHierarchy == true){
+			if (itemIcon != null && itemIcon.activeInHierarchy == true){
             iconTransform.position = Input.mousePosition;
             if(Input.GetMouseButtonDown(0)){
                if(EventSystem.current.IsPointerOverGameObject()==false){

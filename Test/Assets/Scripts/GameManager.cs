@@ -11,7 +11,6 @@ public class GameManager : MonoBehaviour
     public GameObject PickUpItemPrefab;
 
 
-
 	PlayerSaveData playerSaveData;
 	public static GameManager instance { get; private set; }
 
@@ -25,7 +24,7 @@ public class GameManager : MonoBehaviour
 		}
 
 		instance = this; // Set the singleton instance
-		DontDestroyOnLoad(gameObject);
+		//DontDestroyOnLoad(gameObject);
 		
     }
 
@@ -36,9 +35,16 @@ public class GameManager : MonoBehaviour
 		nameMainMenuScene = "MainMenuScene";
 
 
-		//	DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+        
+        //	DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+          LoadData();
 
-		tutorialManager.LoadTutfromID(1);
+        if (!startTut)
+        {
+            tutorialManager.LoadTutfromID(1);
+            startTut = true;
+        }
+
 
 		switch (DatabaseManager.instance.getRoleID(userid))
         {
@@ -76,12 +82,16 @@ public class GameManager : MonoBehaviour
     public DialogueSystem dialogueSystem; 
     public TutorialManager tutorialManager;
 
+    public EnvironmentManager environmentManager;
+
 	public SaveLoadSystem saveLoadSystem;
 
-	public static int userid;
+	public static int userid=5;
    
     string encrypteddata;
-    bool inventoryTut;
+    
+    bool inventoryTut = false;
+    bool startTut= false;
 
 	[Header("Transition")]
 	[SerializeField] string nameMainMenuScene;
@@ -90,13 +100,14 @@ public class GameManager : MonoBehaviour
 
     void loadPlayerInventory()
     {
-        Debug.LogError("Player Loaded");
+
+        Debug.LogError("Player inventory Loaded");
     }
 
     void LoadDevInventory()
     {
-        Debug.LogError("Player Loaded");
 
+        Debug.LogError("Dev inventory Loaded");
 	}
 
 	public void AddItemToInventory(Item item, int count)
@@ -117,23 +128,44 @@ public class GameManager : MonoBehaviour
     public void SaveData()
     {
         Debug.Log("Save datathing run");
-        //encrypteddata = saveLoadSystem.Save(playerSaveData);
+		playerSaveData = new PlayerSaveData();
 
-        //DatabaseManager.instance.SaveEncrypteddata(encrypteddata);
+		playerSaveData.airquality = environmentManager.airQuality;
+        playerSaveData.soilHealth = environmentManager.soilHealth;
+        playerSaveData.EnvironmentalHealth = environmentManager.environmentalHealth;
+
+        playerSaveData.GoldAmount = player.GetComponent<Currency>().gold;
+        playerSaveData.tutinv = inventoryTut;
+        playerSaveData.tutstart = startTut;
+
+        encrypteddata = saveLoadSystem.Save(playerSaveData);
+
+        DatabaseManager.instance.SaveEncrypteddata(encrypteddata,userid);
     }
 
 	void LoadData()
 	{
-        string encrypteddata = DatabaseManager.instance.LaodEncrypteddata();
+        string encrypteddata = DatabaseManager.instance.LoadEncrypteddata(userid);
 
 		if (string.IsNullOrEmpty( encrypteddata))
         {
-            Debug.LogError("DataNot found");
+            Debug.LogError("Data Not found");
             return;
         }    
         playerSaveData = saveLoadSystem.Load(encrypteddata);
 
-        /// put playerSave Data into other fields
+        Debug.LogWarning(playerSaveData.GoldAmount);
+
+        environmentManager.airQuality = playerSaveData.airquality;
+        environmentManager.soilHealth = playerSaveData.soilHealth;
+
+        environmentManager.environmentalHealth = playerSaveData.EnvironmentalHealth;
+
+        player.GetComponent<Currency>().gold = playerSaveData.GoldAmount;
+        inventoryTut = playerSaveData.tutinv;
+		startTut = playerSaveData.tutstart;
+
+		/// put playerSave Data into other fields
 	}
 
 
