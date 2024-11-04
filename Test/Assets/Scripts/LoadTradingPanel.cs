@@ -19,11 +19,11 @@ public class LoadTradingPanel : MonoBehaviour
     private int playerGold = 100;
 
     public string CallerTag;
-    private DatabaseManager dbManager;
+    //private DatabaseManager dbManager;
 
     private void Start()
     {
-        dbManager = GameManager.instance.GetComponent<DatabaseManager>();
+        //dbManager = GameManager.instance.GetComponent<DatabaseManager>();
         UpdatePlayerGoldUI();
 
         if (closeButton != null)
@@ -90,7 +90,7 @@ public class LoadTradingPanel : MonoBehaviour
             playerGold -= totalCost; // Deduct total cost from player gold
             UpdatePlayerGoldUI(); // Update the UI to reflect new gold amount
 
-            dbManager.LogTrade("buy", item.ItemID, amount, totalCost);
+            DatabaseManager.instance.LogTrade("buy", item.ItemID, amount, totalCost);
 
             Debug.Log($"Bought {item.Name} x{amount} for {totalCost} gold.");
         }
@@ -117,7 +117,7 @@ public class LoadTradingPanel : MonoBehaviour
             inventoryPanel.inventory.RemoveItem(item, amountToSell);
             playerGold += itemValue;
             UpdatePlayerGoldUI();
-            dbManager.LogTrade("sell", item.ItemID, amount, itemValue);
+            DatabaseManager.instance.LogTrade("sell", item.ItemID, amount, itemValue);
             Debug.Log($"Sold {item.Name} x{amountToSell} for {itemValue} gold.");
         }
         else

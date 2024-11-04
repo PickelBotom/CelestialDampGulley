@@ -203,10 +203,11 @@ public class DatabaseManager : MonoBehaviour
             CREATE TABLE Trade (
                     TradeID INTEGER PRIMARY KEY AUTOINCREMENT,
                     NPCID INTEGER,
+                    Price INTEGER,
                     ItemID INTEGER,
-                    TradeType TEXT CHECK(TradeType IN ('buy', 'sell')), -- Specify if trade is a buy or sell
-                    Quantity INTEGER NOT NULL,                          -- Track amount of items traded
-                    TradeTimestamp DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Log the trade time
+                    Type TEXT CHECK(Type IN ('buy', 'sell')), -- Specify if trade is a buy or sell
+                    Amount INTEGER NOT NULL,                          -- Track amount of items traded
+                    TradeDate DATETIME DEFAULT CURRENT_TIMESTAMP,  -- Log the trade time
                     FOREIGN KEY (ItemID) REFERENCES Items(ItemID),
                     FOREIGN KEY (NPCID) REFERENCES NPC(NPCID)
             )";
@@ -1307,34 +1308,30 @@ public void InsertDialogue(string info)
 
 public void LogTrade(string tradeType, int itemID, int quantity, int totalValue)
 {
-    using (var connection = new SqliteConnection(dbPath))
+    //using (var connection = new SqliteConnection(dbPath))
     {
         try
         {
-            connection.Open();
-            using (var command = connection.CreateCommand())
+            //connection.Open();
+            using (IDbCommand dbCmd = dbConnection.CreateCommand())
             {
-                command.CommandText = @"
-                    INSERT INTO Trade (Type, ItemID, Quantity, TotalValue, TradeDate) 
-                    VALUES (@type, @itemID, @quantity, @totalValue, @date);
+                dbCmd.CommandText = @"
+                    INSERT INTO Trade (Type, ItemID, Amount, Price, TradeDate) 
+                    VALUES (@type, @itemID, @amount, @price, @date);
                 ";
                 
-                command.Parameters.AddWithValue("@type", tradeType); // "buy" or "sell"
-                command.Parameters.AddWithValue("@itemID", itemID);
-                command.Parameters.AddWithValue("@quantity", quantity);
-                command.Parameters.AddWithValue("@totalValue", totalValue);
-                command.Parameters.AddWithValue("@date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                AddParameterWithValue(dbCmd,"@type", tradeType); // "buy" or "sell"
+                AddParameterWithValue(dbCmd,"@itemID", itemID);
+                AddParameterWithValue(dbCmd,"@amount", quantity);
+                AddParameterWithValue(dbCmd,"@price", totalValue);
+                AddParameterWithValue(dbCmd,"@date", DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 
-                command.ExecuteNonQuery();
+                dbCmd.ExecuteNonQuery();
             }
         }
         catch (Exception ex)
         {
             Debug.LogError("Failed to log trade: " + ex.Message);
-        }
-        finally
-        {
-            connection.Close();
         }
     }
 }
@@ -1343,9 +1340,9 @@ public List<string> GetTradeData()
 {
     List<string> tradeData = new List<string>();
 
-    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
-    {
-        dbConnection.Open();
+    //using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    //{
+        //dbConnection.Open();
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
             dbCmd.CommandText = "SELECT * FROM Trade";
@@ -1360,7 +1357,7 @@ public List<string> GetTradeData()
                 }
             }
         }
-    }
+    //}
 
     return tradeData;
 }
@@ -1369,24 +1366,22 @@ public List<string> GetTradeData()
 
 public void ClearTradeTable()
 {
-    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
-    {
-        dbConnection.Open();
+    //using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    //{
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
             dbCmd.CommandText = "DELETE FROM Trade";
             dbCmd.ExecuteNonQuery();
         }
-    }
+    //}
 }
 
 public void SaveTradeDataToFile()
 {
     List<string> tradeData = new List<string>();
 
-    using (IDbConnection dbConnection = new SqliteConnection(dbPath))
-    {
-        dbConnection.Open();
+    //using (IDbConnection dbConnection = new SqliteConnection(dbPath))
+    //{
         using (IDbCommand dbCmd = dbConnection.CreateCommand())
         {
             dbCmd.CommandText = "SELECT ItemID, Amount, Type, Price FROM Trade";
@@ -1405,7 +1400,7 @@ public void SaveTradeDataToFile()
                 }
             }
         }
-    }
+    //}
 
     // Define file path and save data
     string filePath = Path.Combine(Application.persistentDataPath, "TradeSession.txt");
