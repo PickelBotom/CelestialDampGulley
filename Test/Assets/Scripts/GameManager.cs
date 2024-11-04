@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        foreach (var slot in inventoryContainer.slots)
+        {
+            slot.Clear();
+        }
+
 		Debug.LogError("UserID :"+ userid);
 
 		nameMainMenuScene = "MainMenuScene";
@@ -83,12 +88,22 @@ public class GameManager : MonoBehaviour
     // Check if the player has an inventory linked to their user account
     if (DatabaseManager.instance.InventoryExists(userid))
     {
-        // Load the player's inventory from the database if necessary
+        // Load the player's inventory from the database
         var playerItems = DatabaseManager.instance.LoadPlayerInventory(userid);
-        foreach (var item in playerItems)
+        foreach (var itemData in playerItems)
         {
-            dbManager.AddSingleItemToInventory(item.Name, "InventoryItems", item.Amount);
-            Debug.Log($"Loaded {item.Amount} of {item.Name} from database.");
+            // Find the item asset based on its name
+            Item item = Array.Find(itemAssets, i => i.Name == itemData.Name);
+            if (item != null)
+            {
+                // Add item to the inventory container directly
+                inventoryContainer.Add(item, itemData.Amount);
+                Debug.Log($"Loaded {itemData.Amount} of {item.Name} into inventoryContainer.");
+            }
+            else
+            {
+                Debug.LogWarning($"Item {itemData.Name} not found in item assets.");
+            }
         }
     }
     else
@@ -97,6 +112,7 @@ public class GameManager : MonoBehaviour
         LoadDefaultInventory();
     }
 }
+
 
 void LoadDevInventory()
 {
@@ -150,6 +166,11 @@ void LoadDefaultInventory()
         encrypteddata = saveLoadSystem.Save(playerSaveData);
 
         DatabaseManager.instance.SaveEncrypteddata(encrypteddata,userid);
+
+         if (DatabaseManager.instance.getRoleID(userid) == 1)
+        {
+            DatabaseManager.instance.SaveEntireInventoryToDatabase(userid, inventoryContainer);
+        }
     }
 
 	void LoadData()
@@ -182,6 +203,7 @@ void LoadDefaultInventory()
 
     public void LoadMainMenuScene()
 {
+
     foreach (var slot in inventoryContainer.slots)
     {
         slot.Clear();

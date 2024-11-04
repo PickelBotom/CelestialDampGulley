@@ -1451,6 +1451,43 @@ public List<Item> LoadPlayerInventory(int userId)
     return playerItems;
 }
 
+public void SaveEntireInventoryToDatabase(int userId, ItemContainer inventoryContainer)
+{
+    using (IDbCommand dbCmd = dbConnection.CreateCommand())
+    {
+        dbCmd.CommandText = "DELETE FROM InventoryItems WHERE UserID = @UserId";
+        AddParameterWithValue(dbCmd, "@UserId", userId);
+        dbCmd.ExecuteNonQuery();
+    }
+    // Loop through each slot in the inventory container
+    foreach (var slot in inventoryContainer.slots)
+    { 
+        if (slot.item != null && slot.count > 0) // Only save if there's an item with a positive count
+        {
+            // Insert each item into the InventoryItems table for the user
+            AddItemToInventoryTable(userId, slot.item.Name, slot.count);
+        }
+    }
+    Debug.Log("Entire inventory saved to InventoryItems table.");
+}
+
+private void AddItemToInventoryTable(int userId, string itemName, int count)
+{
+
+        using (IDbCommand dbCmd = dbConnection.CreateCommand())
+        {
+            dbCmd.CommandText = "INSERT INTO InventoryItems (UserID, Name, Quantity) VALUES (@UserId, @Name, @Quantity)";
+            AddParameterWithValue(dbCmd,"@UserId", userId);
+            AddParameterWithValue(dbCmd,"@Name", itemName);
+            AddParameterWithValue(dbCmd,"@Quantity", count);
+
+            dbCmd.ExecuteNonQuery();
+        }
+    Debug.Log($"Added {count} of {itemName} to InventoryItems for user {userId}.");
+}
+
+
+
 /* public List<Item> LoadDevInventory()
 {
     List<Item> devItems = new List<Item>();

@@ -132,6 +132,16 @@ public class MainMenuManager : MonoBehaviour
 		Debug.LogError(GameManager.userid);
 
 		dbConnection.Close();
+
+		/* DatabaseManager dbManager = FindObjectOfType<DatabaseManager>();
+		if (dbManager != null)
+		{
+			dbManager.LoadPlayerInventory(GameManager.userid);
+		}
+		else
+		{
+			Debug.LogError("DatabaseManager not found! Player inventory could not be loaded.");
+		} */
 		SceneManager.LoadScene(nameMainScene, LoadSceneMode.Single);
 		SceneManager.LoadScene(nameEssentialScene, LoadSceneMode.Additive);
 	}
