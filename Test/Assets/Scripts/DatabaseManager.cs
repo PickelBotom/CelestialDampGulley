@@ -269,36 +269,7 @@ public class DatabaseManager : MonoBehaviour
                 )";
 			dbCmd.ExecuteNonQuery();
 
-			// Create Crops table without Yield column
-			dbCmd.CommandText = @"
-            CREATE TABLE IF NOT EXISTS Crops (
-                CropID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                Name TEXT, 
-                GrowthTime INTEGER, 
-                SellPrice INTEGER, 
-                Description TEXT, 
-                Icon BLOB,
-                SpriteName TEXT,
-                Stackable BOOLEAN
-            )";
-			dbCmd.ExecuteNonQuery();
 
-
-
-			// Create InventoryItems table
-			dbCmd.CommandText = @"
-                CREATE TABLE IF NOT EXISTS InventoryItems (
-                    ItemID INTEGER PRIMARY KEY AUTOINCREMENT, 
-                    Name TEXT, 
-                    Category TEXT, 
-                    Effect TEXT, 
-                    CraftingRecipe TEXT, 
-                    SellPrice INTEGER, 
-                    Description TEXT, 
-                    Icon BLOB,
-                    SpriteName TEXT
-                )";
-			dbCmd.ExecuteNonQuery();
 
 		}
 	}
