@@ -7,7 +7,7 @@ public class PickUpItem : MonoBehaviour
     GameObject player;
     [SerializeField] float speed = 1f;
     [SerializeField] float pickUpDistance = 1.5f;
-    [SerializeField] float ttl = 10f; // time to live
+    [SerializeField] float ttl = 15f; // time to live
     public Item item;
     public int count = 1;
 
