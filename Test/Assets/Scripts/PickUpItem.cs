@@ -31,7 +31,18 @@ public class PickUpItem : MonoBehaviour
         renderer.sprite = item.icon;
     }
 
-    private void Update()
+	public void SetTrash(Item item, int count)
+	{
+		this.item = item;
+		this.count = count;
+        ttl = 100f;
+
+		SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+		renderer.sprite = item.icon;
+	}
+
+
+	private void Update()
     {
         ttl -= Time.deltaTime;
         if (ttl < 0)

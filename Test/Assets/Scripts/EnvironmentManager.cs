@@ -69,7 +69,7 @@ public class EnvironmentManager : MonoBehaviour
             PickUpItem pickUpItem = trashObject.GetComponent<PickUpItem>();
             if (pickUpItem != null)
             {
-                pickUpItem.Set(trashItem, 1);
+                pickUpItem.SetTrash(trashItem, 1);
             }
         }
 

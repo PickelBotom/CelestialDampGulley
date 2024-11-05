@@ -18,7 +18,7 @@ public class DayNightController : MonoBehaviour
     float time;
     int days = 0;
 
-    [SerializeField] float timeScale = 3000f;
+    [SerializeField] float timeScale = 1500f;
     [SerializeField] float startTime = 28800f;
     float phaseInSec = secondsInDay / 2;
 
@@ -32,8 +32,8 @@ public class DayNightController : MonoBehaviour
     void Start()
     {
         time = startTime;
-
-    }
+		timeScale = 1500f;
+	}
 
     public void Sub(TimeAgent tagent)
     {
